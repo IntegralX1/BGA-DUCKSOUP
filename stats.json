@@ -1,0 +1,52 @@
+{
+    "table": {
+      "totalRounds": {
+        "id": 20,
+        "name": "Total Rounds",
+        "type": "int"
+      },
+      "bankDuckats": {
+        "id": 30,
+        "name": "Total Duckats in Bank",
+        "type": "int"
+      }
+    },
+    "player": {
+      "duckats": {
+        "id": 11,
+        "name": "Number of Duckats",
+        "type": "int",
+        "defaultValue": 150
+      },
+      "souperDuckats": {
+        "id": 12,
+        "name": "Number of Souper Duckats",
+        "type": "int",
+        "defaultValue": 3
+      },
+      "excellentStaff": {
+        "id": 13,
+        "name": "Number of Excellent Staff",
+        "type": "int",
+        "defaultValue": 0
+      },
+      "normalStaff": {
+        "id": 14,
+        "name": "Number of Normal Staff",
+        "type": "int",
+        "defaultValue": 12
+      },
+      "staffBids": {
+        "id": 15,
+        "name": "Number of Staff Bids",
+        "type": "int",
+        "defaultValue": 0
+      },
+      "staffBidsWon": {
+        "id": 16,
+        "name": "Number of Staff Bids Won",
+        "type": "int",
+        "defaultValue": 0
+      }
+    }
+  }
