@@ -1,0 +1,436 @@
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * DuckSoupTheRestaurantGame implementation : @ RJ Hidson <rhidson1@nait.ca>, @ Ashton Williams <ashtonw@nait.ca>, @ Rubelyn Ragasa <rragasa1@nait.ca>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * ducksouptherestaurantgame.css
+ *
+ * DuckSoupTheRestaurantGame stylesheet
+ *
+ */
+
+/*
+    This is the CSS stylesheet of your game User Interface.
+    
+    Styles defined on this file will be applied to the HTML elements you define in your
+    HTML template (ducksouptherestaurantgame_ducksouptherestaurantgame.tpl), and to HTML elements you create dynamically
+    (in ducksouptherestaurantgame.js).
+    
+    Usually, you are using CSS to:
+    
+    1°) define the overall layout of your game
+        (ex: place the board on the top left, place player's hand beside, place the deck on the right, ...).
+
+    2°) create your CSS-sprites:
+        All images of your games should be gathered into a small number of image files. Then, using
+        background-image and background-position CSS properties, you create HTML blocks that can 
+        display these images correctly (see example below).
+    
+    3°) ... anything else:
+        It is really easy to add and remove CSS classes dynamically from your Javascript with
+        dojo.addClass and dojo.removeClass. It is also easy to check if an element has a class
+        (dojo.hasClass) or to get all elements with a specific class (dojo.query). This is why,
+        very often, using CSS classes for the logic of your user interface allow you to do complex
+        thing easily.
+        
+        
+     Note: on the production platform, this file will be compressed and comments will be removed.
+           Consequently, don't hesitate to put as many comments as necessary.
+*/
+
+
+/* Note: you must not use any @import directive */
+
+
+/********* You can start writing your CSS below this line: **********/
+
+#staff-die-image {
+    margin: 5px;
+    float: left;
+    height: 100px;
+    width: 100px;
+    position: relative;
+    background-image: url('img/staff-die.png');
+    background-size: 100px 100px;
+    outline: 1px solid black;
+}
+
+.* {
+    margin:0;
+    padding:0;
+    box-sizing: border-box!important;
+}
+
+html {
+    height: 100%;
+    background: linear-gradient(#5c629b, #35346d);
+    background-attachment: fixed;
+    font-size: 16px; /* used for scaling using rem units */
+}
+
+body {
+    height: 100%;
+}
+
+.clearfix::after { 
+    content:"";
+    display:table;
+    clear:both;
+}
+
+.left {
+    float: left;
+}
+
+.right { 
+    float: right;
+}
+
+.container { 
+    width: 100%;
+    height: 100%;
+    clear: both;
+}
+
+.left-content {
+    width: 50%;
+    float: left;
+    position: relative;
+    padding: 1.25rem;
+    box-sizing: border-box;
+}
+
+.right-content {
+    width: 50%;
+    float: right;
+    position: relative;
+    padding: 2.5rem 2.5rem 1.25rem 1.25rem;
+    box-sizing: border-box;
+
+}
+
+.board-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+
+.board {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    padding: 0;
+    position: relative;
+    display: block;
+}
+
+.inner-board {
+    width: 55%;
+    height: auto;
+    max-height: 55%;
+    padding: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    z-index: 1;
+}
+
+.board-contents.inactive, .inner-board.inactive { 
+    display: none; 
+}
+
+.board-contents {
+    width: 48%;
+    height: auto;
+    max-height: 45%;
+    padding: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    z-index: 1;
+    color: #fff;
+}
+
+.board-contents h2{
+    font-family: 'Limelight', sans-serif;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.board-contents p {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.375rem;
+    text-align: center;
+}
+
+.letter-buttons {
+    margin-bottom: 1.875rem;
+    text-align: center;
+    width: 0%;
+
+}
+
+.letter-buttons button {
+    background: #3e3f83;
+    color: #fff;
+    border-radius: 30px;
+    padding: 0.938rem 1.875rem 0.75rem 1.875rem;
+    border: 0px;
+    display: inline-block;
+    margin-right: 0.5rem;
+    font-family: 'Limelight', sans-serif;
+    line-height: 1;
+    font-size: 3.75rem;
+    box-shadow: 0 10px 0 #2a2661;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+}
+
+.letter-buttons button:last-child{
+    margin-right: 0;
+}
+
+.dice-buttons {
+    margin-bottom: 2.5rem;
+    text-align: center;
+}
+
+.dice-buttons button {
+    background: #3e3f83;
+    border-radius: 30px;
+    border: 0px;
+    display: inline-block;
+    margin-right: 0.625rem;
+    box-shadow: 0 10px 0 #2a2661;
+    font-size: 0;
+    cursor: pointer;
+    clear: left;
+}
+
+.dice-buttons button img {
+    float: left;
+    padding-left: 1.25rem;
+    height: 6.25rem;
+}
+
+.dice-buttons button span {
+    font-family: 'Arial Black', 'Arial Bold', sans-serif;
+    font-weight: bolder;
+    text-transform: uppercase;
+    line-height: 1.25;
+    font-size: 1.25rem;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    text-align: left;
+    padding: 1.563rem 1.875rem 0.75rem 0.625rem;
+    float: left;
+}
+
+.staff-board-container { 
+    position: relative;
+}
+
+.staff-board {
+    width: 90%;
+    height: auto;
+    max-height: 100%;
+    padding: 0;
+    position: relative;
+    display: block;
+    margin: 0 auto;
+}
+
+.player-stats {
+    position: absolute;
+    top: -0.5rem;
+    padding-right: 1.875rem;
+    right: 1.875rem;
+    z-index: 2;
+    overflow: hidden;
+}
+
+.player-stats img {
+    height: 3.75rem;
+}
+
+.player-header { 
+    width: 90%; 
+    margin: 0 auto;
+    color: #fff;
+}
+
+.name-plate {
+    width: 90%;
+    margin: 0 auto;
+    border-radius: 10px 5px 0px 0px;
+}
+
+.player1 {
+    background: #ff0000;
+}
+
+.player-name {
+    font-family: 'Arial Black', 'Arial Bold', 'Helvetica', sans-serif;
+    text-transform: uppercase;
+    padding: 1rem 1.25rem;
+    border-radius: 10px 10px 0px 0px;
+    font-size: 1.25rem;
+    position: relative;
+}
+
+.super-duckat {
+    padding-bottom: 10px;
+}
+
+.duckat {
+    padding-bottom: 10px;
+    margin-left: 1rem;
+}
+
+.value {
+    background: #000;
+    font-family: 'Arial Black', 'Arial Bold', 'Helvetica', sans-serif;
+    border-radius:  30px 0px 0px 30px;
+    padding: 0.5rem 1.875rem 0.5rem 1.25rem;
+    margin-right: -1.25rem;
+    margin-top: 0.625rem;
+    font-size: 1.25rem;
+}
+
+.player-background {
+    height: 2.188rem;
+    border-radius: 0px 10px 0px 0px;
+    margin-top: -2.188rem;
+}
+
+.arrow {
+    background: #3e3f83;
+    border-radius: 50%;
+    padding: 1.875rem;
+    border: 0px;
+    display: inline-block;
+    text-transform: uppercase;
+    box-shadow: 0 8px 0 #2a2661;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: calc(50% - 1.875px);
+    cursor: pointer;
+    z-index: 1;
+}
+
+#left-arrow { 
+    left: 0;
+}
+
+#right-arrow {
+    right: 0;
+}
+
+.arrow span {
+    width: 0;
+    height: 0;
+    top: 50%;
+    border-top: 0.938rem solid transparent;
+    border-bottom: 0.983rem solid transparent;
+    position: absolute;
+    transform: translateY(-50%);
+}
+
+#right-arrow span {
+    border-left: 0.938rem solid #fff;
+    left: 1.563rem;
+}
+
+#left-arrow span {
+    border-right: 0.938rem solid #fff;
+    right: 1.563rem;
+}
+
+@media screen and (max-width: 1500px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 1280px) {
+    html {
+        font-size: 12px;
+    }
+
+    .duckat {
+        margin-left: 0.5rem;
+    }
+
+    .value { 
+        padding: 0.5rem 1.875rem 0.5rem 1rem;
+    }
+}
+
+@media screen and (max-width: 1023px) {
+    .left-content {
+        width: 100%;
+        float: left;
+        position: relative;
+        padding: 1.25rem;
+        box-sizing: border-box;
+    }
+    
+    .right-content {
+        width: 100%;
+        float: left;
+        position: relative;
+        padding: 1.25rem;
+        box-sizing: border-box;
+    
+    }
+
+}
+
+@media screen and (max-width: 600px) {
+    html {
+        font-size: 10px;
+    }
+
+    .dice-buttons img { 
+        display: none; 
+    }
+    
+    .dice-buttons button { 
+        min-width: 35%;
+        text-align: center;
+    }
+
+    .dice-buttons button span {
+        text-align: center;
+        padding: 1.563rem 1.875rem;
+    }
+
+
+}
+
+@media screen and (max-width: 450px) {
+    .player-name {
+        width: 100%;
+        float: none;
+        text-align: center;
+        margin-top: 6rem;
+    }
+
+    .player-stats {
+        margin-top: -4rem;
+        right: auto;
+        padding-right: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 150px;
+    }
+
+
+}

@@ -47,7 +47,6 @@
 
 
 /********* You can start writing your CSS below this line: **********/
-
 .* {
     margin:0;
     padding:0;
@@ -71,6 +70,14 @@ body {
     clear:both;
 }
 
+#left-content {
+    width: 50%;
+    float: left;
+    position: relative;
+    padding: 1.25rem;
+    box-sizing: border-box;
+}
+
 .left {
     float: left;
 }
@@ -86,55 +93,51 @@ body {
 }
 
 .left-content {
-    width: 50%;
+    width: 40%;
     float: left;
     position: relative;
-    padding: 1.25rem;
+    padding: 4.25rem;
     box-sizing: border-box;
 }
 
 .right-content {
-    width: 50%;
+    width: 60%;
     float: right;
     position: relative;
     padding: 2.5rem 2.5rem 1.25rem 1.25rem;
     box-sizing: border-box;
-
 }
 
-.board-container {
+#board-container {
     position: relative;
     width: 100%;
     height: auto;
 }
 
-.board {
-    width: 100%;
-    height: auto;
-    max-height: 100%;
-    padding: 0;
+#board {
+    width: 700px;
+    height: 700px;
+    background-image: url('img/board.jpg');
     position: relative;
-    display: block;
-}
+ }
 
-.inner-board {
-    width: 55%;
-    height: auto;
-    max-height: 55%;
-    padding: 0;
+ #inner-board {
     position: absolute;
+    background-size: 350px 350px;
+    height: 350px;
+    width: 350px;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(1);
-    z-index: 1;
-}
+    transform: translate(-50%, -50%);
+    background-image: url('img/inner-board.png');
+ }
 
 .board-contents.inactive, .inner-board.inactive { 
     display: none; 
 }
 
 .board-contents {
-    width: 48%;
+    width: 50%;
     height: auto;
     max-height: 45%;
     padding: 0;
@@ -162,8 +165,9 @@ body {
 .letter-buttons {
     margin-bottom: 1.875rem;
     text-align: center;
-    width: 0%;
-
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
 }
 
 .letter-buttons button {
@@ -172,8 +176,7 @@ body {
     border-radius: 30px;
     padding: 0.938rem 1.875rem 0.75rem 1.875rem;
     border: 0px;
-    display: inline-block;
-    margin-right: 0.5rem;
+    margin: 10px 10px 10px 10px;
     font-family: 'Limelight', sans-serif;
     line-height: 1;
     font-size: 3.75rem;
@@ -184,253 +187,4 @@ body {
 
 .letter-buttons button:last-child{
     margin-right: 0;
-}
-
-#staff-die-image {
-    margin: 5px;
-    float: left;
-    height: 100px;
-    width: 100px;
-    position: relative;
-    background-image: url('img/staff-die.png');
-    background-size: 100px 100px;
-    outline: 1px solid black;
-}
-
-.dice-buttons {
-    margin-bottom: 2.5rem;
-    text-align: center;
-}
-
-.dice-buttons button {
-    background: #3e3f83;
-    border-radius: 30px;
-    border: 0px;
-    display: inline-block;
-    margin-right: 0.625rem;
-    box-shadow: 0 10px 0 #2a2661;
-    font-size: 0;
-    cursor: pointer;
-    clear: left;
-}
-
-.dice-buttons button img {
-    float: left;
-    padding-left: 1.25rem;
-    height: 6.25rem;
-}
-
-.dice-buttons button span {
-    font-family: 'Arial Black', 'Arial Bold', sans-serif;
-    font-weight: bolder;
-    text-transform: uppercase;
-    line-height: 1.25;
-    font-size: 1.25rem;
-    color: #fff;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    text-align: left;
-    padding: 1.563rem 1.875rem 0.75rem 0.625rem;
-    float: left;
-}
-
-.staff-board-container { 
-    position: relative;
-}
-
-.staff-board {
-    width: 90%;
-    height: auto;
-    max-height: 100%;
-    padding: 0;
-    position: relative;
-    display: block;
-    margin: 0 auto;
-}
-
-.player-stats {
-    position: absolute;
-    top: -0.5rem;
-    padding-right: 1.875rem;
-    right: 1.875rem;
-    z-index: 2;
-    overflow: hidden;
-}
-
-.player-stats img {
-    height: 3.75rem;
-}
-
-.player-header { 
-    width: 90%; 
-    margin: 0 auto;
-    color: #fff;
-}
-
-.name-plate {
-    width: 90%;
-    margin: 0 auto;
-    border-radius: 10px 5px 0px 0px;
-}
-
-.player1 {
-    background: #ff0000;
-}
-
-.player-name {
-    font-family: 'Arial Black', 'Arial Bold', 'Helvetica', sans-serif;
-    text-transform: uppercase;
-    padding: 1rem 1.25rem;
-    border-radius: 10px 10px 0px 0px;
-    font-size: 1.25rem;
-    position: relative;
-}
-
-.super-duckat {
-    padding-bottom: 10px;
-}
-
-.duckat {
-    padding-bottom: 10px;
-    margin-left: 1rem;
-}
-
-.value {
-    background: #000;
-    font-family: 'Arial Black', 'Arial Bold', 'Helvetica', sans-serif;
-    border-radius:  30px 0px 0px 30px;
-    padding: 0.5rem 1.875rem 0.5rem 1.25rem;
-    margin-right: -1.25rem;
-    margin-top: 0.625rem;
-    font-size: 1.25rem;
-}
-
-.player-background {
-    height: 2.188rem;
-    border-radius: 0px 10px 0px 0px;
-    margin-top: -2.188rem;
-}
-
-.arrow {
-    background: #3e3f83;
-    border-radius: 50%;
-    padding: 1.875rem;
-    border: 0px;
-    display: inline-block;
-    text-transform: uppercase;
-    box-shadow: 0 8px 0 #2a2661;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    position: absolute;
-    top: calc(50% - 1.875px);
-    cursor: pointer;
-    z-index: 1;
-}
-
-#left-arrow { 
-    left: 0;
-}
-
-#right-arrow {
-    right: 0;
-}
-
-.arrow span {
-    width: 0;
-    height: 0;
-    top: 50%;
-    border-top: 0.938rem solid transparent;
-    border-bottom: 0.983rem solid transparent;
-    position: absolute;
-    transform: translateY(-50%);
-}
-
-#right-arrow span {
-    border-left: 0.938rem solid #fff;
-    left: 1.563rem;
-}
-
-#left-arrow span {
-    border-right: 0.938rem solid #fff;
-    right: 1.563rem;
-}
-
-@media screen and (max-width: 1500px) {
-    html {
-        font-size: 14px;
-    }
-}
-
-@media screen and (max-width: 1280px) {
-    html {
-        font-size: 12px;
-    }
-
-    .duckat {
-        margin-left: 0.5rem;
-    }
-
-    .value { 
-        padding: 0.5rem 1.875rem 0.5rem 1rem;
-    }
-}
-
-@media screen and (max-width: 1023px) {
-    .left-content {
-        width: 100%;
-        float: left;
-        position: relative;
-        padding: 1.25rem;
-        box-sizing: border-box;
-    }
-    
-    .right-content {
-        width: 100%;
-        float: left;
-        position: relative;
-        padding: 1.25rem;
-        box-sizing: border-box;
-    
-    }
-
-}
-
-@media screen and (max-width: 600px) {
-    html {
-        font-size: 10px;
-    }
-
-    .dice-buttons img { 
-        display: none; 
-    }
-    
-    .dice-buttons button { 
-        min-width: 35%;
-        text-align: center;
-    }
-
-    .dice-buttons button span {
-        text-align: center;
-        padding: 1.563rem 1.875rem;
-    }
-
-
-}
-
-@media screen and (max-width: 450px) {
-    .player-name {
-        width: 100%;
-        float: none;
-        text-align: center;
-        margin-top: 6rem;
-    }
-
-    .player-stats {
-        margin-top: -4rem;
-        right: auto;
-        padding-right: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 150px;
-    }
-
-
 }
