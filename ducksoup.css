@@ -93,7 +93,7 @@ body {
 }
 
 .left-content {
-    width: 40%;
+    width: 50%;
     float: left;
     position: relative;
     padding: 4.25rem;
@@ -101,7 +101,7 @@ body {
 }
 
 .right-content {
-    width: 60%;
+    width: 50%;
     float: right;
     position: relative;
     padding: 2.5rem 2.5rem 1.25rem 1.25rem;
@@ -115,17 +115,17 @@ body {
 }
 
 #board {
-    width: 700px;
-    height: 700px;
+    width: 850px;
+    height: 850px;
     background-image: url('img/board.jpg');
     position: relative;
  }
 
  #inner-board {
     position: absolute;
-    background-size: 350px 350px;
-    height: 350px;
-    width: 350px;
+    background-size: 425px 425px;
+    height: 425px;
+    width: 425px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -174,6 +174,8 @@ body {
     background: #3e3f83;
     color: #fff;
     border-radius: 30px;
+    height: 6rem;
+    width: 7rem;
     padding: 0.938rem 1.875rem 0.75rem 1.875rem;
     border: 0px;
     margin: 10px 10px 10px 10px;
@@ -187,4 +189,63 @@ body {
 
 .letter-buttons button:last-child{
     margin-right: 0;
+}
+
+.dice-buttons {
+    margin-bottom: 2.5rem;
+    display: flex; 
+    margin: 4.625rem 5.625rem 0.625rem 3.625rem;
+    justify-content: center; 
+    align-items: center;
+    text-align: center;
+}
+
+.dice-buttons button {
+background: #3e3f83;
+border-radius: 30px;
+height: 9rem;
+border: 0px;
+display: inline-block;
+margin-right: 0.625rem;
+box-shadow: 0 10px 0 #2a2661;
+font-size: 0;
+cursor: pointer;
+clear: left;
+}
+
+.dice-buttons button span {
+font-family: 'Arial Black', 'Arial Bold', sans-serif;
+font-weight: bolder;
+text-transform: uppercase;
+line-height: 2.25;
+font-size: 1.25rem;
+color: #fff;
+text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+padding: 1.563rem 1.875rem 0.75rem 0.625rem;
+text-align: left; 
+float: left;
+}
+
+#staff-die {
+    display: flex; 
+    justify-content: flex-start; 
+    align-items: center; 
+}
+
+#staff-die span {
+    order: 2; /* The text appears second */
+    margin: 0rem 4rem 0rem 0rem;
+    text-align: left; /* Align the text to the left */
+}
+
+#staff-die-image {
+    height: 6rem;
+    width: 6rem;
+    padding: 1rem;
+    margin: 1rem;
+    background-image: URL('img/staff-die.png');
+    background-size: cover; 
+    background-position: center;
+    margin-right: auto;
+    order: 1;
 }

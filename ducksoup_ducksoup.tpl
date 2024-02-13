@@ -13,6 +13,21 @@
                     <button id="letter-c">C</button>
                     <button id="letter-d">D</button>
                 </div>
+                <!-- DICE BUTTONS-->
+                <div class="dice-buttons">
+                    <!-- STAFF DIE-->
+                    <button id="staff-die">
+                        <div id="staff-die-image">
+						</div> 
+                        <span>Roll the<br>Staff Die</span>
+                    </button>
+
+                    <!-- MOVEMENT DICE-->
+                    <div id="move-die-image">
+                    <button id="move-die">
+                        <span>Roll for<br>Movement</span>
+                    </button>
+                </div>
         </div>
     <!-- LEFT CONTENT-->
                 <div id="left-content">
