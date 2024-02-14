@@ -64,18 +64,17 @@ body {
     height: 100%;
 }
 
+.container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    clear: both;
+}
+
 .clearfix::after { 
     content:"";
     display:table;
     clear:both;
-}
-
-#left-content {
-    width: 50%;
-    float: left;
-    position: relative;
-    padding: 1.25rem;
-    box-sizing: border-box;
 }
 
 .left {
@@ -86,17 +85,11 @@ body {
     float: right;
 }
 
-.container { 
-    width: 100%;
-    height: 100%;
-    clear: both;
-}
-
 .left-content {
     width: 50%;
     float: left;
     position: relative;
-    padding: 4.25rem;
+    padding: 2rem;
     box-sizing: border-box;
 }
 
@@ -104,7 +97,7 @@ body {
     width: 50%;
     float: right;
     position: relative;
-    padding: 2.5rem 2.5rem 1.25rem 1.25rem;
+    padding: 2rem;
     box-sizing: border-box;
 }
 
@@ -115,17 +108,19 @@ body {
 }
 
 #board {
-    width: 850px;
-    height: 850px;
+    display: flex;
+    width: 53.125rem;
+    height: 53.125rem;
     background-image: url('img/board.jpg');
     position: relative;
  }
 
  #inner-board {
+    display: flex;
     position: absolute;
-    background-size: 425px 425px;
-    height: 425px;
-    width: 425px;
+    background-size: 28.125rem 28.125rem;
+    height: 28.125rem;
+    width: 28.125rem;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -137,6 +132,7 @@ body {
 }
 
 .board-contents {
+    display: flex;
     width: 50%;
     height: auto;
     max-height: 45%;
@@ -194,36 +190,36 @@ body {
 .dice-buttons {
     margin-bottom: 2.5rem;
     display: flex; 
-    margin: 4.625rem 5.625rem 0.625rem 3.625rem;
+    margin: 1.625rem 3.625rem 2.625rem 4.625rem;
     justify-content: center; 
     align-items: center;
     text-align: center;
 }
 
 .dice-buttons button {
-background: #3e3f83;
-border-radius: 30px;
-height: 9rem;
-border: 0px;
-display: inline-block;
-margin-right: 0.625rem;
-box-shadow: 0 10px 0 #2a2661;
-font-size: 0;
-cursor: pointer;
-clear: left;
+    background: #3e3f83;
+    border-radius: 30px;
+    height: 9rem;
+    border: 0px;
+    display: inline-block;
+    margin-right: 0.625rem;
+    box-shadow: 0 10px 0 #2a2661;
+    font-size: 0;
+    cursor: pointer;
+    clear: left;
 }
 
 .dice-buttons button span {
-font-family: 'Arial Black', 'Arial Bold', sans-serif;
-font-weight: bolder;
-text-transform: uppercase;
-line-height: 2.25;
-font-size: 1.25rem;
-color: #fff;
-text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-padding: 1.563rem 1.875rem 0.75rem 0.625rem;
-text-align: left; 
-float: left;
+    font-family: 'Arial Black', 'Arial Bold', sans-serif;
+    font-weight: bolder;
+    text-transform: uppercase;
+    line-height: 2.25;
+    font-size: 1.25rem;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    padding: 1.563rem 1.875rem 0.75rem 0.625rem;
+    text-align: left; 
+    float: left;
 }
 
 #staff-die {
@@ -234,7 +230,7 @@ float: left;
 
 #staff-die span {
     order: 2; /* The text appears second */
-    margin: 0rem 4rem 0rem 0rem;
+    margin: 0rem 3rem 0rem 0rem;
     text-align: left; /* Align the text to the left */
 }
 
@@ -248,4 +244,235 @@ float: left;
     background-position: center;
     margin-right: auto;
     order: 1;
+}
+
+#move-die {
+    display: flex; 
+    justify-content: flex-start; 
+    align-items: center; 
+}
+
+#move-die span {
+    order: 2; /* The text appears second */
+    text-align: left; /* Align the text to the left */
+}
+
+#move-die-image {
+    height: 4rem;
+    width: 9rem;
+    padding: 1rem;
+    margin: 1rem;
+    background-image: URL('img/movement-dice.png');
+    background-size: cover; 
+    background-position: center;
+    margin-right: auto;
+    order: 1;
+}
+
+#staff-board {
+    height: 33rem;
+    width: 53rem;
+    background-image: URL('img/staff-board.jpg');
+    margin: 0rem 1rem 0rem 4rem;
+}
+
+
+.player-stats {
+    position: absolute;
+    top: -0.5rem;
+    padding-right: 1.875rem;
+    right: 1.875rem;
+    z-index: 2;
+    overflow: hidden;
+}
+
+.player-stats img {
+    height: 3.75rem;
+}
+
+.player-header { 
+    width: 90%; 
+    margin: 0 auto;
+    color: #fff;
+}
+
+.name-plate {
+    width: 90%;
+    margin: 0 auto;
+    border-radius: 10px 5px 0px 0px;
+}
+
+.player1 {
+    background: #ff0000;
+}
+
+.player-name {
+    font-family: 'Arial Black', 'Arial Bold', 'Helvetica', sans-serif;
+    text-transform: uppercase;
+    padding: 1rem 1.25rem;
+    border-radius: 10px 10px 0px 0px;
+    font-size: 1.25rem;
+    position: relative;
+}
+
+.super-duckat {
+    padding-bottom: 10px;
+}
+
+#super-duckat-image {
+    height: 3.87rem;
+    width: 3.87rem;
+    background-image: URL('img/super-duckats.png');
+}
+
+.duckat {
+    padding-bottom: 10px;
+    margin-left: 1rem;
+}
+
+#duckats-image {
+    height: 3.87rem;
+    width: 3.87rem;
+    background-image: URL('img/duckats.png');
+}
+
+.value {
+    background: #000;
+    font-family: 'Arial Black', 'Arial Bold', 'Helvetica', sans-serif;
+    border-radius:  30px 0px 0px 30px;
+    padding: 0.5rem 1.875rem 0.5rem 1.25rem;
+    margin-right: -1.25rem;
+    margin-top: 0.625rem;
+    font-size: 1.25rem;
+}
+
+.player-background {
+    height: 2.188rem;
+    border-radius: 0px 10px 0px 0px;
+    margin-top: -2.188rem;
+}
+
+.arrow {
+    background: #3e3f83;
+    border-radius: 50%;
+    padding: 1.875rem;
+    border: 0px;
+    display: inline-block;
+    text-transform: uppercase;
+    box-shadow: 0 8px 0 #2a2661;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: calc(50% - 1.875px);
+    cursor: pointer;
+    z-index: 1;
+}
+
+#left-arrow { 
+    left: 0;
+}
+
+#right-arrow {
+    right: 0;
+}
+
+.arrow span {
+    width: 0;
+    height: 0;
+    top: 50%;
+    border-top: 0.938rem solid transparent;
+    border-bottom: 0.983rem solid transparent;
+    position: absolute;
+    transform: translateY(-50%);
+}
+
+#right-arrow span {
+    border-left: 0.938rem solid #fff;
+    left: 1.563rem;
+}
+
+#left-arrow span {
+    border-right: 0.938rem solid #fff;
+    right: 1.563rem;
+}
+
+@media screen and (max-width: 1500px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 1280px) {
+    html {
+        font-size: 12px;
+    }
+
+    .duckat {
+        margin-left: 0.5rem;
+    }
+
+    .value { 
+        padding: 0.5rem 1.875rem 0.5rem 1rem;
+    }
+}
+
+@media screen and (max-width: 1023px) {
+    .left-content {
+        width: 100%;
+        float: left;
+        position: relative;
+        padding: 1.25rem;
+        box-sizing: border-box;
+    }
+    
+    .right-content {
+        width: 100%;
+        float: left;
+        position: relative;
+        padding: 1.25rem;
+        box-sizing: border-box;
+    
+    }
+
+}
+
+@media screen and (max-width: 600px) {
+    html {
+        font-size: 10px;
+    }
+
+    .dice-buttons img { 
+        display: none; 
+    }
+    
+    .dice-buttons button { 
+        min-width: 35%;
+        text-align: center;
+    }
+
+    .dice-buttons button span {
+        text-align: center;
+        padding: 1.563rem 1.875rem;
+    }
+
+
+}
+
+@media screen and (max-width: 450px) {
+    .player-name {
+        width: 100%;
+        float: none;
+        text-align: center;
+        margin-top: 6rem;
+    }
+
+    .player-stats {
+        margin-top: -4rem;
+        right: auto;
+        padding-right: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 150px;
+    }
+
+
 }
