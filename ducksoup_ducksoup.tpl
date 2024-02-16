@@ -2,7 +2,7 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Limelight&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
-
+<div class="">
     <div class="clearfix">  
         <!-- RIGHT CONTENT -->
         <div class="right-content">
@@ -39,7 +39,7 @@
 
                             <!-- PLAYER NAME -->
                             <div class="player-name left player1">
-                                12312547894564552123
+                                {PLAYERNAME}
                             </div>
 
                             <!-- PLAYER STATS-->
@@ -76,9 +76,22 @@
                     </div>
 
                     <!-- STAFF BOARD -->
-                    <div id="staff-board"></div>
-                    <button id="left-arrow" class="arrow"><span></span></button>
-                    <button id="right-arrow" class="arrow"><span></span></button>
+                    <div id="staff-board">
+                        <div class="card-grid">
+                            <div class="grid-item" id="ex-chef"></div>
+                            <div class="grid-item" id="ex-sous-chef"></div>
+                            <div class="grid-item" id="ex-first-cook"></div>
+                            <div class="grid-item" id="ex-cook-1"></div>
+                            <div class="grid-item" id="ex-cook-2"></div>
+                            <div class="grid-item" id="ex-cook-3"></div>
+                            <div class="grid-item" id="ex-maitre-d"></div>
+                            <div class="grid-item" id="ex-sommelier"></div>
+                            <div class="grid-item" id="ex-capitan"></div>
+                            <div class="grid-item" id="ex-server-1"></div>
+                            <div class="grid-item" id="ex-server-2"></div>
+                            <div class="grid-item" id="ex-server-3"></div>
+                        </div>
+                    </div>
                 </div>
         </div>
 
@@ -87,22 +100,22 @@
         <div class="left-content">
             <div id="board-container">
                 <!-- BOARD -->
+                <!--BEGIN boardcontent-->
                 <div id="board">
                     <!-- DUCK IMAGE TO DISPLAY BY DEFAULT, HIDDEN WHEN CONTENT SHOWN -->
-                    <div id="inner-board" class="">
+                    <div id="inner-board" class="{INBOARD-CONTENT-STATE}"></div>
                         <!-- WRITTEN CONTENT SHOWN IN MIDDLE OF BOARD, INACTIVE BY DEFAULT -->
-                        <div class="board-contents inactive">
-                            <h2>Lorem ipsum dolor sit</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam feugiat, turpis at pulvinar
-                                vulputate, erat libero tristique tellus, nec bibendum odio risus sit amet ante. Aliquam erat
-                                volutpat. Nunc auctor.</p>
+                        <div class="board-contents {BOARD-CONTENT-STATE}">
+                            <h2>{ANSWER-MESSAGE}</h2>
+                            <p>{ANSWER-INFO}</p>
                         </div>
                     </div>
                 </div>
+                <!-- END boardconent -->
             </div>    
         </div> 
     </div>
-
+</div>
 
 
 <script type="text/javascript">
