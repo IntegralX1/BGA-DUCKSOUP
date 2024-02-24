@@ -67,11 +67,14 @@ body {
 .container {
     background: linear-gradient(#5c629b, #35346d);
     background-attachment: fixed;
+    background-size: contain;
     font-size: 16px; 
     margin:0;
     padding:0;
     box-sizing: border-box!important;
     height: 100%;
+    width: 100%;
+    position: relative;
 }
 
 .clearfix::after { 
@@ -112,18 +115,20 @@ body {
 
 #board {
     display: flex;
-    background-size: 60rem 60rem;
-    width: 60rem;
-    height: 60rem;
-    background-image: url('img/board.jpg');
+    width: 40vw;
+    height: 40vw;
+    background-image: url(img/board.jpg);
+    background-size: 40vw 40vw;
+    background-repeat: no-repeat;
     position: relative;
  }
 
  #inner-board {
     position: absolute;
-    background-size: 28.125rem 28.125rem;
-    width: 28.125rem;
-    height: 28.125rem;
+    background-size: 20vw 20vw;
+    background-repeat: no-repeat;
+    width: 20vw;
+    height: 20vw;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -202,6 +207,7 @@ body {
     background: #3e3f83;
     border-radius: 30px;
     height: 9rem;
+    width: 30%;
     border: 0px;
     display: inline-block;
     margin-right: 0.625rem;
@@ -272,19 +278,21 @@ body {
 }
 
 #staff-board {
-    height: 33rem;
-    width: 53rem;
+    height: 27.2vw;
+    width: 100%;
     background-image: URL('img/staff-board.jpg');
-    margin: 0rem 1rem 0rem 4rem;
+    position: absolute;
+    background-repeat: no-repeat;
+    background-size: 40vw 25vw;
+    margin: 0rem 1rem 0rem -9rem;
 }
 
 
 .player-stats {
-    position: absolute;
-    top: -0.5rem;
-    padding-right: 1.875rem;
-    right: 1.875rem;
-    z-index: 0;
+    position: relative;
+    top: 2rem;
+    padding-right: 2rem;
+    z-index: 2;
     overflow: hidden;
 }
 
@@ -293,8 +301,8 @@ body {
 }
 
 .player-header { 
-    width: 90%; 
-    margin: 0 auto;
+    width: 110%;
+    margin: 0rem 0rem 0rem -9rem;
     color: #fff;
     position: relative;
 }
@@ -309,6 +317,18 @@ body {
     background: #ff0000;
 }
 
+.player2 {
+    background: #ff0000;
+}
+
+.player3 {
+    background: #ff0000;
+}
+
+.player4 {
+    background: #ff0000;
+}
+
 .player-name {
     font-family: 'Arial Black', 'Arial Bold', 'Helvetica', sans-serif;
     text-transform: uppercase;
@@ -316,7 +336,9 @@ body {
     border-radius: 10px 10px 0px 0px;
     font-size: 1.25rem;
     position: relative;
-    margin: -1rem 0rem 0rem 1rem;
+    margin: 1rem 1rem 1rem 0rem;
+    width: 20%;
+    height: 100%;
 }
 
 .super-duckat {
@@ -340,6 +362,11 @@ body {
     background-image: URL('img/duckats.png');
 }
 
+.staff-board-container {
+    margin: 1rem 1rem 1rem 12.5rem;
+}
+
+
 .value {
     background: #000;
     font-family: 'Arial Black', 'Arial Bold', 'Helvetica', sans-serif;
@@ -351,26 +378,28 @@ body {
 }
 
 .player-background {
-    height: 2.188rem;
+    height: 3.188rem;
+    width: 100%;
     border-radius: 0px 10px 0px 0px;
     margin-top: -2.188rem;
-    margin: -1rem -1rem 0rem 1rem;
+    margin: -2rem 0rem 0rem 0rem;
+    position: relative;
+}
 }
 
 .arrow {
     background: #3e3f83;
-    width: 4rem;
     border-radius: 50%;
-    margin: 3rem 2rem 3rem 3rem;
-    border: 0rem;
+    padding: 1.875rem;
+    border: 0px;
     display: inline-block;
     text-transform: uppercase;
     box-shadow: 0 8px 0 #2a2661;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     position: absolute;
-    top: calc(50% - -7.125rem);
+    top: calc(50% - 1.875px);
     cursor: pointer;
-    z-index: -1;
+    z-index: 1;
 }
 
 #left-arrow { 
@@ -378,7 +407,7 @@ body {
 }
 
 #right-arrow {
-    right: -1rem;
+    right: 0;
 }
 
 .arrow span {
@@ -403,15 +432,15 @@ body {
 
 /**/
 /*CSS For staff card grid*/
+
 .card-grid {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    gap: 12px;
-    border: 1px solid red;
-    width: 100%;
-    height: 100%;
-    padding: 1.59rem 0rem 0rem 2.4rem;
+    gap: 15px;
+    width: 36.6vw;
+    height: 18.7vw;
+    padding: 1.39vw 0vw 0vw 1.78vw;
   }
   
   .grid-item {
@@ -436,57 +465,146 @@ body {
     right: 0;
     bottom: 0;
   }
+
+    /*Call `.hidden-content` to hide excellent staff on the staff card */
+
+  .hidden-content {
+    visibility: hidden;
+  }
   
   #ex-chef::after {
-    background-position: 0 0; /* Position the sprite for the chef */
-    background-size: cover; /* Or adjust to contain based on your sprite */
+    background-size: contain;
+    background-repeat: no-repeat;
     background-image: URL('img/ex-chef.jpg');
-    max-height: 11.2rem;
-    max-width: 7rem;
+    height: 9.5vw;
+    width: 5.15vw;
+    padding: 0.1vw 0.1vw 0.1vw 0.1vw;
+    grid-column: 1;
+    grid-row: 1;
   }
   
   #ex-sous-chef::after {
-    background-position: -100px 0; /* Adjust the value to match your sprite sheet */
+    background-image: URL('img/ex-sous-chef.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 9.5vw;
+    width: 5.15vw;
+    padding: 0.1vw 0.1vw 0.1vw 0.1vw;
+    grid-column: 2;
+    grid-row: 1;
+
   }
 
   #ex-first-cook::after {
-    background-position: -100px 0; /* Adjust the value to match your sprite sheet */
+    background-position: -111px 0px 0px 0px;
+    background-image: URL('img/ex-first-cook.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 9.5vw;
+    width: 5.15vw;
+    padding: 0.1vw 0.1vw 0.1vw 0.1vw;
+    grid-column: 3;
+    grid-row: 1;
   }
 
   #ex-cook-1::after {
-    background-position: -100px 0; /* Adjust the value to match your sprite sheet */
+
+    background-image: URL('img/ex-cook.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 9.5vw;
+    width: 5.15vw;
+    padding: 0.1vw 0.1vw 0.1vw 0.1vw;
+    grid-column: 4;
+    grid-row: 1;
   }
 
   #ex-cook-2::after {
-    background-position: -100px 0; /* Adjust the value to match your sprite sheet */
+    background-image: URL('img/ex-cook.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 9.5vw;
+    width: 5.15vw;
+    padding: 0.1vw 0.1vw 0.1vw 0.1vw;
+    grid-column: 5;
+    grid-row: 1;
   }
 
   #ex-cook-3::after {
-    background-position: -100px 0; /* Adjust the value to match your sprite sheet */
-  }
+    background-image: URL('img/ex-cook.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 9.5vw;
+    width: 5.15vw;
+    padding: 0.1vw 0.1vw 0.1vw 0.1vw;
+    grid-column: 6;
+    grid-row: 1;
+}
 
   #ex-maitre-d::after {
-    background-position: -100px 0; /* Adjust the value to match your sprite sheet */
+    background-image: URL('img/ex-maitre-d.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 9.5vw;
+    width: 5.15vw;
+    padding: 0.1vw 0.1vw 0.1vw 0.1vw;
+    grid-column: 1;
+    grid-row: 2;
   }
 
   #ex-sommelier::after {
-    background-position: -100px 0; /* Adjust the value to match your sprite sheet */
+    background-image: URL('img/ex-sommelier.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 9.5vw;
+    width: 5.15vw;
+    padding: 0.1vw 0.1vw 0.1vw 0.1vw;
+    grid-column: 2;
+    grid-row: 2;
   }
 
   #ex-capitan::after {
-    background-position: -100px 0; /* Adjust the value to match your sprite sheet */
+    background-image: URL('img/ex-captain.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 9.5vw;
+    width: 5.15vw;
+    padding: 0.1vw 0.1vw 0.1vw 0.1vw;
+    grid-column: 3;
+    grid-row: 2;
   }
 
   #ex-server-1::after {
-    background-position: -100px 0; /* Adjust the value to match your sprite sheet */
+    background-image: URL('img/ex-server.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 9.5vw;
+    width: 5.15vw;
+    padding: 0.1vw 0.1vw 0.1vw 0.1vw;
+    grid-column: 4;
+    grid-row: 2;
   }
 
   #ex-server-2::after {
-    background-position: -100px 0; /* Adjust the value to match your sprite sheet */
+    background-image: URL('img/ex-server.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 9.5vw;
+    width: 5.15vw;
+    padding: 0.1vw 0.1vw 0.1vw 0.1vw;
+    grid-column: 5;
+    grid-row: 2;
   }
   
   #ex-server-3::after {
-    background-position: -300px -200px; /* Example values for the last server */
+    background-image: URL('img/ex-server.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 9.5vw;
+    width: 5.15vw;
+    padding: 0.1vw 0.1vw 0.1vw 0.1vw;
+    grid-column: 5;
+    grid-row: 2;
   }
 
 @media screen and (max-width: 1500px) {
