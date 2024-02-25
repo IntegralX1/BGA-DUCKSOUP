@@ -281,7 +281,8 @@ body {
     height: 27.2vw;
     width: 100%;
     background-image: URL('img/staff-board.jpg');
-    position: absolute;
+    position: relative;
+    overflow: hidden;
     background-repeat: no-repeat;
     background-size: 40vw 25vw;
     margin: 0rem 1rem 0rem -9rem;
@@ -290,14 +291,14 @@ body {
 
 .player-stats {
     position: relative;
-    top: 2rem;
-    padding-right: 2rem;
+    top: 1rem;
+    padding-right: 11rem;
     z-index: 2;
     overflow: hidden;
 }
 
 .player-stats img {
-    height: 3.75rem;
+    height: 3.74rem;
 }
 
 .player-header { 
@@ -332,12 +333,12 @@ body {
 .player-name {
     font-family: 'Arial Black', 'Arial Bold', 'Helvetica', sans-serif;
     text-transform: uppercase;
-    padding: 1rem 1.25rem;
+    padding: 2rem 1.25rem 2rem 3rem;
     border-radius: 10px 10px 0px 0px;
     font-size: 1.25rem;
     position: relative;
-    margin: 1rem 1rem 1rem 0rem;
-    width: 20%;
+    margin: 0rem 0rem 1rem 0rem;
+    width: 17%;
     height: 100%;
 }
 
@@ -363,7 +364,8 @@ body {
 }
 
 .staff-board-container {
-    margin: 1rem 1rem 1rem 12.5rem;
+    position: relative;
+    margin: 1rem -6rem 1rem 12.5rem;
 }
 
 
@@ -379,12 +381,21 @@ body {
 
 .player-background {
     height: 3.188rem;
-    width: 100%;
+    width: 91%;
+    max-width: 100%;
+    box-sizing: border-box;
     border-radius: 0px 10px 0px 0px;
     margin-top: -2.188rem;
-    margin: -2rem 0rem 0rem 0rem;
-    position: relative;
+    margin: -3.2rem 0rem 0rem 0rem;
+    position: absolute;
 }
+
+#left-arrow { 
+    left: 0;
+}
+
+#right-arrow {
+    right: 0;
 }
 
 .arrow {
@@ -397,17 +408,12 @@ body {
     box-shadow: 0 8px 0 #2a2661;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     position: absolute;
-    top: calc(50% - 1.875px);
+    transform: translate(-50%, -50%);
+    top: calc(50% - 1.5vw);
+    margin: 0rem 0rem 0rem -12.5rem;
+    width: 3vw;
     cursor: pointer;
     z-index: 1;
-}
-
-#left-arrow { 
-    left: 0;
-}
-
-#right-arrow {
-    right: 0;
 }
 
 .arrow span {
@@ -416,24 +422,31 @@ body {
     top: 50%;
     border-top: 0.938rem solid transparent;
     border-bottom: 0.983rem solid transparent;
-    position: absolute;
+    position: relative;
     transform: translateY(-50%);
 }
 
 #right-arrow span {
+    position: absolute;
     border-left: 0.938rem solid #fff;
     left: 1.563rem;
+    z-index: 1;
+    left: 50%;
 }
 
 #left-arrow span {
+    position: absolute;
     border-right: 0.938rem solid #fff;
-    right: 1.563rem;
+    right: 10%;
+    left: 38%;
+    z-index: 1;
 }
 
 /**/
 /*CSS For staff card grid*/
 
 .card-grid {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     grid-template-rows: repeat(2, 1fr);
@@ -473,6 +486,7 @@ body {
   }
   
   #ex-chef::after {
+    position: absolute;
     background-size: contain;
     background-repeat: no-repeat;
     background-image: URL('img/ex-chef.jpg');
@@ -484,6 +498,7 @@ body {
   }
   
   #ex-sous-chef::after {
+    position: absolute;
     background-image: URL('img/ex-sous-chef.jpg');
     background-size: contain;
     background-repeat: no-repeat;
@@ -496,6 +511,7 @@ body {
   }
 
   #ex-first-cook::after {
+    position: absolute;
     background-position: -111px 0px 0px 0px;
     background-image: URL('img/ex-first-cook.jpg');
     background-size: contain;
@@ -508,7 +524,7 @@ body {
   }
 
   #ex-cook-1::after {
-
+    position: absolute;
     background-image: URL('img/ex-cook.jpg');
     background-size: contain;
     background-repeat: no-repeat;
@@ -520,6 +536,7 @@ body {
   }
 
   #ex-cook-2::after {
+    position: absolute;
     background-image: URL('img/ex-cook.jpg');
     background-size: contain;
     background-repeat: no-repeat;
@@ -531,6 +548,7 @@ body {
   }
 
   #ex-cook-3::after {
+    position: absolute;
     background-image: URL('img/ex-cook.jpg');
     background-size: contain;
     background-repeat: no-repeat;

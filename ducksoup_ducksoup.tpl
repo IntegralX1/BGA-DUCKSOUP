@@ -86,18 +86,18 @@
 
                     <div id="staff-board">
                         <div class="card-grid">
-                            <div class="grid-item {HIDDEN-CONTENT}" id="ex-chef"></div>
-                            <div class="grid-item {HIDDEN-CONTENT}" id="ex-sous-chef"></div>
-                            <div class="grid-item {HIDDEN-CONTENT}" id="ex-first-cook"></div>
-                            <div class="grid-item {HIDDEN-CONTENT}" id="ex-cook-1"></div>
-                            <div class="grid-item {HIDDEN-CONTENT}" id="ex-cook-2"></div>
-                            <div class="grid-item {HIDDEN-CONTENT}" id="ex-cook-3"></div>
-                            <div class="grid-item {HIDDEN-CONTENT}" id="ex-maitre-d"></div>
-                            <div class="grid-item {HIDDEN-CONTENT}" id="ex-sommelier"></div>
-                            <div class="grid-item {HIDDEN-CONTENT}" id="ex-capitan"></div>
-                            <div class="grid-item {HIDDEN-CONTENT}" id="ex-server-1"></div>
-                            <div class="grid-item {HIDDEN-CONTENT}" id="ex-server-2"></div>
-                            <div class="grid-item {HIDDEN-CONTENT}" id="ex-server-3"></div>
+                            <div class="grid-item {HIDDEN-CONTENT-1}" id="ex-chef"></div>
+                            <div class="grid-item {HIDDEN-CONTENT-2}" id="ex-sous-chef"></div>
+                            <div class="grid-item {HIDDEN-CONTEN-3}" id="ex-first-cook"></div>
+                            <div class="grid-item {HIDDEN-CONTENT-4}" id="ex-cook-1"></div>
+                            <div class="grid-item {HIDDEN-CONTENT-5}" id="ex-cook-2"></div>
+                            <div class="grid-item {HIDDEN-CONTENT-6}" id="ex-cook-3"></div>
+                            <div class="grid-item {HIDDEN-CONTENT-7}" id="ex-maitre-d"></div>
+                            <div class="grid-item {HIDDEN-CONTENT-8}" id="ex-sommelier"></div>
+                            <div class="grid-item {HIDDEN-CONTENT-9}" id="ex-capitan"></div>
+                            <div class="grid-item {HIDDEN-CONTENT-10}" id="ex-server-1"></div>
+                            <div class="grid-item {HIDDEN-CONTENT-11}" id="ex-server-2"></div>
+                            <div class="grid-item {HIDDEN-CONTENT-12}" id="ex-server-3"></div>
                         </div>
                     </div>
                     <!-- END staffboard -->
