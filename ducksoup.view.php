@@ -36,9 +36,10 @@ class view_ducksoup_ducksoup extends game_view
     
   	function build_page( $viewArgs )
   	{		
-  	    // Get players & players number
-        $players = $this->game->loadPlayersBasicInfos();
-        $players_nbr = count( $players );
+            
+
+    }
+      
 
         /*********** Place your code below:  ************/
 
@@ -82,4 +83,4 @@ class view_ducksoup_ducksoup extends game_view
 
         /*********** Do not change anything below this line  ************/
   	}
-}
+

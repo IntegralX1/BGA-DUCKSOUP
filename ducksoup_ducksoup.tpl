@@ -33,16 +33,16 @@
                     <span>Roll for<br>Movement</span>
                 </button>
             </div>
-
+                <!-- BEGIN playerstats_block -->
                 <div class="staff-board-container">
 
                     <div class="player-header">
 
                         <div class="clearfix">
-
+                            
                             <!-- PLAYER NAME -->
                             <div class="player-name left player1">
-                                {PLAYERNAME}
+                                {player_name}
                             </div>
 
                             <!-- PLAYER STATS-->
@@ -67,7 +67,6 @@
                                             </div>
                                             <div class="left" id="duckats-image"></div>
                                         </div>
-
                                     </div>
                                 </div>
 
@@ -75,9 +74,8 @@
                         </div>
 
                         <div class="player-background player1"></div>
-
                     </div>
-
+                    <!-- END playerstats_block -->
                     <!-- STAFF BOARD -->
                     <!-- BEGIN staffboard -->
                     <!-- STAFF BOARD ARROWS -->

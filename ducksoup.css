@@ -279,7 +279,6 @@ body {
 
 #staff-board {
     height: 27.2vw;
-    width: 100%;
     background-image: URL('img/staff-board.jpg');
     position: relative;
     overflow: hidden;
@@ -290,11 +289,11 @@ body {
 
 
 .player-stats {
-    position: relative;
-    top: 1rem;
-    padding-right: 11rem;
+    position: absolute;
+    top: 1vw;
     z-index: 2;
     overflow: hidden;
+    padding-left: 14vw;
 }
 
 .player-stats img {
@@ -302,7 +301,6 @@ body {
 }
 
 .player-header { 
-    width: 110%;
     margin: 0rem 0rem 0rem -9rem;
     color: #fff;
     position: relative;
@@ -410,7 +408,7 @@ body {
     position: absolute;
     transform: translate(-50%, -50%);
     top: calc(50% - 1.5vw);
-    margin: 0rem 0rem 0rem -12.5rem;
+    margin: 0vw 1vw 0vw -5vw;
     width: 3vw;
     cursor: pointer;
     z-index: 1;
