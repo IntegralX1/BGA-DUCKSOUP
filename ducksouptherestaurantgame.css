@@ -1,432 +1,510 @@
-/**
- *------
- * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
- * DuckSoupTheRestaurantGame implementation : @ RJ Hidson <rhidson1@nait.ca>, @ Ashton Williams <ashtonw@nait.ca>, @ Rubelyn Ragasa <rragasa1@nait.ca>
- *
- * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
- * See http://en.boardgamearena.com/#!doc/Studio for more information.
- * -----
- *
- * ducksouptherestaurantgame.css
- *
- * DuckSoupTheRestaurantGame stylesheet
- *
- */
+/* =============================================================
+   ducksouptherestaurantgame.css
+   Duck Soup — The Restaurant Game
+   
+   BGA renders the game inside #game_play_area, not html/body.
+   All selectors scope to the game container to avoid fighting
+   BGA's own layout. rem units are replaced with px/% to avoid
+   BGA's root font-size interference.
+   ============================================================= */
 
-/*
-    This is the CSS stylesheet of your game User Interface.
-    
-    Styles defined on this file will be applied to the HTML elements you define in your
-    HTML template (ducksouptherestaurantgame_ducksouptherestaurantgame.tpl), and to HTML elements you create dynamically
-    (in ducksouptherestaurantgame.js).
-    
-    Usually, you are using CSS to:
-    
-    1°) define the overall layout of your game
-        (ex: place the board on the top left, place player's hand beside, place the deck on the right, ...).
+/* Google Fonts — loaded here instead of TPL to avoid CSP issues */
+@import url('https://fonts.googleapis.com/css2?family=Limelight&display=swap');
 
-    2°) create your CSS-sprites:
-        All images of your games should be gathered into a small number of image files. Then, using
-        background-image and background-position CSS properties, you create HTML blocks that can 
-        display these images correctly (see example below).
-    
-    3°) ... anything else:
-        It is really easy to add and remove CSS classes dynamically from your Javascript with
-        dojo.addClass and dojo.removeClass. It is also easy to check if an element has a class
-        (dojo.hasClass) or to get all elements with a specific class (dojo.query). This is why,
-        very often, using CSS classes for the logic of your user interface allow you to do complex
-        thing easily.
-        
-        
-     Note: on the production platform, this file will be compressed and comments will be removed.
-           Consequently, don't hesitate to put as many comments as necessary.
-*/
-
-
-/* Note: you must not use any @import directive */
-
-
-/********* You can start writing your CSS below this line: **********/
-.* {
-    margin:0;
-    padding:0;
-    box-sizing: border-box!important;
-}
-
-html {
-    height: 100%;
-    background: linear-gradient(#5c629b, #35346d);
-    background-attachment: fixed;
-    font-size: 16px; /* used for scaling using rem units */
-}
-
-body {
-    height: 100%;
-}
+/* =============================================================
+   LAYOUT — two-column: board left, controls right
+   ============================================================= */
 
 .container {
-    background: linear-gradient(#5c629b, #35346d);
-    background-attachment: fixed;
-    background-size: contain;
-    font-size: 16px; 
-    margin:0;
-    padding:0;
-    box-sizing: border-box!important;
-    height: 100%;
     width: 100%;
-    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
-.clearfix::after { 
-    content:"";
-    display:table;
-    clear:both;
-}
-
-.left {
-    float: left;
-}
-
-.right { 
-    float: right;
+.container .clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
 }
 
 .left-content {
-    width: 50%;
+    width: 55%;
     float: left;
     position: relative;
-    padding: 2rem;
+    padding: 10px;
     box-sizing: border-box;
+    min-width: 0;
 }
 
 .right-content {
-    width: 50%;
+    width: 45%;
     float: right;
     position: relative;
+    padding: 16px 20px 10px 10px;
     box-sizing: border-box;
-    margin: 0vw 0vw 29vw 0vw;
+    overflow-y: auto;
+    max-height: 90vh;
+    min-width: 0;
 }
+
+/* =============================================================
+   BOARD
+   ============================================================= */
 
 #board-container {
     position: relative;
     width: 100%;
-    height: auto;
 }
 
 #board {
-    display: flex;
-    width: 40vw;
-    height: 40vw;
-    background-image: url(img/board.jpg);
-    background-size: 40vw 40vw;
-    background-repeat: no-repeat;
     position: relative;
- }
+    width: 100%;
+    display: block;
+}
 
- #inner-board {
+#board .board-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Inner board duck logo — centered over board */
+#inner-board {
     position: absolute;
-    background-size: 20vw 20vw;
-    background-repeat: no-repeat;
-    width: 20vw;
-    height: 20vw;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-image: url('img/inner-board.png');
- }
-
-.board-contents.inactive, .inner-board.inactive { 
-    display: none; 
+    width: 54%;
+    z-index: 1;
+    pointer-events: none;
 }
 
-.board-contents {
-    width: 50%;
+#inner-board img {
+    width: 100%;
     height: auto;
-    max-height: 45%;
-    padding: 0;
+    display: block;
+}
+
+#inner-board.inactive {
+    display: none;
+}
+
+/* Board content message area */
+.board-contents {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(1);
-    z-index: 1;
+    transform: translate(-50%, -50%);
+    width: 48%;
+    z-index: 2;
     color: #fff;
+    text-align: center;
+    pointer-events: none;
 }
 
-.board-contents h2{
-    font-family: 'Limelight', sans-serif;
-    font-size: 2.5rem;
+.board-contents.inactive {
+    display: none;
+}
+
+#board-msg-title {
+    font-family: 'Limelight', cursive, sans-serif;
+    font-size: 20px;
     text-transform: uppercase;
     text-align: center;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.7);
 }
 
-.board-contents p {
+#board-msg-body {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 1.375rem;
+    font-size: 14px;
     text-align: center;
+    line-height: 1.4;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.7);
 }
+
+/* =============================================================
+   PAWNS — positioned absolutely over the board
+   ============================================================= */
+
+#pawns-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.pawn-token {
+    position: absolute;
+    width: 5%;
+    transition: left 0.6s ease, top 0.6s ease;
+    pointer-events: none;
+}
+
+.pawn-token img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.5));
+}
+
+/* =============================================================
+   LETTER BUTTONS (A / B / C / D)
+   ============================================================= */
 
 .letter-buttons {
-    margin-bottom: 1.875rem;
+    margin-bottom: 16px;
     text-align: center;
-    display: flex; 
-    justify-content: center; 
-    align-items: center;
+    white-space: nowrap;
 }
 
 .letter-buttons button {
     background: #3e3f83;
     color: #fff;
     border-radius: 30px;
-    height: 6rem;
-    width: 7rem;
-    padding: 0.938rem 1.875rem 0.75rem 1.875rem;
-    border: 0px;
-    margin: 10px 10px 10px 10px;
-    font-family: 'Limelight', sans-serif;
+    padding: 10px 20px 8px 20px;
+    border: 0;
+    display: inline-block;
+    margin-right: 6px;
+    font-family: 'Limelight', cursive, sans-serif;
     line-height: 1;
-    font-size: 3.75rem;
-    box-shadow: 0 10px 0 #2a2661;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 42px;
+    box-shadow: 0 8px 0 #2a2661;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+    vertical-align: top;
 }
 
-.letter-buttons button:last-child{
+.letter-buttons button:last-child {
     margin-right: 0;
 }
 
-.dice-buttons {
-    display: flex;
-    margin: 1vw 1vw 1vw -9.5vw;
-    justify-content: center;
+.letter-buttons button:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 0 #2a2661;
+}
+
+.letter-buttons button:not(:disabled):active {
+    transform: translateY(4px);
+    box-shadow: 0 4px 0 #2a2661;
+}
+
+.letter-buttons button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* =============================================================
+   QUESTION MODAL
+   ============================================================= */
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.65);
+    z-index: 9999;
     align-items: center;
-    text-align: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: #2e2f6e;
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 560px;
+    width: 90%;
+    color: #fff;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6);
     position: relative;
-    height: 8vw;
-    width: 63vw;
+}
+
+.close-button {
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    font-size: 28px;
+    cursor: pointer;
+    color: rgba(255,255,255,0.6);
+    line-height: 1;
+}
+
+.close-button:hover {
+    color: #fff;
+}
+
+#question-text {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.question-answers {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.answer-btn {
+    background: #3e3f83;
+    color: #fff;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.answer-btn:not(:disabled):hover {
+    background: #5152a8;
+    border-color: rgba(255,255,255,0.5);
+}
+
+.answer-btn:disabled {
+    cursor: not-allowed;
+}
+
+.answer-btn.selected {
+    border-color: #fff;
+    background: #5152a8;
+}
+
+.answer-btn.correct {
+    background: #1a7a3e;
+    border-color: #2ecc71;
+}
+
+.answer-btn.wrong {
+    background: #7a1a1a;
+    border-color: #e74c3c;
+}
+
+/* =============================================================
+   DICE BUTTONS
+   ============================================================= */
+
+.dice-buttons {
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 .dice-buttons button {
     background: #3e3f83;
-    border-radius: 30px;
-    height: 9rem;
-    width: 30%;
-    border: 0px;
-    display: inline-block;
-    margin-right: 0.625rem;
-    box-shadow: 0 10px 0 #2a2661;
-    font-size: 0;
+    border-radius: 20px;
+    border: 0;
+    display: inline-flex;
+    align-items: center;
+    margin-right: 8px;
+    box-shadow: 0 8px 0 #2a2661;
     cursor: pointer;
-    clear: left;
+    overflow: hidden;
+    transition: transform 0.1s, box-shadow 0.1s;
+    vertical-align: top;
+}
+
+.dice-buttons button:last-child {
+    margin-right: 0;
+}
+
+.dice-buttons button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 0 #2a2661;
+}
+
+.dice-buttons button:active {
+    transform: translateY(4px);
+    box-shadow: 0 4px 0 #2a2661;
+}
+
+#staff-die-image,
+#move-die-image {
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+}
+
+#staff-die-image img,
+#move-die-image img {
+    height: 64px;
+    width: auto;
+    display: block;
 }
 
 .dice-buttons button span {
     font-family: 'Arial Black', 'Arial Bold', sans-serif;
-    font-weight: bolder;
+    font-weight: 900;
     text-transform: uppercase;
-    line-height: 2.25;
-    font-size: 1.25rem;
+    line-height: 1.2;
+    font-size: 13px;
     color: #fff;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    padding: 1.563rem 1.875rem 0.75rem 0.625rem;
-    text-align: left; 
-    float: left;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    text-align: left;
+    padding: 14px 18px 14px 8px;
 }
 
-#staff-die {
-    display: flex; 
-    justify-content: flex-start; 
-    align-items: center; 
+/* =============================================================
+   STAFF BOARD CONTAINER
+   ============================================================= */
+
+.staff-board-container {
+    position: relative;
+    padding: 0 44px; /* room for arrow buttons */
 }
 
-#staff-die span {
-    order: 2; /* The text appears second */
-    margin: 0rem 3rem 0rem 0rem;
-    text-align: left; /* Align the text to the left */
-}
-
-#staff-die-image {
-    height: 6rem;
-    width: 6rem;
-    padding: 1rem;
-    margin: 1rem;
-    background-image: URL('img/staff-die.png');
-    background-size: cover; 
-    background-position: center;
-    margin-right: auto;
-    order: 1;
-}
-
-#move-die {
-    display: flex; 
-    justify-content: flex-start; 
-    align-items: center; 
-}
-
-#move-die span {
-    order: 2; /* The text appears second */
-    text-align: left; /* Align the text to the left */
-}
-
-#move-die-image {
-    height: 4rem;
-    width: 9rem;
-    padding: 1rem;
-    margin: 1rem;
-    background-image: URL('img/movement-dice.png');
-    background-size: cover; 
-    background-position: center;
-    margin-right: auto;
-    order: 1;
-}
-
-/* Modal styling */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
+.staff-board-panel {
     width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4);
 }
 
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-}
-
-.close-button {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close-button:hover,
-.close-button:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-#staff-board {
-    height: 21.5vw;
-    background-image: URL('img/staff-board.jpg');
+.staff-board-wrap {
     position: relative;
-    overflow: hidden;
-    background-repeat: no-repeat;
-    background-size: 40vw 21.5vw;
-    margin: 0vw 0vw 0vw -8vw;
-    width: 40vw;
+    width: 100%;
+    display: block;
 }
 
-
-.player-stats {
-    position: absolute;
-    z-index: 2;
-    overflow: hidden;
-    padding-left: 25vw;
+.staff-board-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 0 0 8px 8px;
 }
 
-.player-stats img {
-    height: 3.74rem;
-}
+/* =============================================================
+   PLAYER HEADER (name + Duckats)
+   ============================================================= */
 
-.player-header { 
-    margin: 0rem 0rem 0rem -9rem;
+.player-header {
+    width: 100%;
     color: #fff;
-    position: relative;
-}
-
-.name-plate {
-    width: 90%;
-    margin: 0 auto;
-    border-radius: 10px 5px 0px 0px;
-}
-
-.player1 {
-    background: #ff0000;
-}
-
-.player2 {
-    background: #000080;
-}
-
-.player3 {
-    background: #006400;
-}
-
-.player4 {
-    background: #3F259B;
+    margin-bottom: 0;
 }
 
 .player-name {
-    font-family: 'Arial Black', 'Arial Bold', 'Helvetica', sans-serif;
+    font-family: 'Arial Black', 'Arial Bold', Helvetica, sans-serif;
     text-transform: uppercase;
-    padding: 0vw 0vw 1.5vw 1vw;
-    border-radius: 10px 10px 0px 0px;
-    font-size: 1.25rem;
+    padding: 10px 14px;
+    border-radius: 10px 10px 0 0;
+    font-size: 13px;
     position: relative;
-    margin: 0vw 0vw 1vw -0.2vw;
-    width: 11.5vw;
-    height: 1vw;
-}
-
-.super-duckat {
-    padding-bottom: 10px;
-}
-
-#super-duckat-image {
-    height: 3.87rem;
-    width: 3.87rem;
-    background-image: URL('img/super-duckats.png');
-}
-
-.duckat {
-    padding-bottom: 10px;
-    margin-left: 1rem;
-}
-
-#duckats-image {
-    height: 3.87rem;
-    width: 3.87rem;
-    background-image: URL('img/duckats.png');
-}
-
-.staff-board-container {
-    position: absolute;
-    margin: 1vw -1vw 0vw 10vw;
-}
-
-
-.value {
-    background: #000;
-    font-family: 'Arial Black', 'Arial Bold', 'Helvetica', sans-serif;
-    border-radius:  30px 0px 0px 30px;
-    padding: 0.5rem 1.875rem 0.5rem 1.25rem;
-    margin-right: -1.25rem;
-    margin-top: 0.625rem;
-    font-size: 1.25rem;
+    float: left;
+    max-width: 55%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #fff;
 }
 
 .player-background {
-    height: 3.188rem;
-    width: 39.9vw;
-    max-width: 100%;
-    box-sizing: border-box;
-    border-radius: 0px 10px 0px 0px;
-    margin-top: -2.188rem;
-    margin: -2.1vw 0vw 0vw -0.2vw;
-    position: relative;
+    height: 30px;
+    border-radius: 0 10px 0 0;
+    float: right;
+    width: 45%;
+    margin-top: 0;
 }
 
-#left-arrow { 
+.player-stats {
+    float: right;
+    padding-right: 10px;
+    position: relative;
+    top: 0;
+    z-index: 2;
+}
+
+.player-stats img {
+    height: 48px;
+    width: auto;
+    display: block;
+}
+
+.super-duckat,
+.duckat {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.duckat {
+    margin-left: 12px;
+}
+
+.value {
+    background: #000;
+    font-family: 'Arial Black', 'Arial Bold', Helvetica, sans-serif;
+    border-radius: 30px 0 0 30px;
+    padding: 6px 20px 6px 12px;
+    margin-right: -12px;
+    font-size: 16px;
+    color: #fff;
+    min-width: 48px;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+/* =============================================================
+   STAFF GRID (Excellent staff tiles on staff board)
+   ============================================================= */
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    position: absolute;
+    top: 8%;
+    left: 3%;
+    width: 94%;
+    height: 85%;
+    gap: 2px;
+}
+
+.grid-item {
+    border-radius: 4px;
+    transition: opacity 0.3s;
+}
+
+.grid-item.excellent {
+    background: rgba(255, 215, 0, 0.35);
+    border: 2px solid gold;
+    border-radius: 4px;
+}
+
+.grid-item.hidden {
+    display: none;
+}
+
+/* =============================================================
+   NAVIGATION ARROWS (staff board prev/next)
+   ============================================================= */
+
+.arrow {
+    background: #3e3f83;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    box-shadow: 0 6px 0 #2a2661;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#left-arrow {
     left: 0;
 }
 
@@ -434,344 +512,81 @@ body {
     right: 0;
 }
 
-.arrow {
-    background: #3e3f83;
-    border-radius: 50%;
-    padding: 1vw;
-    border: 0px;
-    display: inline-block;
-    text-transform: uppercase;
-    box-shadow: 0 8px 0 #2a2661;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: calc(50% - 1.5vw);
-    margin: 2vw -4vw 2vw -9vw;
-    width: 3vw;
-    cursor: pointer;
-    z-index: 1;
-}
-
 .arrow span {
     width: 0;
     height: 0;
-    top: 50%;
-    border-top: 0.938rem solid transparent;
-    border-bottom: 0.983rem solid transparent;
-    position: relative;
-    transform: translateY(-50%);
+    display: block;
 }
 
 #right-arrow span {
-    position: absolute;
-    border-left: 0.938rem solid #fff;
-    left: 1.563rem;
-    z-index: 1;
-    left: 50%;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 10px solid #fff;
+    margin-left: 2px;
 }
 
 #left-arrow span {
-    position: absolute;
-    border-right: 0.938rem solid #fff;
-    right: 10%;
-    left: 38%;
-    z-index: 1;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 10px solid #fff;
+    margin-right: 2px;
 }
 
-/**/
-/*CSS For staff card grid*/
-
-.card-grid {
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    gap: 15px;
-    width: 36.6vw;
-    height: 17.0vw;
-    padding: 0.5vw 0vw 0vw 1.66vw;
-  }
-  
-  .grid-item {
-    background-color: transparent; /* Initial background if needed */
-    position: relative; /* Positioning context for sprites */
-  }
-  
-  @media (max-width: 768px) {
-    .card-grid {
-      grid-template-columns: repeat(2, 1fr); /* Adjusts to 2 columns for smaller screens */
-      grid-template-rows: repeat(6, 1fr); /* Adjusts to 6 rows for smaller screens */
-    }
-  }
-
-  /*Object insertion for each image after*/
-
-  .grid-item::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-
-    /*Call `.hidden-content` to hide excellent staff on the staff card */
-
-  .hidden-content {
-    visibility: hidden;
-  }
-  
-  #ex-chef::after {
-    position: absolute;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-image: URL('img/ex-chef.jpg');
-    height: 9.5vw;
-    width: 5.15vw;
-    padding: 0.1vw 0.1vw 0.1vw 0.1vw;
-    grid-column: 1;
-    grid-row: 1;
-  }
-  
-  #ex-sous-chef::after {
-    position: absolute;
-    background-image: URL('img/ex-sous-chef.jpg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    height: 9.5vw;
-    width: 5.15vw;
-    padding: 0.1vw 0.1vw 0.1vw 0.1vw;
-    grid-column: 2;
-    grid-row: 1;
-
-  }
-
-  #ex-first-cook::after {
-    position: absolute;
-    background-position: -111px 0px 0px 0px;
-    background-image: URL('img/ex-first-cook.jpg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    height: 9.5vw;
-    width: 5.15vw;
-    padding: 0.1vw 0.1vw 0.1vw 0.1vw;
-    grid-column: 3;
-    grid-row: 1;
-  }
-
-  #ex-cook-1::after {
-    position: absolute;
-    background-image: URL('img/ex-cook.jpg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    height: 9.5vw;
-    width: 5.15vw;
-    padding: 0.1vw 0.1vw 0.1vw 0.1vw;
-    grid-column: 4;
-    grid-row: 1;
-  }
-
-  #ex-cook-2::after {
-    position: absolute;
-    background-image: URL('img/ex-cook.jpg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    height: 9.5vw;
-    width: 5.15vw;
-    padding: 0.1vw 0.1vw 0.1vw 0.1vw;
-    grid-column: 5;
-    grid-row: 1;
-  }
-
-  #ex-cook-3::after {
-    position: absolute;
-    background-image: URL('img/ex-cook.jpg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    height: 9.5vw;
-    width: 5.15vw;
-    padding: 0.1vw 0.1vw 0.1vw 0.1vw;
-    grid-column: 6;
-    grid-row: 1;
-}
-
-  #ex-maitre-d::after {
-    background-image: URL('img/ex-maitre-d.jpg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    height: 7.3vw;
-    width: 5vw;
-    padding: 0.1vw 0.1vw 0.1vw 0.1vw;
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  #ex-sommelier::after {
-    background-image: URL('img/ex-sommelier.jpg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    height: 7.3vw;
-    width: 5vw;
-    padding: 0.1vw 0.1vw 0.1vw 0.1vw;
-    grid-column: 2;
-    grid-row: 2;
-  }
-
-  #ex-capitan::after {
-    background-image: URL('img/ex-captain.jpg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    height: 7.3vw;
-    width: 5vw;
-    padding: 0.1vw 0.1vw 0.1vw 0.1vw;
-    grid-column: 3;
-    grid-row: 2;
-  }
-
-  #ex-server-1::after {
-    background-image: URL('img/ex-server.jpg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    height: 7.3vw;
-    width: 5vw;
-    padding: 0.1vw 0.1vw 0.1vw 0.1vw;
-    grid-column: 4;
-    grid-row: 2;
-  }
-
-  #ex-server-2::after {
-    background-image: URL('img/ex-server.jpg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    height: 7.3vw;
-    width: 5vw;
-    padding: 0.1vw 0.1vw 0.1vw 0.1vw;
-    grid-column: 5;
-    grid-row: 2;
-  }
-  
-  #ex-server-3::after {
-    background-image: URL('img/ex-server.jpg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    height: 7.3vw;
-    width: 5vw;
-    padding: 0.1vw 0.1vw 0.1vw 0.1vw;
-    grid-column: 5;
-    grid-row: 2;
-  }
-
-  .custom-prompt-modal {
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4); /* Dim the background */
-}
-
-.custom-prompt-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-}
-
-.custom-prompt-close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.custom-prompt-close:hover,
-.custom-prompt-close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-@media screen and (max-width: 1500px) {
-    html {
-        font-size: 14px;
-    }
-}
+/* =============================================================
+   RESPONSIVE — BGA minimum 1024px wide
+   At 1024px the game area is ~750px so we scale fonts down
+   ============================================================= */
 
 @media screen and (max-width: 1280px) {
-    html {
-        font-size: 12px;
+    .letter-buttons button {
+        font-size: 32px;
+        padding: 8px 14px 6px 14px;
     }
-
-    .duckat {
-        margin-left: 0.5rem;
+    #staff-die-image img,
+    #move-die-image img {
+        height: 52px;
     }
-
-    .value { 
-        padding: 0.5rem 1.875rem 0.5rem 1rem;
+    .dice-buttons button span {
+        font-size: 11px;
+    }
+    .value {
+        font-size: 14px;
+        padding: 5px 16px 5px 10px;
     }
 }
 
 @media screen and (max-width: 1023px) {
-    .left-content {
-        width: 100%;
-        float: left;
-        position: relative;
-        padding: 1.25rem;
-        box-sizing: border-box;
-    }
-    
+    .left-content,
     .right-content {
         width: 100%;
-        float: left;
-        position: relative;
-        padding: 1.25rem;
-        box-sizing: border-box;
-    
-    }
-
-}
-
-@media screen and (max-width: 600px) {
-    html {
-        font-size: 10px;
-    }
-
-    .dice-buttons img { 
-        display: none; 
-    }
-    
-    .dice-buttons button { 
-        min-width: 35%;
-        text-align: center;
-    }
-
-    .dice-buttons button span {
-        text-align: center;
-        padding: 1.563rem 1.875rem;
-    }
-
-
-}
-
-@media screen and (max-width: 450px) {
-    .player-name {
-        width: 100%;
         float: none;
-        text-align: center;
-        margin-top: 6rem;
+        padding: 10px;
     }
 
-    .player-stats {
-        margin-top: -4rem;
-        right: auto;
-        padding-right: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 150px;
+    .right-content {
+        max-height: none;
+        overflow-y: visible;
     }
 
+    .letter-buttons button {
+        font-size: 32px;
+    }
 
+    #board-msg-title { font-size: 20px; }
+    #board-msg-body  { font-size: 14px; }
+}
+
+/* =============================================================
+   STAT BLOCK — Duckat / Souper Duckat counter rows
+   (replaces .left float utility which conflicts with BGA)
+   ============================================================= */
+
+.stat-block {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.stat-icon {
+    display: inline-block;
+    vertical-align: middle;
 }

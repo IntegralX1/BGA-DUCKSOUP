@@ -77,13 +77,13 @@ CREATE TABLE IF NOT EXISTS `staff_box` (
 -- =============================================================
 
 CREATE TABLE IF NOT EXISTS `restaurant_card` (
-  `card_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `card_type` VARCHAR(32) NOT NULL COMMENT 'e.g. pay_bank, collect_bank, hire_free, lose_staff, etc.',
-  `description` TEXT NOT NULL,
-  `effect_value` INT NOT NULL DEFAULT 0 COMMENT 'Duckat amount or modifier; negative = pay',
-  `card_order` INT UNSIGNED NOT NULL COMMENT 'Shuffled draw order',
-  PRIMARY KEY (`card_id`),
-  KEY `idx_card_order` (`card_order`)
+    `card_id`        INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `card_type`      VARCHAR(32)  NOT NULL COMMENT 'e.g. pay_bank, collect_bank, hire_free, lose_staff, etc.',
+    `description`    TEXT         NOT NULL,
+    `effect_value`   INT          NOT NULL DEFAULT 0 COMMENT 'Duckat amount or modifier, negative = pay',
+    `card_order`     INT UNSIGNED NOT NULL COMMENT 'Shuffled draw order',
+    PRIMARY KEY (`card_id`),
+    KEY `idx_card_order` (`card_order`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- =============================================================

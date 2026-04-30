@@ -4,15 +4,14 @@
  *
  * Duck Soup — The Restaurant Game
  *
- * NOTE: Game HTML is now generated entirely in ducksouptherestaurantgame.js
- * via this.bga.gameArea.getElement().insertAdjacentHTML() in the setup() method.
- * This file exists only to satisfy the BGA framework's view requirement.
- * It intentionally contains no game layout or player-specific data.
+ * All game HTML is generated in ducksouptherestaurantgame.js via
+ * this.bga.gameArea.getElement().insertAdjacentHTML() in setup().
+ * This file is a minimal stub required by the BGA framework.
  */
 
 require_once(APP_BASE_PATH . 'view/common/game.view.php');
 
-class ducksouptherestaurantgame_view_ducksouptherestaurantgame extends game_view
+class view_ducksouptherestaurantgame_ducksouptherestaurantgame extends game_view
 {
     public function getGameName()
     {
@@ -21,7 +20,9 @@ class ducksouptherestaurantgame_view_ducksouptherestaurantgame extends game_view
 
     public function build_page($viewArgs)
     {
-        // All game HTML is injected from JS setup().
-        // No template variables to assign here.
+        // All game HTML is injected from JS setup() via bga.gameArea.getElement().
+        // The TPL contains only empty block markers required by the BGA template engine.
+        // No variables or blocks need to be set here.
     }
 }
+

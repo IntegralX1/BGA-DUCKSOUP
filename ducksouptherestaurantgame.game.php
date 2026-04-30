@@ -16,10 +16,9 @@
  *   - zombieTurn()
  */
 
-require_once(APP_GAMEMODULE_PATH . 'module/table/table.game.php');
 require_once('questions_seed.php');
 
-class duckSoupTheRestaurantGame extends Table
+class duckSoupTheRestaurantGame extends Bga\GameFramework\Table
 {
     // ------------------------------------------------------------------
     // Staff definitions — mirrors the physical Staff Board.
@@ -104,10 +103,6 @@ class duckSoupTheRestaurantGame extends Table
         ));
     }
 
-    protected function getGameName()
-    {
-        return 'ducksouptherestaurantgame';
-    }
 
     // ==================================================================
     // SETUP
@@ -181,19 +176,21 @@ class duckSoupTheRestaurantGame extends Table
         self::setGameStateInitialValue('turnNumber',        1);
 
         // --- Init statistics ---
-        self::initStat('table', 'totalRounds',  0);
-        self::initStat('table', 'bankDuckats',  0);
-        foreach ($players as $player_id => $player) {
-            self::initStat('player', 'duckats',        $player_id);
-            self::initStat('player', 'souperDuckats',  $player_id);
-            self::initStat('player', 'excellentStaff', $player_id);
-            self::initStat('player', 'normalStaff',    $player_id);
-            self::initStat('player', 'staffBids',      $player_id);
-            self::initStat('player', 'staffBidsWon',   $player_id);
-        }
+        // Table stats: one call per stat
+        self::initStat('table', 'totalRounds', 0);
+        self::initStat('table', 'bankDuckats', 0);
+        // Player stats: BGA initialises for ALL players automatically — no loop needed
+        self::initStat('player', 'duckats',        0);
+        self::initStat('player', 'souperDuckats',  0);
+        self::initStat('player', 'excellentStaff', 0);
+        self::initStat('player', 'normalStaff',    0);
+        self::initStat('player', 'staffBids',      0);
+        self::initStat('player', 'staffBidsWon',   0);
 
         // --- Determine first player (highest die roll, ties re-roll) ---
         $this->activeNextPlayer();
+
+        return 2; // chooseQuestion — first active state
     }
 
     /**
@@ -457,7 +454,7 @@ class duckSoupTheRestaurantGame extends Table
         $player_id = self::getActivePlayerId();
 
         if (!in_array($letter, array('A', 'B', 'C', 'D'))) {
-            throw new BgaUserException(self::_('Invalid letter choice.'));
+            throw new BgaUserException(clienttranslate('Invalid letter choice.'));
         }
 
         // Draw the next question
@@ -512,7 +509,7 @@ class duckSoupTheRestaurantGame extends Table
         $player_id  = self::getActivePlayerId();
 
         if (!in_array($answer, array('A', 'B', 'C', 'D'))) {
-            throw new BgaUserException(self::_('Invalid answer.'));
+            throw new BgaUserException(clienttranslate('Invalid answer.'));
         }
 
         $questionId = (int) self::getGameStateValue('currentQuestion');
@@ -660,7 +657,7 @@ class duckSoupTheRestaurantGame extends Table
         );
 
         if ($count > $owned) {
-            throw new BgaUserException(self::_('You do not have enough Souper Duckats.'));
+            throw new BgaUserException(clienttranslate('You do not have enough Souper Duckats.'));
         }
 
         self::DbQuery(
@@ -699,19 +696,19 @@ class duckSoupTheRestaurantGame extends Table
             }
         }
         if ($staffDef === null) {
-            throw new BgaUserException(self::_('Invalid staff type.'));
+            throw new BgaUserException(clienttranslate('Invalid staff type.'));
         }
 
         $available = (int) self::getUniqueValueFromDB(
             "SELECT available FROM staff_box WHERE staff_type = '{$staffType}'"
         );
         if (!$available) {
-            throw new BgaUserException(self::_('That staff member is not available.'));
+            throw new BgaUserException(clienttranslate('That staff member is not available.'));
         }
 
         $duckats = $this->getPlayerDuckats($player_id);
         if ($duckats < $staffDef['value']) {
-            throw new BgaUserException(self::_('Not enough Duckats to hire this staff member.'));
+            throw new BgaUserException(clienttranslate('Not enough Duckats to hire this staff member.'));
         }
 
         $this->hireFromBox($staffType, $player_id, $staffDef['value']);
@@ -797,7 +794,7 @@ class duckSoupTheRestaurantGame extends Table
             }
         }
         if ($staffDef === null) {
-            throw new BgaUserException(self::_('Invalid staff type.'));
+            throw new BgaUserException(clienttranslate('Invalid staff type.'));
         }
 
         $isExcellent = (int) self::getUniqueValueFromDB(
@@ -805,7 +802,7 @@ class duckSoupTheRestaurantGame extends Table
              WHERE player_id = {$player_id} AND staff_type = '{$staffType}'"
         );
         if (!$isExcellent) {
-            throw new BgaUserException(self::_('You can only return Excellent staff.'));
+            throw new BgaUserException(clienttranslate('You can only return Excellent staff.'));
         }
 
         $refund = (int) floor($staffDef['value'] / 2);
@@ -847,13 +844,13 @@ class duckSoupTheRestaurantGame extends Table
         );
 
         if ($auction === null || $auction['status'] !== 'active') {
-            throw new BgaUserException(self::_('No active auction.'));
+            throw new BgaUserException(clienttranslate('No active auction.'));
         }
         if ($amount <= (int) $auction['current_high_bid']) {
-            throw new BgaUserException(self::_('Your bid must be higher than the current bid.'));
+            throw new BgaUserException(clienttranslate('Your bid must be higher than the current bid.'));
         }
         if ($amount > $this->getPlayerDuckats($player_id)) {
-            throw new BgaUserException(self::_('You do not have enough Duckats.'));
+            throw new BgaUserException(clienttranslate('You do not have enough Duckats.'));
         }
 
         self::DbQuery(
@@ -1216,9 +1213,8 @@ class duckSoupTheRestaurantGame extends Table
         // Check win condition on active player
         $activePlayerId = self::getActivePlayerId();
         if ($this->hasWon($activePlayerId)) {
-            self::DbQuery(
-                "UPDATE player SET player_score = 1 WHERE player_id = {$activePlayerId}"
-            );
+            // Score update via BGA framework counter
+            $this->bga->playerScore->inc(1, $activePlayerId);
             self::notifyAllPlayers('gameWon', clienttranslate('${player_name} has hired all 12 Excellent staff and wins the game!'), array(
                 'player_id'   => $activePlayerId,
                 'player_name' => self::getActivePlayerName(),

@@ -103,6 +103,8 @@ function (dojo, declare) {
             console.log('Starting game setup', gamedatas);
 
             this.gamedatas = gamedatas;
+            var gameThemeUrl = g_gamethemeurl; // BGA global — available by setup() time
+            this.gameThemeUrl = gameThemeUrl;
 
             // ---------------------------------------------------------------
             // Inject full game HTML into BGA game area (replaces TPL/view)
@@ -132,13 +134,13 @@ function (dojo, declare) {
                             <div class="dice-buttons">
                                 <button id="staff-die" style="display:none;">
                                     <div id="staff-die-image">
-                                        <img src="${g_gamethemeurl}img/staff-die.png" alt="Staff Die">
+                                        <img src="${gameThemeUrl}img/staff-die.png" alt="Staff Die">
                                     </div>
                                     <span>Roll the<br>Staff Die</span>
                                 </button>
                                 <button id="move-die" style="display:none;">
                                     <div id="move-die-image">
-                                        <img src="${g_gamethemeurl}img/movement-dice.png" alt="Movement Dice">
+                                        <img src="${gameThemeUrl}img/movement-dice.png" alt="Movement Dice">
                                     </div>
                                     <span>Roll for<br>Movement</span>
                                 </button>
@@ -152,11 +154,11 @@ function (dojo, declare) {
                         <div class="left-content">
                             <div id="board-container">
                                 <div id="board">
-                                    <img class="board-img" src="${g_gamethemeurl}img/board.jpg" alt="Duck Soup Board">
+                                    <img class="board-img" src="${gameThemeUrl}img/board.jpg" alt="Duck Soup Board">
                                     <div id="inner-board">
-                                        <img src="${g_gamethemeurl}img/inner-board.png" alt="Duck Soup">
+                                        <img src="${gameThemeUrl}img/inner-board.png" alt="Duck Soup">
                                     </div>
-                                    <div class="board-contents inactive">
+                                    <div class="board-contents inactive" id="board-contents">
                                         <h2 id="board-msg-title"></h2>
                                         <p id="board-msg-body"></p>
                                     </div>
@@ -222,6 +224,7 @@ function (dojo, declare) {
         // ==============================================================
 
         _initPlayerBoard: function (player_id, player) {
+            var gameThemeUrl = this.gameThemeUrl || g_gamethemeurl || '';
             // Build player board HTML dynamically and inject into wrapper
             var color     = player.color || 'ff0000';
             var name      = player.name  || '';
@@ -232,23 +235,23 @@ function (dojo, declare) {
                 <div id="staff-board-${player_id}" class="staff-board-panel" style="display:none;">
                     <div class="player-header">
                         <div class="clearfix">
-                            <div class="player-name left player-${player_id}"
+                            <div class="player-name player-${player_id}"
                                  style="background-color:#${color};">${name}</div>
-                            <div class="player-stats right">
+                            <div class="player-stats">
                                 <div class="clearfix">
-                                    <div class="left">
+                                    <div class="stat-block">
                                         <div class="clearfix super-duckat">
                                             <div class="value left" id="souper-duckat-count-${player_id}">${souper}</div>
-                                            <div class="left">
-                                                <img src="${g_gamethemeurl}img/super-duckats.png" alt="Souper Duckats">
+                                            <div class="stat-icon">
+                                                <img src="${gameThemeUrl}img/super-duckats.png" alt="Souper Duckats">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="left">
+                                    <div class="stat-block">
                                         <div class="clearfix duckat">
                                             <div class="value left" id="duckat-count-${player_id}">${duckats}</div>
                                             <div class="left">
-                                                <img src="${g_gamethemeurl}img/duckats.png" alt="Duckats">
+                                                <img src="${gameThemeUrl}img/duckats.png" alt="Duckats">
                                             </div>
                                         </div>
                                     </div>
@@ -259,7 +262,7 @@ function (dojo, declare) {
                              style="background-color:#${color};"></div>
                     </div>
                     <div class="staff-board-wrap">
-                        <img class="staff-board-img" src="${g_gamethemeurl}img/staff-board.jpg" alt="Staff Board">
+                        <img class="staff-board-img" src="${gameThemeUrl}img/staff-board.jpg" alt="Staff Board">
                         <div class="card-grid">
                             <div class="grid-item" id="ex-chef-${player_id}"></div>
                             <div class="grid-item" id="ex-sous-chef-${player_id}"></div>
@@ -379,11 +382,11 @@ function (dojo, declare) {
             var pawnEl = dojo.byId('pawn-' + player_id);
             if (!pawnEl) {
                 var pawnsLayer = dojo.byId('pawns-layer');
-                var colorName  = this.pawnColors[player_color] || 'red';
+                var colorName  = this.pawnColors[color] || 'red';
                 if (pawnsLayer) {
                     pawnsLayer.insertAdjacentHTML('beforeend',
                         '<div class="pawn-token pawn-' + colorName + '" id="pawn-' + player_id + '">' +
-                        '<img src="' + g_gamethemeurl + 'img/pawn-' + colorName + '.png" alt="pawn"></div>'
+                        '<img src="' + this.gameThemeUrl + 'img/pawn-' + colorName + '.png" alt="pawn"></div>'
                     );
                     pawnEl = dojo.byId('pawn-' + player_id);
                 }
