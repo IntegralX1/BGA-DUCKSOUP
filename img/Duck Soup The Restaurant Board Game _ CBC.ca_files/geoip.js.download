@@ -1,0 +1,13 @@
+function geoip_country_code() { return "CA"; }
+function geoip_country_name() { return "Canada"; }
+function geoip_city() { return "Edmonton"; }
+function geoip_region() { return "AB"; }
+function geoip_region_name() { return "Alberta"; }
+function geoip_latitude() { return "53.4609"; }
+function geoip_longitude() { return "-113.3714"; }
+function geoip_postal_code() { return "T6T"; }
+function geoip_metro_code() { return "0"; }
+function geoip_area_code() { return "0"; }
+function geoip_regions_ventesweb() { return []; }
+function geoip_region_info() { return {televisionRegionId:13,radioRegionId:13,espaceMusiqueRegionId:13,editionRegionId:13,cityCode:"YXD",cbcMusicRegionId:0,cbcMusicStationId:102,espaceMusiqueClassiqueRegionId:118}; }
+function geoip_get_eastern_time() { return "0000"; }
