@@ -1,0 +1,228 @@
+/* =============================================================
+   Duck Soup: The Restaurant Game
+   Souper Duckat Panel CSS — ADD TO ducksouptherestaurantgame.css
+   
+   Lives inside the player header panel (#ds-player-header-{id}).
+   Interactive controls only visible to the active local player.
+   Read-only count row visible on all player headers.
+   ============================================================= */
+
+/* --- Panel container --- */
+
+.ds-sd-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px 10px;
+    background: rgba(0, 0, 0, 0.06);
+    border-radius: 8px;
+    margin-top: 8px;
+    font-size: 13px;
+}
+
+.ds-sd-panel--readonly {
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+}
+
+/* --- Count display row --- */
+
+.ds-sd-count-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ds-sd-icon {
+    font-size: 16px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.ds-sd-label {
+    flex: 1;
+    color: inherit;
+    opacity: 0.8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 12px;
+}
+
+.ds-sd-count {
+    font-weight: 700;
+    font-size: 16px;
+    min-width: 20px;
+    text-align: right;
+    color: inherit;
+}
+
+/* --- Show / hide toggle for control groups --- */
+
+.ds-sd-controls--hidden {
+    display: none !important;
+}
+
+/* --- Buy / Cash row --- */
+
+.ds-sd-buycash {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+/* --- Use row --- */
+
+.ds-sd-use {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.ds-sd-use-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+}
+
+.ds-sd-use-qty {
+    font-size: 20px;
+    font-weight: 700;
+    min-width: 28px;
+    text-align: center;
+    color: inherit;
+}
+
+.ds-sd-use-label {
+    font-size: 11px;
+    opacity: 0.7;
+    white-space: nowrap;
+}
+
+.ds-sd-use-actions {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* --- Shared button base --- */
+
+.ds-sd-btn {
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background 0.12s, opacity 0.12s, transform 0.08s;
+    white-space: nowrap;
+    flex: 1;
+    min-width: 0;
+}
+
+.ds-sd-btn:disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.ds-sd-btn:active:not(:disabled) {
+    transform: scale(0.96);
+}
+
+/* Buy — green tint */
+.ds-sd-btn--buy {
+    background: #2e7d32;
+    color: #ffffff;
+}
+
+.ds-sd-btn--buy:hover:not(:disabled) {
+    background: #256428;
+}
+
+/* Cash — amber tint */
+.ds-sd-btn--cash {
+    background: #b8860b;
+    color: #ffffff;
+}
+
+.ds-sd-btn--cash:hover:not(:disabled) {
+    background: #9a700a;
+}
+
+/* Use / Spend — duck orange */
+.ds-sd-btn--use {
+    background: #e65c00;
+    color: #ffffff;
+    flex: 2;
+}
+
+.ds-sd-btn--use:hover:not(:disabled) {
+    background: #cc5200;
+}
+
+/* Skip — neutral */
+.ds-sd-btn--skip {
+    background: #d0c8b8;
+    color: #4a3e2a;
+    flex: 1;
+}
+
+.ds-sd-btn--skip:hover:not(:disabled) {
+    background: #c0b8a8;
+}
+
+/* Cost hint inside buy/cash buttons */
+.ds-sd-cost {
+    font-weight: 400;
+    opacity: 0.85;
+    font-size: 11px;
+}
+
+/* --- Counter +/- buttons --- */
+
+.ds-sd-counter-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    background: transparent;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    color: inherit;
+    opacity: 0.75;
+    transition: opacity 0.12s, background 0.12s;
+    flex-shrink: 0;
+}
+
+.ds-sd-counter-btn:hover:not(:disabled) {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.ds-sd-counter-btn:disabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+}
+
+/* --- Compact layout when panel is inside a narrow header --- */
+
+@media (max-width: 240px) {
+    .ds-sd-buycash {
+        flex-direction: column;
+    }
+
+    .ds-sd-btn {
+        font-size: 11px;
+        padding: 4px 6px;
+    }
+}

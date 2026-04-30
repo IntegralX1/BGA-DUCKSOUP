@@ -234,6 +234,7 @@ function (dojo, declare) {
             var name      = player.name  || '';
             var duckats   = player.duckats        || 0;
             var souper    = player.souper_duckats || 0;
+            console.log('Player board init — id:', player_id, 'color:', color, 'name:', name, 'duckats:', duckats);
 
             var boardHtml = `
                 <div id="staff-board-${player_id}" class="staff-board-panel" style="display:none;">
