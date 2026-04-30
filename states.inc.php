@@ -1,214 +1,258 @@
 <?php
 /**
- * states.inc.php
+ * Duck Soup: The Restaurant Game
+ * states.inc.php — Full state machine definition
  *
- * Duck Soup — Complete Game State Machine
- *
- * STATE MAP (matches diagram):
- *
- *  1  gameSetup          manager   → 2
- *  2  chooseQuestion     active    → 3 (answerQuestion) | 4 (rollStaffDie)
- *  3  answerQuestion     active    → 4
- *  4  rollStaffDie       active    → 5
- *  5  rollMovement       active    → 6
- *  6  resolveSquare      game      → 7 (staffQuits) | 8 (helpWanted) | 9 (endTurn)
- *                                  | 10 (restaurant card) | 5 (Duck Soup re-roll)
- *  7  staffQuitsBid      multiple  → 9
- *  8  helpWantedBid      multiple  → 9
- *  9  endTurn            game      → 2 (next player) | 99 (winner)
- * 10  resolveRestaurant  active    → 9
- * 99  gameEnd            manager
+ * State IDs:
+ *   1   = gameSetup     (BGA reserved)
+ *   2   = chooseQuestion
+ *   3   = answerQuestion
+ *   4   = rollStaffDie
+ *   5   = rollMovement
+ *   6   = resolveSquare      (server-side auto)
+ *   7   = resolveRestaurant  (draw + resolve restaurant card)
+ *   8   = restaurantCardRoll (player rolls dice for card effect)
+ *   9   = hireStaff          (player picks staff to hire)
+ *   10  = souperDuckatUse    (player optionally spends Souper Duckats post-move)
+ *   11  = staffQuitsBid      (multi-active auction: staff quits)
+ *   12  = helpWantedBid      (multi-active auction: help wanted)
+ *   13  = endTurn            (server-side auto)
+ *   99  = gameEnd            (BGA reserved)
  */
 
 $machinestates = array(
 
     // ---------------------------------------------------------------
-    // 1 — Initial setup (BGA required, do not modify)
+    // 1 — GAME SETUP (BGA reserved, do not modify)
     // ---------------------------------------------------------------
     1 => array(
-        'name'        => 'gameSetup',
-        'description' => '',
-        'type'        => 'manager',
-        'action'      => 'stGameSetup',
-        'transitions' => array('' => 2),
+        'name'              => 'gameSetup',
+        'description'       => '',
+        'type'              => 'manager',
+        'action'            => 'stGameSetup',
+        'transitions'       => array('' => 2),
     ),
 
     // ---------------------------------------------------------------
-    // 2 — Choose a letter (A/B/C/D) before the roll
-    //     Active player selects a trivia letter each turn.
-    //     The card read by the player to the left determines whether
-    //     it maps to a question or a ROLL STAFF DIE! result.
+    // 2 — CHOOSE QUESTION
+    // Active player picks a letter (A/B/C/D).
+    // Souper Duckat buy/cash is available in this state (pre-roll).
     // ---------------------------------------------------------------
     2 => array(
-        'name'             => 'chooseQuestion',
-        'description'      => clienttranslate('${actplayer} must choose a letter: A, B, C or D'),
-        'descriptionmyturn'=> clienttranslate('${you} must choose a letter: A, B, C or D'),
-        'type'             => 'activeplayer',
-        'possibleactions'  => array('chooseLetter'),
-        'transitions'      => array(
+        'name'              => 'chooseQuestion',
+        'description'       => clienttranslate('${actplayer} must choose a letter: A, B, C or D'),
+        'descriptionmyturn' => clienttranslate('Choose a letter: A, B, C or D — then buy or cash Souper Duckats if desired'),
+        'type'              => 'activeplayer',
+        'possibleactions'   => array(
+            'chooseLetter',
+            'buySouperDuckat',
+            'cashSouperDuckat',
+        ),
+        'transitions'       => array(
             'toAnswer'       => 3,
             'toRollStaffDie' => 4,
         ),
     ),
 
     // ---------------------------------------------------------------
-    // 3 — Answer the trivia question
-    //     Active player submits their answer (A/B/C/D).
-    //     Correct → collect Duckats; wrong → nothing.
-    //     Always advances to rollStaffDie (we never skip it).
+    // 3 — ANSWER QUESTION
+    // Active player submits their answer.
     // ---------------------------------------------------------------
     3 => array(
-        'name'             => 'answerQuestion',
-        'description'      => clienttranslate('${actplayer} must answer the question'),
-        'descriptionmyturn'=> clienttranslate('${you} must answer the question'),
-        'type'             => 'activeplayer',
-        'possibleactions'  => array('submitAnswer'),
-        'transitions'      => array(
+        'name'              => 'answerQuestion',
+        'description'       => clienttranslate('${actplayer} is answering a question'),
+        'descriptionmyturn' => clienttranslate('Submit your answer'),
+        'type'              => 'activeplayer',
+        'possibleactions'   => array('submitAnswer'),
+        'transitions'       => array(
             'toRollStaffDie' => 4,
         ),
     ),
 
     // ---------------------------------------------------------------
-    // 4 — Roll the Staff Die (12-sided)
-    //     If chosen letter was ROLL STAFF DIE!, this resolves bonus.
-    //     If active player has the rolled staff, collect half value.
-    //     Otherwise this is a no-op pass-through state.
+    // 4 — ROLL STAFF DIE
+    // Active player rolls the 12-sided Staff Die.
     // ---------------------------------------------------------------
     4 => array(
-        'name'             => 'rollStaffDie',
-        'description'      => clienttranslate('${actplayer} must roll the Staff Die'),
-        'descriptionmyturn'=> clienttranslate('${you} must roll the Staff Die'),
-        'type'             => 'activeplayer',
-        'possibleactions'  => array('rollStaffDie'),
-        'transitions'      => array(
+        'name'              => 'rollStaffDie',
+        'description'       => clienttranslate('${actplayer} must roll the Staff Die'),
+        'descriptionmyturn' => clienttranslate('Roll the Staff Die'),
+        'type'              => 'activeplayer',
+        'possibleactions'   => array('rollStaffDie'),
+        'transitions'       => array(
             'toRollMovement' => 5,
         ),
     ),
 
     // ---------------------------------------------------------------
-    // 5 — Roll the movement dice (2×6-sided)
-    //     Active player may also play Souper Duckats here for extra
-    //     movement before confirming the roll.
+    // 5 — ROLL MOVEMENT
+    // Active player rolls 2d6 for movement.
+    // Souper Duckat buy/cash is still available until dice are rolled.
     // ---------------------------------------------------------------
     5 => array(
-        'name'             => 'rollMovement',
-        'description'      => clienttranslate('${actplayer} must roll the movement dice'),
-        'descriptionmyturn'=> clienttranslate('${you} must roll the movement dice'),
-        'type'             => 'activeplayer',
-        'possibleactions'  => array('rollMovement', 'playSouperDuckat'),
-        'transitions'      => array(
+        'name'              => 'rollMovement',
+        'description'       => clienttranslate('${actplayer} must roll the dice to move'),
+        'descriptionmyturn' => clienttranslate('Roll the dice to move — buy or cash Souper Duckats before rolling'),
+        'type'              => 'activeplayer',
+        'possibleactions'   => array(
+            'rollMovement',
+            'buySouperDuckat',
+            'cashSouperDuckat',
+        ),
+        'transitions'       => array(
             'toResolveSquare' => 6,
         ),
     ),
 
     // ---------------------------------------------------------------
-    // 6 — Resolve the landed square (server-side game logic)
-    //     No player action — the server reads the square type and
-    //     routes to the correct follow-up state.
-    //
-    //     Square → transition:
-    //       DUCK SOUP           → toRollMovement (5)   re-roll granted
-    //       BUSINESS IS GREAT   → toEndTurn (9)        collect handled in action
-    //       RENOS AND REPAIRS   → toEndTurn (9)        pay handled in action
-    //       VACATION            → toEndTurn (9)        flag set on player row
-    //       RESTAURANT          → toRestaurant (10)    draw a card
-    //       KITCHEN             → toEndTurn (9)        hire handled in resolveSquare
-    //       DINING ROOM         → toEndTurn (9)
-    //       HIRE K/DR           → toEndTurn (9)
-    //       STAFF QUITS         → toStaffQuits (7)
-    //       HELP WANTED         → toHelpWanted (8)
+    // 6 — RESOLVE SQUARE (server-side automatic)
+    // Server reads the square type and routes to the correct next state.
     // ---------------------------------------------------------------
     6 => array(
-        'name'        => 'resolveSquare',
-        'description' => '',
-        'type'        => 'game',
-        'action'      => 'stResolveSquare',
-        'transitions' => array(
-            'toRollMovement' => 5,
-            'toRestaurant'   => 10,
-            'toStaffQuits'   => 7,
-            'toHelpWanted'   => 8,
-            'toEndTurn'      => 9,
+        'name'              => 'resolveSquare',
+        'description'       => clienttranslate('Resolving square...'),
+        'type'              => 'game',
+        'action'            => 'stResolveSquare',
+        'transitions'       => array(
+            'toSouperDuckatUse' => 10,
+            'toRestaurant'      => 7,
+            'toHireStaff'       => 9,
+            'toStaffQuits'      => 11,
+            'toHelpWanted'      => 12,
+            'toEndTurn'         => 13,
         ),
     ),
 
     // ---------------------------------------------------------------
-    // 7 — Staff Quits auction
-    //     Multiple-active: all players except the original owner can
-    //     bid. Clockwise from left of active player.
-    //     Highest bid wins; tile transfers. No bids → tile to box.
+    // 7 — RESOLVE RESTAURANT CARD (server-side automatic)
+    // Server draws and begins resolving the top Restaurant card.
+    // Cards that need a dice roll transition to state 8.
+    // Cards that need a hire transition to state 9.
+    // All others resolve fully server-side and go to endTurn.
     // ---------------------------------------------------------------
     7 => array(
-        'name'             => 'staffQuitsBid',
-        'description'      => clienttranslate('Players may bid on the staff member who just quit'),
-        'descriptionmyturn'=> clienttranslate('${you} may place a bid or pass'),
-        'type'             => 'multipleactiveplayer',
-        'possibleactions'  => array('placeBid', 'passBid'),
-        'action'           => 'stStaffQuitsBid',
-        'transitions'      => array(
-            'toEndTurn' => 9,
+        'name'              => 'resolveRestaurant',
+        'description'       => clienttranslate('${actplayer} is resolving a Restaurant card'),
+        'descriptionmyturn' => clienttranslate('Resolving Restaurant card...'),
+        'type'              => 'game',
+        'action'            => 'stResolveRestaurant',
+        'transitions'       => array(
+            'toCardRoll'    => 8,
+            'toHireStaff'   => 9,
+            'toEndTurn'     => 13,
         ),
     ),
 
     // ---------------------------------------------------------------
-    // 8 — Help Wanted hire / auction
-    //     Active player gets first right to hire at face value.
-    //     If they decline, other players may bid (same clockwise rule).
+    // 8 — RESTAURANT CARD ROLL
+    // Active player rolls dice for roll-based card effects:
+    //   renos_repairs (card): pay 5× roll
+    //   business_great (card): collect 5× roll
+    //   food_costs_jump: all players pay 5× roll
     // ---------------------------------------------------------------
     8 => array(
-        'name'             => 'helpWantedBid',
-        'description'      => clienttranslate('Players may hire or bid for the available staff member'),
-        'descriptionmyturn'=> clienttranslate('${you} may hire, bid, or pass'),
-        'type'             => 'multipleactiveplayer',
-        'possibleactions'  => array('hireStaff', 'placeBid', 'passBid'),
-        'action'           => 'stHelpWantedBid',
-        'transitions'      => array(
-            'toEndTurn' => 9,
+        'name'              => 'restaurantCardRoll',
+        'description'       => clienttranslate('${actplayer} must roll the dice for the Restaurant card effect'),
+        'descriptionmyturn' => clienttranslate('Roll the dice for the card effect'),
+        'type'              => 'activeplayer',
+        'possibleactions'   => array('rollForCard'),
+        'transitions'       => array(
+            'toEndTurn' => 13,
         ),
     ),
 
     // ---------------------------------------------------------------
-    // 9 — End of turn (server-side)
-    //     Check win condition (all 12 excellent staff) → gameEnd.
-    //     Otherwise advance to next non-vacation player → chooseQuestion.
+    // 9 — HIRE STAFF
+    // Active player chooses which Excellent staff to hire (or passes).
+    // Triggered by: Kitchen square, Dining Room square,
+    //   Hire K or DR square, or Go-to-Next movement cards.
+    //   Also used for half-price conditional hires (chef_cook_bonus,
+    //   maitre_d_bonus restaurant cards).
     // ---------------------------------------------------------------
     9 => array(
-        'name'                  => 'endTurn',
-        'description'           => '',
-        'type'                  => 'game',
-        'action'                => 'stEndTurn',
-        'updateGameProgression' => true,
-        'transitions'           => array(
+        'name'              => 'hireStaff',
+        'description'       => clienttranslate('${actplayer} may hire an Excellent staff member'),
+        'descriptionmyturn' => clienttranslate('Choose a staff member to hire, or pass'),
+        'type'              => 'activeplayer',
+        'possibleactions'   => array('hireStaff', 'passHire'),
+        'transitions'       => array(
+            'toEndTurn' => 13,
+        ),
+    ),
+
+    // ---------------------------------------------------------------
+    // 10 — SOUPER DUCKAT USE
+    // Active player may spend Souper Duckats for extra movement squares,
+    // after normal movement has resolved.
+    // If player has 0 Souper Duckats, server auto-transitions past this.
+    // ---------------------------------------------------------------
+    10 => array(
+        'name'              => 'souperDuckatUse',
+        'description'       => clienttranslate('${actplayer} may spend Souper Duckats for extra movement'),
+        'descriptionmyturn' => clienttranslate('Spend Souper Duckats for extra squares, or skip'),
+        'type'              => 'activeplayer',
+        'possibleactions'   => array('useSouperDuckats', 'skipSouperDuckats'),
+        'transitions'       => array(
+            'toResolveSquare' => 6,
+            'toEndTurn'       => 13,
+        ),
+    ),
+
+    // ---------------------------------------------------------------
+    // 11 — STAFF QUITS BID (multi-active)
+    // All players except the original owner may bid on the quit staff.
+    // ---------------------------------------------------------------
+    11 => array(
+        'name'              => 'staffQuitsBid',
+        'description'       => clienttranslate('Players may bid on the available staff member'),
+        'descriptionmyturn' => clienttranslate('Place a bid or pass on this staff member'),
+        'type'              => 'multipleactiveplayer',
+        'possibleactions'   => array('placeBid', 'passBid'),
+        'action'            => 'stStaffQuitsBid',
+        'transitions'       => array(
+            'toEndTurn' => 13,
+        ),
+    ),
+
+    // ---------------------------------------------------------------
+    // 12 — HELP WANTED BID (multi-active)
+    // All players may bid if the active player declines first offer.
+    // ---------------------------------------------------------------
+    12 => array(
+        'name'              => 'helpWantedBid',
+        'description'       => clienttranslate('Players may bid on the available staff member'),
+        'descriptionmyturn' => clienttranslate('Place a bid or pass on this staff member'),
+        'type'              => 'multipleactiveplayer',
+        'possibleactions'   => array('placeBid', 'passBid'),
+        'action'            => 'stHelpWantedBid',
+        'transitions'       => array(
+            'toEndTurn' => 13,
+        ),
+    ),
+
+    // ---------------------------------------------------------------
+    // 13 — END TURN (server-side automatic)
+    // Resolves auction, checks win condition, advances to next player.
+    // ---------------------------------------------------------------
+    13 => array(
+        'name'              => 'endTurn',
+        'description'       => clienttranslate('End of turn...'),
+        'type'              => 'game',
+        'action'            => 'stEndTurn',
+        'transitions'       => array(
             'toChooseQuestion' => 2,
             'toGameEnd'        => 99,
         ),
     ),
 
     // ---------------------------------------------------------------
-    // 10 — Resolve a Restaurant card
-    //      Active player draws and resolves the top restaurant card.
-    //      If they cannot pay, they may return excellent staff for
-    //      half value to cover the cost.
-    // ---------------------------------------------------------------
-    10 => array(
-        'name'             => 'resolveRestaurant',
-        'description'      => clienttranslate('${actplayer} must resolve the Restaurant card'),
-        'descriptionmyturn'=> clienttranslate('${you} must resolve the Restaurant card'),
-        'type'             => 'activeplayer',
-        'possibleactions'  => array('resolveRestaurantCard', 'returnStaffForPayment'),
-        'transitions'      => array(
-            'toEndTurn' => 9,
-        ),
-    ),
-
-    // ---------------------------------------------------------------
-    // 99 — Game end (BGA required, do not modify)
+    // 99 — GAME END (BGA reserved, do not modify)
     // ---------------------------------------------------------------
     99 => array(
-        'name'        => 'gameEnd',
-        'description' => clienttranslate('End of game'),
-        'type'        => 'manager',
-        'action'      => 'stGameEnd',
-        'args'        => 'argGameEnd',
+        'name'              => 'gameEnd',
+        'description'       => clienttranslate('End of game'),
+        'type'              => 'manager',
+        'action'            => 'stGameEnd',
+        'args'              => 'argGameEnd',
     ),
 );
