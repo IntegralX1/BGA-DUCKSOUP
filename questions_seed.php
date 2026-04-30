@@ -16,11 +16,11 @@
  *   - Deck order is randomised with shuffle() before insert
  *
  * Usage inside setupNewGame():
- *   require_once('questions_seed.php');
- *   duckSoupQuestions::seed($this);
+ *   require_once('ducksouptherestaurantgamequestions_seed.php');
+ *   duckSoupTheRestaurantGameQuestions::seed($this);
  */
 
-class duckSoupQuestions
+class duckSoupTheRestaurantGameQuestions
 {
     /**
      * Seed the question table for a new game instance.

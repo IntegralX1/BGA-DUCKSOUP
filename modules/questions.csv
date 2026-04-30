@@ -1,0 +1,901 @@
+duckats_value,category,question_text,answer_a,answer_b,answer_c,answer_d,correct_answer,answer_text
+40,Additives,Kwok disease results from overuse of,Artificial Coloring,Monosodium Glutamate,Sulfites,,B,"The symptoms of Kwok's disease are burning pains in the chest, dizziness and numbness. "
+50,Additives,"Xantham gum, a thickener, emulsifier and stabilizer in dairy products, dressings and other foods, is made from",Artificial Ingredients,Glucose,Palm Oil,Potato Starch,B,
+30,Baking,True or false? Baking at high altitudes requires more yeast or baking powder.  ,TRUE,FALSE,,,B,"It requires less yeast or baking powder. The higher the altitude, the lower the atmospheric pressure, which means that the carbon dioxide generated in baking encounters less resistance from the surrounding air."
+30,Baking,True or false? Empanada is a type of stuffed-meat pastry.  ,TRUE,FALSE,,,A,"In Spain, empanadas are round and larger than the semicircular South American versions. "
+30,Baking,True or false? Grissini are thin smoked sausages.   ,TRUE,FALSE,,,B,Grissini are Italian bread sticks. 
+30,Baking,True or false? Pumpernickel bread is made with rye flour.   ,TRUE,FALSE,,,A,"Pumpernickel was originally made in Westphalia but is now made all over Germany. There are number of explanations for its unusual name, one of which translates into ""a coarse bread fit for a half-wit."
+30,Baking,True or false? Stollen is a kind of German almond cookie.  ,TRUE,FALSE,,,B,Stollen is a German yeast bread made with dried fruit and topped with sugar icing and candied cherries. It is traditionally eaten at Christmas.
+40,Baking,"Johnnycakes, ashcakes and battercakes are made with which of the following?",Buckwheat,Cornmeal,Whole Wheat,,B,"These are all regional names for cornmeal flatbread. The name ""ashcake"" comes from the cake being cooked over the ashes of a campfire."
+40,Baking,A fleuron is a type of,Baby Carrot,Chocolate,Pastry,,C,A fleuron is a baked crescent-shaped pastry that is used as a garnish for seafood dishes in sauces. 
+40,Baking,"In Italy, a pizza with onions, black olives and anchovies is known as",Ligurian,Margherita,Marinara,,A,
+40,Baking,What is a panettone?,Bread,Cheese,Sauce,,A,A panettone is an Italian sweet yeast bread. It is a specialty of the city of Milan and is particularly popular at Christmas time.
+40,Baking,Japanese bread crumbs used for coating fried foods are called,Gari,Kashi,Panko,,C,Panko crumbs are coarser than the bread crumbs usually used in the US and produce a crunchier crust. 
+50,Baking,Baps is a type of bread from which country?,Denmark,Hungary,Scotland,Sweden,C,"Baps are small, soft-crusted loaves made from a dough of milk, butter, flour, yeast and salt. "
+50,Baking,What is barmbrack?,Baked Bread,Beer,Fish,Stew,A,Barmbrack is a sweet yeast bread popular in Ireland; it is made with dried fruit and nuts and baked especially for celebrations. 
+50,Baking,"Bloomer, Coburg and Rumpy all refer to ",Breads,Sausages,Cheeses,Lager Beers,A,These British breads differ in shape but are made with similar dough of white and/or whole wheat flour. 
+50,Baking,"What are chapati, paratha and puri?",Breads,Fresh Cheeses,Spice Mixtures,Stews,A,
+50,Baking,Which of the following is made with yeast?,Chapati,Focaccia,Matzo,Tortilla,B,The dough for focaccia is similar to pizza dough. The most popular and typical focaccia is topped with olive oil and herbs such as rosemary or sage.
+50,Baking,Macaroon cookies traditionally contain which of the following?,Almonds,Hazelnuts,Pecans,Walnuts,A,"Macaroons are traditionally made with ground almonds or almond paste, although sometimes they are made with coconut. "
+50,Baking,What is a madeleine?,A Portable Slicer,A Salad Of Edible Flowers,A Type Of Cake,An Ice Cream Scoop,C,"This light, spongy cake is often dipped in coffee or tea. Marcel Proust's epic novel In Search of Lost Time famously begins with the narrator contemplating a madeleine."
+50,Baking,Which of the following is NOT a type of Indian bread?,Naan,Poori,Raita,Roti,C,"Raita is chilled yogurt seasoned with coriander, cumin, mint, cayenne pepper, caraway, and other herbs and spices. Vegetables such as cucumber and fruits like pineapple can also be added."
+50,Baking,In what year was sliced bread introduced in the US?,1925,1930,1940,1945,err,Wonderbread made the first sliced white bread in the US. 
+50,Baking,Zwieback is a,Type Of Bacon,Type Of Beer,Type Of Bread,Type Of Sausage,C,"This German word means ""twice baked. Zwieback is crisp and dry, slightly sweet and easily digested.."
+30,Beer,True or false? All beer can age and improve under the proper conditions.  ,TRUE,FALSE,,,B,"Except for very rare cases, the shorter the period between brewery and glass, the fresher and better the beer will taste. "
+30,Beer,True or false? Ale is darker and more bitter than lager beer.  ,TRUE,FALSE,,,A,
+30,Beer,True or false? All beer can be classified as either an ale or a lager.  ,TRUE,FALSE,,,A,The difference depends on the type of yeast used in fermentation. 
+30,Beer,True or false? Ales are brewed at room temperature and lagers are fermented at chilled temperatures. ,TRUE,FALSE,,,A,"Unlike lagers, ales can be fermented in just a few days. "
+30,Beer,True or false? Beer should be served as cold as possible.  ,TRUE,FALSE,,,B,Very low temperatures inhibit the release of aromatics and carbon dioxide. 
+30,Beer,True or false? Beer glasses should never be towel dried.  ,TRUE,FALSE,,,A,"Towels can leave lint and grease that, in turn, can adversely affect the head and flavor of beer. "
+30,Beer,True or false? Hoegaarden is a Belgian white beer made from wheat. ,TRUE,FALSE,,,A,"Hoegaarden is a municipality in Flanders, Belgium. The beer that bears its name is an internationally popular wheat beer seasoned with orange and coriander."
+30,Beer,True or false? Hops have always been used to flavor beer.  ,TRUE,FALSE,,,B,"Hop-influenced beers have been prevalent only in the last few centuries. Prior to that, herbs, spices, berries and some flowers were used in beer making."
+30,Beer,True or false? Mead is an alcoholic beverage made from rice. ,TRUE,FALSE,,,B,Mead is a fermented beverage made with honey. It is an ancient drink and predates both grape wine and beer.
+30,Beer,True or false? Beer in bottles should be stored in an upright position only.   ,TRUE,FALSE,,,A,"If stored upright, the beer does not contact the metal cap, which can impart a metallic flavor. "
+30,Beer,True or false? Stout is a lighter version of porter beer.  ,TRUE,FALSE,,,B,"Both are dark, almost black, beers, and feature a heavily roasted flavor profile. "
+30,Beer,True or false? Tinted beer bottles are better for storing beer than clear bottles.   ,TRUE,FALSE,,,A,Tinted beer bottles allow less damaging light in. Brown tinted bottles block slightly more light than green tinted bottles.
+40,Beer,Which of the following is NOT a Dutch beer?,Amstel,Becks,Heineken,,B,"First brewed in Bremen, Germany, in 1873, Becks is the number one German export beer by volume and is sold in over 100 countries. "
+40,Beer,Bitter accounts for what percentage of draft beer sales in English pubs?,45 Per Cent,65 Per Cent,80 Per Cent,,C,"Traditionally, bitter is unpasteurized and cask-conditioned in the pub cellar. It is highly hopped, dry and lightly carbonated."
+50,Beer,In what year was beer first sold in cans?,1926,1935,1946,1958,err,"The American Can Company developed the can that was used by the Gottfried Krueger Brewing Company of Newark, New Jersey. "
+50,Beer,Bock beer is usually available only in,Fall,Spring,Summer,Winter,B,"A bock is an earthenware or glass beer mug; the word ""bock"" also refers to the strong, dark and rich beer that fills up the mug. Bock beer can be traced back to the 14th century and the city of Einbeck, in Lower Saxony."
+50,Beer,How many calories does an average bottle of beer contain?,80,100,130,150,err,The majority of those calories are derived from alcohol. 
+50,Beer,"In German beer terminology, what does ""dunkel"" mean?",Bitter,Dark,Strong,Sweet,B,This Bavarian-style beer is rich and complex. 
+50,Beer,Which of the following companies is the world's largest producer of beer?,Anheuser-Busch,Heineken,Inbev,Molson Coors  ,C,"This Belgium-based company's products include Stella Artois, Bass and Becks. "
+50,Beer,Lambic refers to which of the following?,High Alcohol Content,Kind Of Yeast,Type Of Ale,Variety Of Hops,C,Lambic ale is unique because only natural yeasts in the atmosphere are used for fermentation; nothing is added by the brewer. 
+50,Beer,"Pilsen beer is named after the town of Pilsen, which is located in",Austria,Czech Republic,Hungary,Poland,B,
+50,Beer,"In Britain, wild yeast was referred to as which of the following?",Divine Dust,God Is Good,Heaven'S Touch,Invisible Hand,B,
+30,Beverages,True or false? Over time carbonated beverages in plastic bottles contain less carbon dioxide than the same beverage in cans.  ,TRUE,FALSE,,,A,Plastic bottles are more carbon-dioxide permeable than aluminum cans. 
+30,Beverages,True or false? One of Coca Cola's original ingredients was cocaine.  ,TRUE,FALSE,,,A,"The other key ingredient was the caffeine from the kola nut, hence the name Coca Cola. The cocaine was eliminated in 1903."
+30,Beverages,True or false? Ginger ale has more carbonation than most other sodas.  ,TRUE,FALSE,,,A,Ginger ale contains almost twice as much carbonation as other sodas. 
+30,Beverages,True or false? Grenadine syrup was originally made with pomegranate juice.  ,TRUE,FALSE,,,A,"Today grenadine contains vegetable matter, citric acid, and certain red fruits. "
+30,Beverages,True or false? Tonic water is flavored with quinine.  ,TRUE,FALSE,,,A,"Quinine is a bitter crystalline alkoloid with fever-reducing, pain-relieving and anti-inflammatory qualities. "
+40,Beverages,"A ""fifth"" refers to which size of bottle?",250 mL,500 mL,750 mL,,C,A fifth of a gallon is about 750 mL. 
+40,beverages,Koumiss (or kumis) is a,Beverage,Bread,Cheese,,A,Koumiss is a fermented dairy product traditionally made from mare's milk. It is important in the culture of the peoples of the Central Asian steppes.
+40,Beverages,"In the beverage industry, what does ""ullage"" refer to?",Airspace In The Bottle,Capacity Of The Glass,Shelf Life,,A,Ullage can also refer to the empty space in a barrel or cask. 
+50,Beverages,Which of the following is NOT a brand of bitters?,Picon,Angostura,Cynar,Paccheri,D,Paccheri are large tube-shaped pasta. 
+50,Beverages,Which country consumes the most cola drinks per capita?,Canada,Japan,Mexico,Usa,C,
+50,Beverages,Cream soda is a soft drink flavored with,Almond,Peach,Strawberry,Vanilla,D,
+30,Cocktails,True or false? Black Velvet is a drink made with equal portions of Guinness and brandy.  ,TRUE,FALSE,,,B,A Black Velvet is made with Guinness (or another stout) and champagne. 
+30,Cocktails,True or false? A Daiquiri is a cocktail made with lime juice.  ,TRUE,FALSE,,,A,"Rum, sugar and sometimes fruit are also included. "
+30,Cocktails,True or false? Raki is an alcoholic aperitif from Turkey. ,TRUE,FALSE,,,A,"Raki, this unofficial national drink of Turkey, is distilled and aromatized with anise. "
+30,Cocktails,True or false? A Screwdriver cocktail is made with gin.   ,TRUE,FALSE,,,B,A Screwdriver contains vodka and orange juice. 
+40,Cocktails,Caipirinha is the national cocktail of which country?,Brazil,Puerto Rico,South Africa,,A,"Caipirinha consists of lime, sugar and cachaça, which is made from fermented sugar cane and is the most popular distilled beverage in Brazil. "
+40,Cocktails,"A Cosmopolitan cocktail is made with vodka, triple sec, lime juice and what other fruit juice?",Cranberry,Orange,Pineapple,,A,
+40,Cocktails,"The cocktail known as French 75 is made with champagne, lemon juice, sugar and",Cognac,Crème De Cassis,Orange Liqueur,,A,French 75 is named after a World War I artillery piece. 
+40,Cocktails,The cocktail Gin & It is made with gin and,Ginger Beer,Orange Liqueur,Sweet Vermouth,,C,The Gin & It was very popular during the 1940s. Later the sweet red vermouth was replaced by dry white vermouth. Today it is referred to as a Sweet Martini. 
+40,Cocktails,"A Mai Tai cocktail is made with lime or orange juice, curaçao, orgeat syrup and",Gin,Rum,Vodka,,B,"Either dark or light rum goes into a Mai Tai. ""Maita'i"" is the Tahitian word for ""good."
+40,Cocktails,"In what year did Victor Bergeron, known as Trader Vic, invent the Mai Tai cocktail?",1944,1958,1972,,err,"The modern recipe is 1 oz. each of golden rum, dark rum and Triple Sec, and 1/2 oz. each of lime juice and orgeat syrup. "
+40,Cocktails,What is the proper garnish for a Manhattan?,Cherry,Lemon Twist,Olive,,A,
+40,Cocktails,A Mimosa is a cocktail made with orange juice and,Brandy,Champagne,Vermouth,,B,
+40,Cocktails,What whiskey is used to make a Mint Julep?,Bourbon,Rye,Scotch,,A,
+40,Cocktails,Mojito and Caipirinha are popular cocktails that contain sugar and which combination of juice and spirit?,Lemon And Gin,Lime And Rum,Orange And Vodka,,B,Mojito is Cuban and Caipirinha is Brazilian. 
+40,Cocktails,"A Rickey is a drink made with gin or whiskey, soda water and which juice?",Lime,Orange,Pineapple,,A,
+40,Cocktails,"A Sidecar is a cocktail made with lemon juice, orange liqueur and",Bourbon,Brandy,Scotch,,B,Cognac is also used. The Sidecar is believed to have been invented around the end of World War I in either Paris or London.
+40,Cocktails,A Stinger is a cocktail of brandy or Cognac and which of the following?,Crème De Menthe,Dry Vermouth,Grenadine,,A,
+40,Cocktails,"A White Lady is a cocktail made with an orange-based liqueur, lemon juice and",Gin,Vodka,White Wine,,A,"Also called a Delilah, a White Lady can also include egg whites, sugar and cream. "
+50,Cocktails,"A Harvey Wallbanger is a cocktail of vodka, orange juice and which liqueur?",Chartreuse,Cointreau,Drambuie,Galliano,D,
+50,Cocktails,Kir is made with dry white wine and which of the following?,Armagnac,Crème De Cassis,Kirsch,Pernod,B,Aligoté is the classic white wine used. 
+50,Cocktails,Pimm's Cup is garnished with which of the following?,Celery,Cherry,Cucumber,Olive,C,"This British drink typically consists of gin, fruit extracts, liqueurs and bitter herbs and is garnished with cucumber. "
+30,Coffee_Tea,True or false? Chai tea is made with milk.  ,TRUE,FALSE,,,A,"Spices such as ginger, cloves, cinnamon and cardamom are also possible ingredients. "
+30,Coffee_Tea,True or false? Coffee originated in Kenya.  ,TRUE,FALSE,,,B,Coffee originated in Ethiopia. 
+30,Coffee_Tea,True or false? Colombia produces more coffee than any other country.  ,TRUE,FALSE,,,B,Brazil is the world's largest coffee producer. Colombia is second.
+30,Coffee_Tea,True or false? Earl Grey tea is flavored with essence of rose.  ,TRUE,FALSE,,,B,The defining flavor of Earl Grey tea is oil of bergamot. 
+30,Coffee_Tea,"True or false? In India, teas are defined by the region in which they are grown.  ",TRUE,FALSE,,,A,"Darjeeling, Assam and Orissa are all regions and types of tea. "
+30,Coffee_Tea,"True or false? Indonesia's Celebes, Kalossi and Timor islands produce coffees noted for their dry, heavy bodies.",TRUE,FALSE,,,B,Coffees from these islands are mild and light bodied. 
+30,Coffee_Tea,True or false? Hawaiian coffee plantations have the highest per acre yield of any place in the world.  ,TRUE,FALSE,,,A,Weather conditions for growing coffee in Hawaii are superb and there are very few disease threats. 
+30,Coffee_Tea,True or false? Italians consume the most coffee per capita of any nationality in the world.  ,TRUE,FALSE,,,B,The Finns are first; they consume an average of just over 25 lb. (11.4 kg. ) of coffee per person per year. The US ranks 23rd and Canada is 25th.
+30,Coffee_Tea,True or false? Robusta coffee trees produce more fruit than Arabica trees.   ,TRUE,FALSE,,,A,Many growers are replacing Arabica with Robusta for this reason. 
+30,Coffee_Tea,True or false? Coffee and tea both contain tannins.   ,TRUE,FALSE,,,A,"Tannins are astringent, bitter plant polyphenols. They are found in many foods and drinks (including wine, tea, coffee), some herbs and spices, legumes and chocolate."
+30,Coffee_Tea,"True or false? To make stronger tea, one should increase the amount of tea leaves, NOT the steeping period.   ",TRUE,FALSE,,,A,"Increasing the steeping period makes tea more bitter, because more bitter polyphenols are extracted from each leaf. "
+50,Coffee_Tea,Antigua and Cobán are coffee varieties from which country?,Colombia,Costa Rica,Guatemala,Nicaragua,C,Both are full-bodied coffees with a spicy flavor. 
+50,Coffee_Tea,Where does Blue Mountain coffee come from?,Costa Rica,Jamaica,Kenya,Venezuela,B,"Blue Mountain coffee is famous for its excellent flavor and lack of bitterness, and is considered by many to be one of the best coffees in the world. "
+50,Coffee_Tea,Butter tea is popular in which of the following countries?,India,Korea,Pakistan,Tibet,D,"Butter tea is made with tea leaves, yak butter and salt. "
+50,Coffee_Tea,Which country's coffee drinkers consume the most coffee per person?,Brazil,Finland,Indonesia,Italy,B,"Finns consume about 25 pounds (11. 4 kg) of coffee per person per year. The USA is in 23rd place, at 9. 2 pounds (4. 2 kg)."
+50,Coffee_Tea,Crema is associated with,Cheese,Coffee,Ice Cream,Pastry Filling,B,"In espresso coffee, crema is the thin golden-brown froth created by the emulsion of coffee oils during high-pressure extraction. "
+50,Coffee_Tea,Which of the following has the least adverse effect on ground or whole bean coffee?,Air,Heat,Light,Moisture,C,
+50,Coffee_Tea,"What does the Italian word ""macchiato"" mean?",Foamed,Machine-Made,Stained,Steamed,C,"A latte macchiato, for example, is made or ""stained"" with a small amount of espresso. "
+50,Coffee_Tea,"Mocha coffee is named after the city of Moka, which is in what country?",India,Kuwait,Saudi Arabia,Yemen,D,
+50,Coffee_Tea,Mount Kilimanjaro is located in which of the following coffee-growing countries?,Ethiopia,Kenya,Madagascar,Uganda,B,
+50,Coffee_Tea,How many main categories of tea are there?,Two,Three,Four,Five,C,"Black, green, oolong and white. The category depends on the method of processing and amount of allowed oxidation."
+50,Coffee_Tea,"What does the word ""tisane"" refer to?",Herbal Tea,Finger-Sized Pastry,Spice Mixture,Vodka-Based Cocktail ,A,"A tisane is made by steeping herbs, spices and/or flowers in boiling water. Many tisanes are made for medicinal purposes (for example, camomile is said to be useful against headaches; mint is a tonic)."
+40,Coffee_Tea,"When coffee beans are still on the tree, what fruit do they resemble?",Apricot,Cherry,Raspberry,,B,
+40,Coffee_Tea,Which of the following is NOT a black tea?,Assam,Gunpowder,Keemun,,B,It is a green tea. 
+40,Coffee_Tea,In what year did Indian tea became available in Britain?,1772,1839,1886?,,err,Indian tea was inexpensive and quickly became the national drink. 
+40,Coffee_Tea,"Which of the following teas has a tarry, smoky flavor?",Keemun,Lapsang Souchong,Yunnan,,B,
+40,Coffee_Tea,"Compared with a latte macchiato, a caffè macchiato has",More Milk Than Coffee,Less Milk Than Coffee,The Same Amount Of Milk And Coffee,,B,A caffè macchiato is a single or double espresso topped with one or two spoonfuls of frothed milk whereas a latte macchiato is the reverse: a cup of steamed milk with a single or double espresso added. 
+40,Coffee_Tea,Mazagran is,A French Name For Cold Coffee And Seltzer,A Spanish Utensil For Sifting Flour,A Three-Liter Measure Of Wine In Italy,,A,"It is named for the town of Mazagran, in Algeria. "
+30,condiments,True or false? Chutney can be sweet or hot.  ,TRUE,FALSE,,,A,"Chutneys are mixture of fruits and/or vegetables cooked in vinegar, sugar and spices. The word ""chutney"" comes from a Hindustani word meaning ""hot spices. However, chutney is actually a British specialty dating from the colonial era. "
+30,condiments,True or false? Chutney sometimes contains meat.  ,TRUE,FALSE,,,B,"All chutneys are vegetarian, although the ingredients vary widely. "
+30,Condiments,True or false? Jaggery is a thin porridge made with fine oatmeal or barley.  ,TRUE,FALSE,,,B,Jaggery is traditional unrefined sugar obtained from sugar cane and the date palm tree. It is used in sweet and savory dishes in India and Sri Lanka.
+30,Condiments,True or false? The addition of vinegar to mustard lessens the intensity of the heat.   ,TRUE,FALSE,,,B,"Vinegar intensifies heat, as does cold liquid. "
+30,Condiments,"True or false? Sugars have NO nutritional value, except as a source of energy.   ",TRUE,FALSE,,,A,
+40,Condiments,Which of the following is America's leading food additive?,Monosodium Glutamate,Salt,Sugar,,C,Salt is second. 
+40,Condiments,Wasabi is similar to which of the following?,Collards,Horseradish,Kohlrabi,,B,This pungent Japanese condiment is made from the root of a perennial herb in the same family as mustard and broccoli. 
+50,Condiments,Wasabi is a Japanese,Condiment,Fish Dish,Seaweed,Vegetable Steamer,A,Wasabi is a piquant paste that accompanies various foods. 
+30,Confectionary,True or false? The cacao tree is native to Africa. ,TRUE,FALSE,,,B,"The cacao tree is native to Central and South America, although it is cultivated in Africa, Sri Lanka, Madagascar, Samoa, Southeast Asia, and the Philippines. "
+30,Confectionary,True or false? A white discoloration of chocolate is a form of mould.  ,TRUE,FALSE,,,B,The whitish tinge one sometimes sees on chocolate is called the bloom; it is the result of cocoa fat or sugar being drawn to the surface because of improper storage. 
+30,Confectionary,True or false? Gastrique is a kind of French hot plate.  ,TRUE,FALSE,,,B,Gastrique is a syrupy glaze of sugar and vinegar that is drizzled over a preparation. 
+30,Confectionary,True or false? Licorice is made from the anise plant. ,TRUE,FALSE,,,B,"True licorice is derived from the licorice perennial shrub. Many commercial licorices contain no licorice and are instead flavored with anise, which has a similar taste but is unrelated to true licorice."
+30,Confectionary,True or false? Licorice contains no fat.  ,TRUE,FALSE,,,A,
+30,Confectionary,True or false? Toffee is essentially the same as caramel.   ,TRUE,FALSE,,,B,"Toffee is made by adding butter or cream to caramel, which is sugar that has been boiled down to yield a full, intense flavor. "
+30,Confectionary,True or false? Varak is a decoration for desserts made of edible silver or gold.   ,TRUE,FALSE,,,A,"Varak (also vark) are gossamer-thin sheets of pure silver or gold used to garnish sweets in India. They are edible, flavorless, and dissolve easily."
+40,Confectionary,"What does the phrase ""hard-crack"" refer to?",A Degree Of Doneness In Boiled Eggs,A Kind Of Candy Syrup,A Type Of Nut Shell,,B,The range of candy syrups made from sugar and water is from small-thread (least cooked) to caramel (most cooked). 
+40,Confectionary,"Marzipan is made with sugar, egg whites and what other main ingredient?",Almonds,Hazelnuts,Peanuts,,A,Marzipan is a popular icing for Christmas and wedding cakes. It is said to have been invented by the Ursuline order of nuns in France in the 1800s.
+40,Confectionary,Which of the following is NOT a flavoring in Mexican chocolate?,Almond,Nutmeg,Vanilla,,B,
+40,Confectionary,In what country was milk chocolate invented?,Belgium,France,Switzerland,,C,
+40,Confectionary,"A concoction of sugar or honey, roasted nuts and candied fruit is called",Manzanilla,Nougat,Ratafia,,B,This sweetmeat was first made in Marseille in the 16th century and is still a specialty of southeastern France. 
+40,Confectionary,Ratafia does NOT refer to which of the following?,A Biscuit,A Hard Candy,A Liqueur,,B,"The ratafia biscuit and liqueur are flavored with peach or cherry kernels, bitter almonds or other fruits. "
+50,Confectionary,Halvah is a confection containing which of the following?,Cinnamon,Nutmeg,Peanuts,Sesame,D,Halvah is a Middle Eastern sweet made of ground sesame seeds and honey. 
+50,Confectionary,Praline is a confection of caramelized sugar and,Almond,Hazelnut,Peanut,Pecan,A,
+50,Confectionary,What is treacle?,Beverage Of Ale And Fruit Juice,Bread Pudding,Bread Yeast,Sugary Syrup,D,"Treacle is a generic name for syrup made during the refining of sugar cane. Dark treacle is strong and slightly bitter, but not as dark as molasses."
+30,Dairy,True or false? Brick is a genuine American cheese.  ,TRUE,FALSE,,,A,The name of this all-American Wisconsin cheese is said to derive from the fact that bricks were once used to weigh the curd and press out the whey. It is also shaped like a brick.
+30,Dairy,True or false? Caerphilly is originally an Irish cheese.  ,TRUE,FALSE,,,B,"Caerphilly, a semi-firm cheese with a mild, tangy flavor, was originally a Welsh cheese. "
+30,Dairy,True or false? Camembert is a soft-ripened cheese.  ,TRUE,FALSE,,,A,"Camembert has a creamy interior and a thin, edible crust. Camembert was invented around the time of the French Revolution, in Normandy."
+30,Dairy,True or false? Cheshire is a relatively new British cheese.  ,TRUE,FALSE,,,B,"Cheshire is one of the oldest cheeses in Britain. Port records from 1770 show that over 5,000 tons of Cheshire were shipped to London that year."
+30,Dairy,"True or false? In French, chèvre refers to sheep's milk cheese.  ",TRUE,FALSE,,,B,Chèvres are goat milk cheeses. 
+30,Dairy,True or false? Edam is another name for Swiss cheese. ,TRUE,FALSE,,,B,Edam is a Dutch cheese. 
+30,Dairy,"True or false? The technical term for the holes formed in cheeses after the fermentation process is ""eyes.""  ",TRUE,FALSE,,,A,
+30,Dairy,"True or false? Cottage cheese, cream cheese and ricotta cheese are examples of fresh cheeses. ",TRUE,FALSE,,,A,
+30,Dairy,True or false? Gouda accounts for two-thirds of all Dutch cheese.  ,TRUE,FALSE,,,A,
+30,Dairy,"True or false? The Italian term ""grana"" refers to hard, grainy cheese.  ",TRUE,FALSE,,,A,"Grana means ""grain. Parmesan (Parmigiano"" in Italian) is a classic example of a grana cheese."
+30,Dairy,True or false? Gruyère cheese is from Belgium. ,TRUE,FALSE,,,B,Gruyère comes from Switzerland. 
+30,Dairy,True or false? Cheese is the oldest of man-made foods.  ,TRUE,FALSE,,,A,"The proposed dates of its ""discovery"" range from 8,000 to 3,000 BCE. "
+30,Dairy,True or false? Mozzarella was originally made from the milk of domesticated water buffalo.  ,TRUE,FALSE,,,A,"In fact, traditional Mozarella is still made this way in the Italian provinces of Latium and Campania; cow's milk is used in the rest of Italy. "
+30,Dairy,"True or false? In Italy, Pecorino refers to sheep's milk cheese.   ",TRUE,FALSE,,,A,"Pecorino has been made since the time of the ancient Romans. Its name comes from the Italian word ""pecora,"" which means ""ewe."
+30,Dairy,True or false? Ricotta refers to a type of pasta.  ,TRUE,FALSE,,,B,Ricotta is a type of cheese. 
+30,dairy,True or false? Condensed milk is sweetened before being reduced.  ,TRUE,FALSE,,,B,Sugar is added after the water has been removed. Unopened condensed milk keeps almost indefinitely.
+40,Dairy,Black Diamond and Cherry Hill are two examples of high quality cheddars from which country?,Canada,Great Britain,Usa,,A,
+40,Dairy,"What does the term ""cheddaring"" refer to?",Aging Cheese In Wood,Coloring Cheese,"Stacking, Cutting And Turning Curds",,C,
+40,Dairy,What country is Esrom cheese from?,Denmark,Holland,Norway,,A,"Named for its town of origin, this semi-soft cheese has a slightly pungent flavor. "
+40,Dairy,"Feta cheese is made by pressing curds into a mould then slicing the resulting mass into slabs, which are soaked in brine. Which of these stages gives feta its name?",Pressing,Slicing,Soaking In Brine,,B,"The name is derived from the modern Greek ""tyri pheta,"" which means ""cheese slice. "
+40,Dairy,Gorgonzola is a kind of,Cheese,Cream-Filled Pastry,Pizza,,A,"Named for a town outside Milan where it was originally made, Gorgonzola has an ivory-colored interior and is streaked with bluish-green veins. "
+40,Dairy,Idiazabal is a Spanish,Cheese,Fortified Wine,Sausage,,A,This unpasteurized sheep's milk cheese from the Basque and Navarre regions of Spain has a slightly smoky and nutty flavor when young. The longer-aged version is great for grating.
+40,Dairy,What country does Jarlsberg cheese come from?,Denmark,Norway,Sweden,,B,Jarlsberg is a mild Swiss-style cheese. 
+40,Dairy,From what country do we get Manchego cheese?,Italy,Portugal,Spain,,C,"Manchego, which is from La Mancha, is a semi-firm cheese with a full, mellow flavor. "
+40,Dairy,Which cheese was first made by French Trappist monks in the early 19th century and named after the abbey?,Camembert,Port-Salut,Reblochon,,B,
+40,Dairy,Ricotta cheese is made with which of the following?,The Solids Of The Milk,The Whey Of The Milk,Both The Whey And Solids Of The Milk,,B,"In contrast, most cheese is made from the solids of the milk. "
+40,Dairy,Which of the following cheeses is from Quebec?,Mimolette,Neufchâtel,Riopelle,,C,Le Riopelle de l 'isle is a triple-cream cheese named after the renowned Quebec painter Jean-Paul Riopelle. It has a buttery taste with hints of mushrooms and hazelnuts.
+40,Dairy,Which of the following cheeses is often used as a substitute for Parmigiano?,Friulano,Ricotta,Romano,,C,This hard cheese has a texture very similar to that of Parmigiano and is ideal for grating. 
+40,Dairy,A round soft cheese made from ewe's milk and ripened in cabbage leaves is,Cotswold,Finslaydale,Slipcote,,C,This is one of the oldest (dating to Shakespeare's time) and best English cream cheeses. 
+40,Dairy,In what US state is Tillamook cheese made?,Minnesota,Oregon,Wisconsin,,B,"This cheddar cheese gets its name from the town of Tillamook, which is located on the southeast end of Tillamook Bay, on the Pacific Ocean. "
+40,Dairy,What is Yarg?,A Cheese,Beer And Whiskey,A Porridge ,,A,"Yarg is a hard cow's milk cheese from Cornwall. Before being left to mature, it is wrapped in nettle leaves to form an edible mouldy rind. The odd name is the family name of its makers, Gray, spelled backward. "
+50,Dairy,Affinage refers to,Adding Carbonation To Wine,Filtering Of Wine,Reduction Of A Sauce,Ripening Of Cheese,D,Affinage is the craft of aging and maturing cheeses. 
+50,Dairy,Which of the following is NOT a soft-ripened cheese?,Boursault,Camembert,Coulommiers,Gruyere,A,"This is a triple-cream cheese, containing 70 per cent butterfat. This high cream content gives it a smooth, buttery taste."
+50,Dairy,Cheddar represents what percentage of cheese produced in the United States?,50 Per Cent,60 Per Cent,70 Per Cent,90 Per Cent,C,
+50,Dairy,In which country did Edam cheese originate?,Denmark,Germany,Holland,Switzerland,C,Edam is a mellow cheese with a yellow interior; it comes encased in a red or yellow paraffin coating. 
+50,Dairy,Haloumi is,A Chick Pea Salad,A Small Lemon Tart,A Giant Olive,Mild Cheese,D,"This salty cheese from Cyprus, which is popular throughout the Middle East and Greece, is commonly cut into slices and fried or grilled. "
+50,Dairy,What country is the world's biggest cheese exporter?,France,Holland,Italy,Usa,B,"Though the Dutch are sixth in the world in cheese production, they are first in exports. "
+50,Dairy,"What do the German word ""Kase"" and the Dutch word ""Kaas"" mean?",Aged,Cheese,Cork,Keg,B,
+50,Dairy,What is mascarpone?,Dessert,Fruit,Cheese,Sausage,C,Mascarpone is a triple-cream cow's milk cheese (75 per cent fat content) from Italy. It is an essential ingredient in the Italian dessert tiramisù.
+50,Dairy,Which of the following is NOT a hard cheese?,Asiago,Double Gloucester,Manchego,Neufchâtel,D,
+50,Dairy,Paneer is a type of Indian,Bread,Candy,Cheese,Tea,C,"This cow's milk cheese does not require rennet (which is traditionally derived from calves' stomachs) and is, therefore, completely vegetarian. "
+50,Dairy,Which is NOT a cheese from Switzerland?,Appenzeller,Gruyère,Reblochon,Sbrinz,C,Reblochon is a traditional semi-soft cow's milk cheese from France. 
+50,Dairy,Which of the following is NOT a type of blue cheese?,Gorgonzola,Reblochon,Roquefort,Stilton,B,Reblochon is a traditional semi-soft cheese from France. 
+50,Dairy,What country does Sbrinz cheese come from?,Germany,Hungary,Poland,Switzerland,D,This hard cow's milk cheese shares many characteristics with Parmigiano. It is thought to be the oldest variety of Swiss cheese.
+50,Dairy,A classic wine pairing with Stilton cheese is,Cabernet Sauvignon,Champagne,Chardonnay,Port,D,"Pairing port with Stilton is an example of a classic pairing of contrasting tastes; in this case, salty and sweet. "
+50,Dairy,"Tiri is the word for ""cheese"" in which country?",Greece,India,Lebanon,Turkey,A,
+30,Desserts,True or false? Bananas Foster is a dessert made with bourbon.  ,TRUE,FALSE,,,B,"In this dish from New Orleans, bananas are sautéed with rum (and sometimes banana liqueur) and brown sugar, and served with vanilla ice cream. "
+30,Desserts,True or false? A blintz is similar to a Belgian waffle. ,TRUE,FALSE,,,B,A blintz is a thin pancake similar to a French crêpe; it is a mainstay of Jewish cuisine. 
+30,Desserts,True or false? The dessert known as Brown Betty is chocolate cake garnished with peaches.  ,TRUE,FALSE,,,B,Brown Betty is a baked pudding usually made with sweetened apples (or sometimes another fruit) and buttered bread crumbs. 
+30,Desserts,True or false? Cassata is a kind of melon. ,TRUE,FALSE,,,B,Cassata is an Italian ice cream cake that contains pistachios and candied fruits. 
+30,Desserts,True or false? Flummery is a type of cotton candy.  ,TRUE,FALSE,,,B,"Flummery is a fruit purée, thickened with potato starch and served with cream. "
+30,Desserts,True or false? Kugelhopf (or kugelhupf) is a type of cake.  ,TRUE,FALSE,,,A,"This yeast cake from Alsace (but of Austrian origin) is filled with raisins, candied fruits, and nuts, and dusted with sugar. It is baked in a special high mold that resembles a crown."
+30,Desserts,True or false? Linzertorte is made with strawberries.   ,TRUE,FALSE,,,B,"Linzertorte is made with shortbread dough, flavored with lemon and cinnamon, topped with raspberry jam, and decorated with a pastry lattice. It is named for the Austrian town of Linz."
+30,Desserts,True or false? Meringue is made with egg yolks.  ,TRUE,FALSE,,,B,"Meringue is stiffly beaten egg whites and sugar; it is used as a topping for pies, puddings, and other desserts. "
+30,Desserts,True or false? English Christmas puddings are traditionally steamed.   ,TRUE,FALSE,,,A,Traditional steamed English Christmas puddings are among the richest and densest of all puddings. 
+30,Desserts,True or false? The Italian dessert tiramisù is made with Ricotta cheese.   ,TRUE,FALSE,,,B,"The usual cheese is Mascarpone. Tiramisù consists of Savoiardi (or ladyfinger) biscuits soaked in espresso and layered with a mixture of Mascarpone and a custard of egg yolks, Marsala and sugar."
+30,Desserts,True or false? Zabaglione is made with egg whites.   ,TRUE,FALSE,,,B,"Zabaglione is a foamy Italian dessert. It is made by whisking egg whites, sugar and some kind of alcoholic liquid (for example, white wine, port, or liqueur) together over low heat."
+40,Desserts,What is ambrosia?,A Fruity Dessert,A Late-Harvest Dessert Wine,An Orange-Flavored Liqueur,,A,"Ambrosia usually consists of oranges and bananas mixed with coconut. In Greek mythology, ambrosia was the food of the gods."
+40,Desserts,"A dessert made from milk or cream, sugar, vanilla and cornstarch or gelatin is best described as",Blancmange,Charlotte,Peruvian Cream,,A,A blancmange is a cooked pudding that is served chilled with a sauce or fruit. Blancmange is one of the oldest desserts and dates back to the Middle Ages.
+40,Desserts,"What does the word ""cannoli"" refer to?",Beans,A Dessert,A Shape Of Pasta,,B,"Cannoli are deep-fried pastry shells filled with whipped ricotta cheese or cream, chocolate, candied citron and sometimes nuts. "
+40,Desserts,What is congee?,Gelatinous Dessert,Rice Pudding,Type Of Eel,,B,Boil rice long enough and you will get congee. 
+40,Desserts,"Crêpes Suzette includes a sauce made from butter, sugar and which fruit?",Banana,Lemon,Orange,,C,Orange juice and orange-based liqueur are essential ingredients in crêpes Suzette. 
+40,Desserts,What is a fiadone?,Fruit Tart,Liqueur,Sponge Cake,,C,"Fiadone is made of cream cheese, eggs, flour, lemon peel and Corsican liqueur. It was one of Napoleon's favorite desserts."
+40,Desserts,A dessert of puréed sweetened fruit with custard or whipped cream is called a,Fantasy,Fool,Frippery,,B,"The name ""fool"" is thought to derive from the French word ""fouler,"" which means ""to trample. "
+40,Desserts,Ganache is made with cream and what other ingredient?,Almond Paste,Chocolate,Vanilla,,B,Ganache is used as an icing on cakes and tortes. 
+40,Desserts,Which of the following nuts is used in the dessert mont-blanc?,Almond,Chestnut,Hazelnut,,B,"Mont-blanc consists of sweetened, vanilla-flavored puréed chestnuts topped with whipped cream. "
+40,Desserts,Struffoli refers to a Neapolitan speciality of small deep fried rounds of dough covered in which of the following?,Chocolate,Honey,Icing Sugar,,B,"Also known as honey balls, struffoli are crunchy on the outside and light on the inside. They are traditionally served at Christmas and Easter and are best served warm."
+40,Desserts,What is tapioca made from?,Cassava,Coconut,Rice,,A,Tapioca is derived from the root of the cassava plant. It is used mainly as a thickener.
+40,Desserts,Which of the following is traditionally used to make zabaglione?,Cinzano,Port,Marsala,,C,"Zabaglione is a foamy Italian dessert. It is made by whisking egg whites, sugar and some kind of alcoholic liquid (for example, white wine, port, or liqueur) together over low heat."
+50,Desserts,"What does the Italian word ""budino"" mean? ",Baked,Braised,Butter,Pudding,D,
+50,Desserts,Baklava is a Middle Eastern dessert that contains which of the following ingredients?,Cream,Nuts,Orange,Raisins,B,"Baklava consists of chopped pistachios, walnuts or almonds sandwiched between layers of filo pastry. "
+50,Desserts,What is clafoutis?,A Dessert,A Dish Of Beans And Rice,A Papaya-Based Drink,Spicy Kebab,A,"Clafoutis is a dessert consisting of a layer of fruit (usually cherries), topped with batter and baked. It is originally from the Limousin area of France."
+50,Desserts,A compote is,An Airtight Container Used For Storing Spices,A Cooking Temperature Guide,A Dish Of Fruit,A Very Small Saucepan,C,The fruit is cooked in a spiced or liqueur-flavored syrup. 
+50,Desserts,The pastry Dobos torte comes from which country?,Greece,Hungary,Poland,Russia,B,This famous vanilla sponge cake is layered with chocolate butter-cream and topped with caramel. 
+50,Desserts,A Far Breton is a type of,Bread,Cocktail,Cookie,Custard,D,"From Brittany, in France, this baked custard usually contains pitted soaked prunes. "
+50,Desserts,Jalousie is a dessert cake made from which nut?,Almond,Hazelnut,Peanut,Pistachio,A,"Jalousie is a puff pastry spread with almond paste topped with slatted pastry that looks like a Venetian blind, the French word for which is ""jalousie. "
+50,Desserts,What is rugalach?,Dessert,Milk-Based Drink,Smoked Sausage,Type Of Stew,A,"A rugalach is a crescent-shaped Jewish pastry filled with such things as raisins, walnuts, cinnamon, chocolate, marzipan, poppy seeds and apricot preserves. "
+50,Desserts,Sachertorte (Sacher torte) is made with chocolate and what kind of jam?,Apricot,Lemon,Peach,Raspberry,A,This Viennese classic was invented in 1832 by Franz Sacher for a dinner party given by Prince von Metternich. 
+50,Desserts,Savoiardi refers to,An Aperitif,A Biscuit,A Cheese,An Olive,B,"Often referred to as ladyfingers, these light, sweet, crispy sponge cakes are about the size of a large finger and are used in trifles, charlottes and tiramisù. "
+50,Desserts,What is a syllabub?,A Fried Bacon And Cheese Sandwich,A Mixture Of Beer And Brandy,A Pot Pie Made With Partridge,"A Thick, Frothy Dessert",D,"This English concoction that dates to the time of Elizabeth І is made with milk, wine or ale, sugar, spices and egg whites. "
+50,Desserts,Tarte Tatin is a French dessert made with,Apples,Lemons And  Oranges,Peaches,Strawberries,A,This upside-down apple pie is made with apples caramelized in butter and sugar. 
+30,Fruit,True or false? Apples continue to ripen after they are picked  ,TRUE,FALSE,,,A,
+30,Fruit,True or false? The alligator pear is also known as an eggplant. ,TRUE,FALSE,,,B,"Alligator pear is another word for the avocado, so called because its skin can be green or purplish black and quite thick. "
+30,Fruit,True or false? Avocados will not ripen until they are picked.  ,TRUE,FALSE,,,A,
+30,Fruit,True or false? The most prolific plant is the banana.  ,TRUE,FALSE,,,A,As many as 300 bananas can grow from the same stalk. 
+30,Fruit,"True or false? Wild bananas contain large, hard seeds.  ",TRUE,FALSE,,,A,Commercial bananas cultivated for mass consumption have had the seeds bred out. 
+30,Fruit,True or false? Blueberries are native to North America.  ,TRUE,FALSE,,,A,Blueberries are very nutritious and important for their antioxidant properties. 
+30,Fruit,True or false? The cacao tree requires intense direct heat in order to thrive.  ,TRUE,FALSE,,,B,The cacao tree requires shade. 
+30,Fruit,"True or false? Royal Ann, Vignola and Early Burlat are all type of plums.  ",TRUE,FALSE,,,B,They are sweet cherries. 
+30,Fruit,True or false? Cherries ripen after picking. ,TRUE,FALSE,,,B,
+30,Fruit,True or false? Cranberries grow in water.  ,TRUE,FALSE,,,B,"Cranberries grow on low-lying vines in soil beds called bogs. At harvest time, the growers flood the bogs. The berries are mechanically beaten from the vines, and the cranberries, which contain small air pockets, float to the surface. "
+30,Fruit,True or false? The nectarine is a cross between a peach and a plum.  ,TRUE,FALSE,,,B,The nectarine is a smooth-skinned variety of peach. 
+30,Fruit,True or false? Oranges are native to South America. ,TRUE,FALSE,,,B,Oranges are probably native to Southeast Asia. 
+30,Fruit,True or false? Pears ripen from the outside in.   ,TRUE,FALSE,,,B,Pears ripen from the inside out. 
+30,Fruit,True or false? The pineapple is native to the Philippines.   ,TRUE,FALSE,,,B,The pineapple is native to southern Brazil and Paraguay. The Spanish introduced it to the Philippines in the 16th century.
+30,Fruit,True or false? Plantains are usually eaten raw.   ,TRUE,FALSE,,,B,"Plantains are known as the ""cooking banana. They are fried, mashed or used in stews and serve as an accompaniment to many dishes in African, South American or West Indian dishes."
+30,Fruit,True or false? Quince is a fruit with a sweet flesh.  ,TRUE,FALSE,,,B,"This yellow-skinned fruit has a tart, astringent flavor; it is often cooked for use in jams and preserves. "
+30,Fruit,True or false? Rhubarb leaves are edible.  ,TRUE,FALSE,,,B,Rhubarb leaves contain toxic substances like oxalic acid and should not be eaten. 
+30,Fruit,True or false? Seville oranges are sweet.  ,TRUE,FALSE,,,B,"The Seville is a bitter orange grown in the Mediterranean region. Because of its high acid content, it is not an ideal eating orange."
+30,Fruit,True or false? Sugar cane originated in the Caribbean.  ,TRUE,FALSE,,,B,"Although it is now grown everywhere in the Caribbean, sugar cane originated in Indonesia. "
+30,Fruit,True or false? Sultanas are made from dried plums.   ,TRUE,FALSE,,,B,"Sultanas are made from dried grapes, as are currants and raisins. "
+30,Fruit,True or false? Tangerines are named after the city of Tangiers.   ,TRUE,FALSE,,,A,"Tangiers, Morocco, was the port from which tangerines were first shipped to Europe. "
+30,Fruit,"True or false? ""Zest"" refers to the fleshy pulp of citrus fruit.  ",TRUE,FALSE,,,B,Zest is the fragrant outermost layer of the peel. 
+40,Fruit,"What does the word ""bing"" refer to?",Cherries,Peaches,Plums,,A,"Bing cherries are large, juicy and dark-skinned. "
+40,Fruit,"Which green-skinned fruit tastes like a combination of mango, strawberry and pineapple, and is known as a custard apple?",Cherimoya,Persimmon,Pomegranate,,A,"This fruit, native to the Andean highlands of Ecuador and Peru, is oval and has a leathery green skin. Mark Twain called it ""the most delicious fruit known to man."
+40,Fruit,Copra refers to which of the following?,Apricot Purée,Brazil Nut Oil,Coconut Meat,,C,"Copra is the dried meat of the coconut; when pressed, it yields coconut oil. "
+40,Fruit,What is the only tree whose flower is edible?,Date,Fig,Olive,,B,
+40,Fruit,"In the Middle East, the ""poor man's food"" is",Dates,Figs,Plums,,B,
+40,Fruit,In what country did Granny Smith apples originate?,Britain,New Zealand,Usa,,B,
+40,Fruit,What other berry do huckleberries resemble?,Blackberries,Blueberries,Raspberries,,B,Huckleberries range in color from bright red to dark purple to shades of blue. The huckleberry is the state fruit of Idaho.
+40,Fruit,What country is the fruit jaffa from?,Algeria,Israel,Morocco,,B,Jaffa is a sweet and almost seedless orange. 
+40,Fruit,Jujube is a Chinese tree that bears fruit about the same size as which of the following?,Apple,Grapefruit,Olive,,C,"Fresh or dried, jujubes can be eaten plain or cooked and can be used like dates. The outside of the fruit is red; the inside is yellowish or green."
+40,Fruit,Chinese gooseberry is more commonly known as ,Cherimoya,Kiwi,Kumquat,,B,A Chinese gooseberry resembles a large brown egg with a hairy exterior; it has green flesh and contains edible black seeds. 
+40,Fruit,"Kiwano, nispero and mamey sapote are all varieties of",Fruit,Peppers,Squash,,A,"Kiwano is also known as a horned melon because of its spiky exterior. Nispero is a yellowish pear-shaped fruit from the medlar tree. Mamey sapote is a fruit from Mexico and the Caribbean; it has a brown, fuzzy exterior and creamy sweet flesh. "
+40,Fruit,Where did the lemon originate?,Central America,India,Southeast Asia,,C,Lemons are now grown in tropical and temperate climates around the world. 
+40,Fruit,"By weight, approximately what percentage of juice does a lemon contain?",30 To 45 Per Cent,50 To 60 Per Cent,70 To 80 Per Cent,,A,
+40,Fruit,Quebec produces approximately how much of the world's maple syrup?,60 Per Cent,80 Per Cent,95 Per Cent,,B,
+40,Fruit,"Angelino, Kelsey and Roysum are all types of",Cherries,Pears,Plums,,C,
+40,Fruit,Grapefruit is an ancestor of which fruit?,Chermoya,Kumquat,Pomelo,,C,The pomelo is the largest of the citrus fruits. It can range from the size of a canteloupe to that of a watermelon.
+40,Fruit,What kind of flavor does tamarind contribute to a dish?,Acidic,Salty,Sweet,,A,"Tamarind is the fruit of a leguminous evergreen tree that grows in the West Indies, tropical Africa, southeast Asia and India. It is used primarily in the preparation of jams and chutneys."
+40,Fruit,Turnips are particularly high in which vitamin?,A,B,C,,C,
+40,Fruit,What is the most widely grown juice orange in the world?,Navel,Seville,Valencia,,C,
+40,Fruit,Yuzu is which of the following?,Candy,Fruit,Liqueur,,B,A yuzu is a Japanese citrus fruit used almost exclusively for its aromatic rind. 
+50,Fruit,Ackee is a type of,Fish,Fruit,Rice,Beer,B,"The popular Jamaican fruit ackee is bright red with a soft, creamy white flesh. "
+50,Fruit,The seeds of which of the following fruits contain cyanide?,Apples,Grapefruit,Papaya,Raspberries,A,"However, cyanide is present in such minute amounts that one would have to eat thousands of seeds before suffering any ill effects. "
+50,Fruit,In what country did apricots originate?,Algeria,China,India,Mexico,B,"Apricots date to approximately 4,000 years ago. They were probably introduced to Europe by Alexander the Great."
+50,Fruit,"What word means ""fruit of the testicle tree"" in the ancient Nahuatl language of Mexico?",Apricot,Avocado,Mango,Papaya,B,
+50,Fruit,"Cavendish, Valery and Red Jamaica are types of",Bananas,Grapefruit,Melons,Plums,A,
+50,Fruit,Chayote is a kind of,Chili Pepper,Flour,Fruit,Nut,C,A chayote resembles a large pear and is prepared like a summer squash. It was a main food of the Aztecs and Mayans.
+50,Fruit,The fruit of the Prunus cerasus is which of the following?,Cantaloupe,Cherry,Plum,Prune,B,
+50,Fruit,Which of the following is native to North America?,Blueberry,Cranberry,Strawberry,Watermelon,B,
+50,Fruit,A bunch of bananas is referred to as a,Folly,Hand,Merry,Stack,B,
+50,Fruit,Approximately 50 per cent of all tropical fruits produced worldwide are,Bananas,Coconuts,Mangos,Papayas,C,
+50,Fruit,A mangosteen is a type of,Fish Chowder,Indonesian Coffee Bean,Small Goat,Tropical Fruit,D,"The mangosteen, which is related to the mango, is native to Malaysia. It has a dark red skin and juicy white flesh."
+50,Fruit,Mirabelle is a type of which fruit?,Apple,Cherry,Plum,Raspberry,C,"Mirabelle plums are small and round, and range in color from golden yellow to red. They can be stewed, made into jam, preserved in syrup or used to make a white brandy."
+50,Fruit,Mulberries are,Black,Red,White,All Of The Above,D,"Mulberries resemble blackberries in size and shape. They grow in subtropical areas of Asia, Europe and the Americas."
+50,Fruit,Pippin refers to,Apples,Peppers,Plums,Potatoes,A,"Pippin now refers to various types of apples, but it originally applied to any variety of apple grown from seed. The word comes from Old French ""pépin,"" which means ""seed"" or ""pip."
+50,Fruit,Rambutan is a type of,Cooking Pot,Flat Bread,Fruit,Stew,C,"The rambutan is a relative of the lychee and is common in southeast Asia, where it is eaten in salads but also served with pork dishes. Its thick red shell is coverd with hooked hairs."
+50,Fruit,What is the most popular commercial apple variety in North America?,Granny Smith,Macintosh,Red Delicious,Spartan,C,
+50,Fruit,Which fruit has the highest percentage of sugar content by fresh weight?,Banana,Cherry,Honeydew,Pineapple,A,"Bananas are 18 per cent sugar, cherries are 14 per cent, pineapples are 13 per cent, and honeydew is 10 per cent. "
+50,Fruit,Which fruit has the lowest percentage of sugar content by fresh weight?,Cranberry,Grapefruit,Lemon,Tomato,C,"Lemons are 2 per cent sugar, tomatoes are 3 per cent, cranberries are 4 per cent, and grapefruit is 6 per cent. "
+50,Fruit,Ugli fruit is native to which country?,Brazil,Jamaica,Madagascar,The Philippines,B,"Possibly a tangerine-grapefruit hybrid, the ugli fruit's name derives from its unsightly wrinkled skin wrapped loosely around the pulpy citrus interior. "
+50,Fruit,Which of the following contains the most vitamin C in mg per 100 grams of edible portion of raw item?,Broccoli,Orange,Strawberry,Tomato,A,"It contains 89. 2 mg. R543 Oranges have 45, strawberries 37 and tomatoes 12. 7."
+30,Grains,True or false? Durum wheat is the ideal choice for making pasta.  ,TRUE,FALSE,,,A,"This hard summer wheat produces semolina flour, which is high in gluten and ideal for making pasta. "
+30,Grains,True or false? Millet is the name of a type of rice.   ,TRUE,FALSE,,,B,Millet is an ancient and nutritious grain that is important in the diet of many African and Asian countries; in Europe and North America it is cultivated mainly as pasture grass and fodder. 
+30,Grains,True or false? Muesli is a breakfast mixture from Sweden.  ,TRUE,FALSE,,,B,"Muesli is from Switzerland; it consists of rolled oats and other grains, nuts and dried fruits, and is served with milk or yogurt. "
+40,Grains,"What does the Hindi word ""basmati"" mean?",Exotic,Fragrant,Heavenly,,B,Basmati rice emits a sweet almost nutty fragrance when cooked. 
+40,Grains,Which of the following is NOT a variety of grain?,Basmati,Kamut,Quinoa,,A,Basmati is a variety of long-grained rice. 
+40,Grains,Bulgur is made from which of the following?,Barley,Oats,Wheat,,C,Bulgur (sometimes spelled burghul) is a treated whole-wheat grain that is made by cooking wheat then drying and cracking it. 
+40,Grains,From what area of the world does couscous come?,Caribbean,North Africa,Southeast Asia,,B,Couscous is granular semolina wheat that is cooked and served in both sweet and savory dishes. 
+40,Grains,Groats are associated with which of the following?,Beans,Grains,Nuts,,B,"Groats are what is left of grain kernels after the husks are removed. In the case of wheat, one refers to ""berries"" instead of groats."
+40,Grains,Kamut is a variety of which of the following?,Bean,Rice,Wheat,,C,Kamut is a high-protein wheat that has never been hybridized. 
+40,Grains,What is kasha made of?,Barley,Buckwheat,Wild Rice,,B,"To produce kasha, buckwheat kernels are hulled then crushed. "
+40,Grains,"In India, ragi flour is made with",Corn,Millet,Wheat,,B,Ragi flour gives pancakes a crispness that is not possible with wheat flour. 
+40,Grains,What is spelt?,Fish,Grain,Young Lamb,,B,Spelt is an ancient variety of wheat consisting of small brown grains; it has a distinctive nutty flavor unlike that of common wheat. 
+50,Grains,Quinoa is a kind of,Flatbread,Fruit,Grain,Spice,C,Quinoa has been cultivated in the Andes for thousands of years. It is an excellent source of plant protein and minerals.
+50,Herbs_Spices,Which of the following is NOT one of the herbs used in bouquet garni?,Bay Leaf,Cilantro,Oregano,Parsley,C,"A bouquet garni (French for ""garnished bouquet"")is a bundle of herbs tied together with a string or put into a sachet and used to prepare stocks, soups and stews. It can also include basil, rosemary, chervil, tarragon or savory."
+50,Herbs_Spices,"After saffron and vanilla, which of the following is the most expensive spice?",Cardamom,Cumin,Nutmeg,Pepper,A,"This spicy, pungent spice is used in sweet and savory Middle Eastern and Indian dishes. "
+50,Herbs_Spices,Cynar is an Italian aperitif flavored with ,Artichokes,Figs,Grapefruit,Walnuts,A,"This bitter liqueur also includes 13 other herbs and plants. Italians sip it on the rocks, often with a slice of orange, before or after meals."
+50,Herbs_Spices,"In Indian cuisine, ""masala"" refers to",Dried Mango,Chickpeas,A Spice Mixture,Stew,C,"Masala can refer either to dried spices or to a paste made with spices and other ingredients such as garlic, ginger and onions. "
+50,Herbs_Spices,Oregano is often compared to what other herb?,Borage   Bergamot,Calumba,Marjoram,,C,"Although the marjoram and oregano plants look and taste alike, marjoram is milder and sweeter than oregano. "
+50,Herbs_Spices,Persillade is a culinary term for parsley and,Garlic,Paprika,Pepper,Salt,A,"If the persillade is added early in cooking, it becomes mellow. When added at the end or as a garnish, it provides a garlicky zap. Persillades are common in French, Greek, Cajun, Louisiana Creole and Québecois cuisines. "
+50,Herbs_Spices,"In French cuisine, the mixture quatre-épices (four spices) consists of pepper, nutmeg, cinnamon and",Cloves,Coriander,Cumin,Saffron,A,Quatre-épices is used to flavor terrines and pâtés. 
+50,Herbs_Spices,What country produces two-thirds of the world's vanilla?,India,Indonesia,Madagascar,Sri Lanka,C,"Vanilla is native to Mexico; the Aztecs were known to have used it. The Spanish took it back to Europe, and it spread quickly around the world from there."
+50,Herbs_Spices,Zaatar is a Middle Eastern,Almond-Based Confection,Butter Bean Soup,Lamb Kebab,Spice Mixture,D,Zaatar is a mixture of the herb zaatar mixed with spices. It is used as a condiment.
+30,Herbs_Spices,True or false? Angelica is a herb from the Mediterranean region.  ,TRUE,FALSE,,,B,"Angelica comes from Greenland, Iceland, the Scandinavian countries and northern Russia. Because of its sweetness, it is used to flavor desserts, liqueurs and sweet wines."
+30,Herbs_Spices,True or false? Basil must be cooked for a long time to release its flavor.  ,TRUE,FALSE,,,B,The oils of the basil leaf are very volatile and are quickly released when the leaf is broken. 
+30,Herbs_Spices,True or false? Another name for the bay leaf is laurel leaf.  ,TRUE,FALSE,,,A,The bay tree is a species of laurel and is also known as bay laurel or true laurel. In ancient times it was used to make the wreaths with which poets and soldiers were crowned.
+30,Herbs_Spices,True or false? Cumin seeds are round.  ,TRUE,FALSE,,,B,They are elongated like caraway seeds. 
+30,Herbs_Spices,True or false? Curry powder is made from the leaves of the curry plant.  ,TRUE,FALSE,,,B,"Curry powder is a blend of up to twenty herbs, seeds and spices, none of which is from the curry plant. "
+30,Herbs_Spices,True or false? Basil is one of the four classic ingredients of fines herbes.  ,TRUE,FALSE,,,B,"Fines herbes, a mixture of finely chopped herbs, usually consists of chervil, chives, parsley and tarragon. "
+30,Herbs_Spices,True or false? Nutmeg and mace come from the same tree.  ,TRUE,FALSE,,,A,"Both come from the seed of the nutmeg tree. Both spices have a warm, sweet flavor, but mace is more intense."
+30,Herbs_Spices,True or false? Black pepper is the most commonly used spice in the West. ,TRUE,FALSE,,,A,
+30,Herbs_Spices,"True or false? Black, white and green peppercorns are all produced from the berry of the same tree.   ",TRUE,FALSE,,,A,The different colors are due to variations in harvesting time and processing methods. 
+30,Herbs_Spices,True or false? Saffron is the world's most expensive spice.  ,TRUE,FALSE,,,A,"Saffron is derived from the dark stigmas of the saffron crocus, a bulbous plant that originated in the East. At least 14,000 flowers are required to produce one ounce of saffron."
+30,Herbs_Spices,True or false? The spice turmeric is in the ginger family.   ,TRUE,FALSE,,,A,Turmeric is a deep yellow tropical rhizome. It has a peppery flavor and is an essential spice in Indian cooking. Hindus associate it with fertility. 
+40,Herbs_Spices,Cayenne is indigenous to which part of the world?,India,North Africa,South America,,C,"French Guyana to be specific, though the bulk of the world's production is now in other areas. "
+40,Herbs_Spices,Coriander is also known as,Chervil,Cilantro,Escarole,,B,Coriander is also sometimes called Chinese parsley. 
+40,Herbs_Spices,Which of the following is NOT one of the spices in Chinese five-spice powder?,Cinnamon,Fennel,Nutmeg,,C,"Cloves, star anise and Szechuan peppercorn make up the rest of the spices in this pungent mixture of ground spices. "
+40,Herbs_Spices,"Which of the following has leaves with a hot, peppery taste?",Borage,Dandelion,Nasturtium,,C,All parts of the nasturtium plant can be eaten except the roots. 
+40,Herbs_Spices,The spice paprika is most associated with which country's cuisine?,Hungary,Poland,Russia,,A,"Paprika, the national spice of Hungary, comes in several varieties, from sweet to hot. "
+40,Herbs_Spices,What color does saffron impart to food?,Orange,Red,Yellow,,C,
+40,Herbs_Spices,What herb has an aroma and flavor reminiscent of thyme and mint,Oregano,Rosemary,Savory,,C,"There are two types of savory: summer and winter. The name comes from a Latin word (""satureia"") meaning ""satyr's herb,"" a reference to the aphrodisiac qualities once attributed to it."
+30,History,True or false? The muffuletta sandwich originated in New York.  ,TRUE,FALSE,,,B,The muffuletta was developed in New Orleans in 1906 at the Central Grocery by an Italian immigrant. 
+40,History,"Until the early 1800s which of the following fruits was kapu (forbidden) for the women of Hawaii to eat, under penalty of death?",Bananas,Kiwis,Pineapple,,A,Bananas were kapu to women because of their phallic shape. Also kapu were coconuts and pork.
+50,History,Carême is the name of which of the following?,A Coffee-Based Drink,A Famous Chef,A Type Of Icing,A Type Of Chocolate,B,Antonin Carême (1783–1833) is considered one of the founders of French cooking. 
+50,History,In 1947 Marilyn Monroe was crowned the first queen of which of the following?,Artichokes,Grapefruits,Kumquats,Oranges,A,"Marilyn Monroe was 21 and still known as Norma Jean Baker when she was crowned the first Artichoke Queen of Castroville, California, which bills itself as the artichoke center of the world. "
+30,Meat,True or false? The white of the egg is very low in protein.  ,TRUE,FALSE,,,B,Egg whites (albumen) are almost pure protein. 
+30,Meat,True or false? A slice of ham with an iridescent greenish sheen is spoiled.  ,TRUE,FALSE,,,B,"The green is a sign of oxidation and does not necessarily mean that the meat is spoiled. When exposed to oxygen or light, some of the nitrate-modified iron content of the meat undergoes a chemical change that alters the ham's pigmentation."
+30,Meat,True or false? Head cheese is made with sheep's milk.  ,TRUE,FALSE,,,B,"Head cheese is not actually cheese, but a jellied sausage made from the head of a pig or calf. "
+30,Meat,True or false? New York steak is cut from the tenderloin.   ,TRUE,FALSE,,,B,A New York cut is from the short or strip loin and is the boneless top loin muscle. 
+30,Meat,True or false? Pemmican is a type of fried unleavened bread.   ,TRUE,FALSE,,,B,"Pemmican is a North American Aboriginal cake of dried and pounded meat, berries (such as blueberries or cranberries) and melted fat. The name comes from the Algonquin word ""pime,"" which means ""fat."
+30,Meat,"True or false? ""Poussin"" is the French term for a small, young chicken. ",TRUE,FALSE,,,A,
+30,Meat,True or false? Prosciutto is a type of smoked ham.,TRUE,FALSE,,,B,Prosciutto is dry-cured and aged. 
+30,Meat,True or false? A pullet is a young turkey.   ,TRUE,FALSE,,,B,A pullet is a chicken that is younger than one year. 
+30,Meat,True or false? Mortadella and mettwurst are dry sausages. ,TRUE,FALSE,,,B,"They are smoked sausages; however, mortadella is cooked and mettwurst is uncooked. "
+30,Meat,True or false? Serrano and Iberico are two great Spanish cheeses.   ,TRUE,FALSE,,,B,"Both are world-famous hams. Although Serrano is more popular, Iberico is considered one of the best in the world."
+30,Meat,True or false? The most humane methods of animal slaughter result in the highest quality meat. ,TRUE,FALSE,,,A,It has been known for centuries that stressing animals before slaughter adversely affects the quality of the meat. 
+40,Meat,What are chipolatas?,Fried Seasoned Tortilla Chips,Small Sausages,Very Hot Peppers,,B,"Chipolatas can be made with beef, chicken, or pork, and grilled or fried. The name comes from the Italian word ""cipolla,"" which means ""onion."
+40,Meat,Most commercial gelatins are made from which of the following?,Beef,Pork,Veal,,B,"However, the purest gelatin with the most delicate and richest flavor is obtained from calves' feet. "
+40,Meat,A New York steak is also known as,Porterhouse,Rib Eye,Striploin,,C,
+40,Meat,Which of the following is NOT a traditional pairing with Italian prosciutto?,Apple,Figs,Melon,,A,The figs and melons are a great complement to the saltiness of the meat. 
+40,Meat,Rilletes is similar to,Bacon,Pâté,Sausage,,B,"Rillettes is a preparation of pork, goose, rabbit or poultry meat that is cooked in lard then pounded into a smooth paste. The mixture is then potted and served as a cold hors d'oeuvre."
+40,Meat,The Cajun specialty tasso is a type of,Chicken,Fish,Ham,,C,"Tasso is usually included in jambalaya and is often used in pastas, soups and gravies. "
+40,Meat,What type of ham is smoked over burning juniper bushes?,Mangalica,Virginia,Westphalian,,C,
+50,Meat,"In Mexican cuisine the word ""albóndiga"" means",Fruit Preserve,Meatball,Tuna,Turkey,B,
+50,Meat,Which country eats more meat per capita than any country in the world?,Argentina,France,Germany,Usa,A,Argentinians consume an average of 10 oz. of meat per person per day.
+50,Meat,Culatello is a type of,Cheese,Ham,Pasta,Wine,B,"Culatello is a lean, cured and aged Italian ham. "
+50,Meat,Who developed the flat-iron steak?,A Railroad Company,A University Research Team,A Us Army General,The Ritz Hotel In New York,B,"Teams from the universities of Nebraska and Florida, using a previously waste cut of beef from the shoulder, developed a method for cutting and presenting the steak, which looks like an old-fashioned flat metal iron. "
+50,Meat,Foie gras comes from,Chickens,Geese,Pheasants,Turkeys,B,"Foie gras is made from the liver of a goose or duck that has been force fed, a practise that dates back to the ancient Romans. The European Union as well as the city of Chicago have passed laws against force feeding geese."
+50,Meat,Galantine refers to preparations made with,Fish,Pork,Poultry,Vegetables,C,"A galantine is a mixture of lean ground meat and a forcemeat of eggs, spices and other ingredients pressed into a cylindrical shape. It is cooked in stock and served cold as an entree."
+50,Meat,Jamon is a Spanish word for,Cut Of Ham,French Roasting Pot,Gooey Frosting Used On Pastries,Young Turkey,A,Jamon also refers to a cut of bacon. 
+50,Meat,"Seasoned beef that is dry-cured, smoked and cooked is called",Carpaccio,Mortadella,Pastrami,Prosciutto,C,
+50,Meat,Squab is a type of ,Asian Fruit,Bird,Saltwater Fish,Clam,B,"A squab is a domesticated pigeon that has never flown and, therefore, has very tender meat. "
+50,Meat,Wagyu refers to,Beef,Noodles,Radish,Tuna,A,Japanese Wagyu cattle are genetically predisposed to produce highly marbled meat that is extremely tender and flavorful. 
+50,Meat,Westphalian ham is a cured and smoked ham produced from pigs raised on which of the following?,Acorns,Chestnuts,Corn,Sweet Potatoes,A,"This excellent German ham is dense, dark brown and among the best in the world. "
+30,Misc,"True or false? In Japanese cuisine, the term ""agemono"" refers to deep frying.  ",TRUE,FALSE,,,A,Tempura (deep-fried vegetables or seafood) is the best-known dish cooked using the agemono method. 
+30,Misc,True or false? Bird's nest soup is made from noodles that resemble a bird's nest.  ,TRUE,FALSE,,,B,"Bird's nest soup is made from the nests of cave swifts in southeast Asia. The nests have been used in Chinese cooking for over 400 years. They are difficult to obtain and process, and are among the most expensive animal products consumed by humans. "
+30,Misc,True or false? An egg that sinks when placed in water is fresh.  ,TRUE,FALSE,,,B,"The gases in eggs increase over time, causing them to become more buoyant as they age. "
+30,Misc,True or false? Honey contains no cholesterol.  ,TRUE,FALSE,,,A,It also contains no fat or fiber but it is high in carbohydrates. 
+30,Misc,True or false? Honey is believed to be the only food that does not spoil.  ,TRUE,FALSE,,,A,Honey found in ancient Egyptian tombs has been tasted and found edible. 
+40,Misc,In the United States dairy products comprise what percentage of all food consumed?,29 Per Cent,35 Per Cent,42 Per Cent,,A,
+40,Misc,Which of the following foods was Eleanor Roosevelt reputed to have eaten every morning?,Chocolate-Covered Garlic,Headcheese,Rhubarb And Honey,,A,Her doctor reputedly told her that it would improve her memory. 
+40,Misc,"In the Michelin system for judging restaurants, the highest rating is",Three Stars,Four Stars,Five Stars,,A,
+40,Misc,"According to the 2008 Michelin Guide, what city has the most restaurants?",New York,Paris,Tokyo,,C,"Paris had 20,000 and New York 23,000. "
+40,Misc,Which of the following foods is NOT a good source of Vitamin D?,Eggs,Oranges,Sardines,,B,
+50,Misc,Canned food was first produced because of the encouragement of,Thomas Jefferson,Napoleon Bonaparte,Lord Nelson,Czar Nicholas Ii Of Russia,B,"During the Napoleonic wars, Napoleon offered a prize to whoever could invent a method of preventing food from spoiling. The winner, Nicolas Appert, used jars that were packed with food and sealed, then boiled to prevent spoilage."
+50,Misc,"For every dollar spent in the US on produce at the supermarket, how much goes to the farmer who produced the food?",5 Cents,10 Cents,15 Cents,20 Cents,A,
+50,Misc.,"What does the Japanese word ""kanpai"" refer to?",A Toast (As In What One Says Before Taking A Drink),A Strongly Flavored Rice Liqueur,The Headgear Worn By Chefs,Saki Bar,A,
+30,Nuts,True or false? The Brazil nut is the toughest of all nuts to crack.  ,TRUE,FALSE,,,B,"The black walnut has the hardest shell. In addition, it is covered by a thick husk that exudes a dark, staining, strong-smelling juice that can be extremely difficult to remove from clothing and hands."
+30,Nuts,True or false? Peanuts are cholesterol free.   ,TRUE,FALSE,,,A,
+30,Nuts,True or false? The pecan is native to the US.   ,TRUE,FALSE,,,A,The pecan is a member of the hickory family. 
+40,Nuts,Which of the following nuts contains the most fiber?,Almonds,Pistachios,Walnuts,,A,Almonds also contain more calcium than any other nut. 
+40,Nuts,Almonds do NOT contain which of the following?,Fat,Protein,Starch,,C,
+40,Nuts,Cobnuts is another name for,Hazelnuts,Peanuts,Walnuts,,A,Hazelnuts are also known as filberts. They are so named because they ripen about the time of St. Philibert's Day (August 20). 
+40,Nuts,The macadamia nut is native to which of the following?,Australia,Hawaii,Turkey ,,A,"Also known as a Queensland nut, the macadamia is used in curries and stews in Asia. It is now cultivated extensively in Hawaii and California."
+40,Nuts,Which is NOT a true nut?,Peanut,Macadamia,Walnut,,A,The peanut is an underground legume (also called a groundnut or a goober). 
+40,Nuts,"Runner, Spanish and Virginia are all names of varieties of ",Beans,Peanuts,Squash,,B,
+40,Nuts,China is the world's leading peanut producer. The second is,India,Indonesia,The Usa,,A,The USA is third. 
+40,Nuts,Which nut has the highest fat content?,Pecan,Pistachio,Walnut?,,A,Pecans are over 70 per cent fat; walnuts 65 per cent; pistachios between 50 and 55 per cent. 
+50,Nuts,The cashew is native to which country?,Brazil,India,Mexico,Madagascar,A,Cashews were introduced to other tropical countries in the 16th century. 
+50,Nuts,Cashew nuts hang from fleshy fruitlike peduncles that are sometimes referred to as,Apples,Bananas,Melons,Pears,A,
+50,Nuts,"In its natural state, which nut contains a potent skin irritant that must be roasted in order to remove it and make the nut safe to eat?",Brazil Nuts,Cashews,Hazelnuts,Macadamia,B,
+50,Nuts,Goobers are also known as,Jelly Beans,Peanuts,Tiny Shrimp,Unpopped Popcorn,B,"Other names include pindars, ground nuts, monkey nuts, grass nuts, earth nuts and goober peas. "
+30,Oils,True or false? Balsamic vinegar is made from wine.  ,TRUE,FALSE,,,B,Balsamic vinegar is made from grape pressings that have never fermented into wine. 
+30,Oils,True or false? Balsamic vinegar is always aged in oak casks. ,TRUE,FALSE,,,B,"Chestnut, cherrywood, ash, mulberry and juniper kegs are also used, and each adds a distinctive character to the vinegar. "
+30,Oils,"True or false? Grapeseed oil has a relatively low smoke point, which means that it burns at a lower temperature than other oils.  ",TRUE,FALSE,,,B,"Grapeseed oil has a high smoke point and is, therefore, ideal for sautéeing. "
+30,Oils,True or false? Olive oil should be stored in the refrigerator. ,TRUE,FALSE,,,B,"The best way to store olive oil is to cap it tightly and store it in a cool, dark place. If stored properly olive oil can last a couple of years, although after being stored for one year, the oil should be used only for cooking."
+30,Oils,True or false? Omega-3 oils are found only in fish.  ,TRUE,FALSE,,,B,"Although Omega-3 oils are found in the tissues of all sea creatures, particularly in high-fat fish, this highly beneficial oil is also found in flax seed and walnut oil. "
+30,Oils,True or false? Palm oil contains transfats.   ,TRUE,FALSE,,,B,"Palm oil does not contain transfats but it does contain saturated fat. However, it is also rich in antioxidants and vitamins."
+30,Oils,True or false? All vegetable oils are low in cholesterol and contain virtually no saturated fatty acids.   ,TRUE,FALSE,,,B,Palm and coconut oils contain almost equal amounts of saturated fatty acids and animal fats. 
+30,Oils,"True or false? Corn, olive and sunflower oils contain unsaturated fatty acids.  ",TRUE,FALSE,,,A,
+40,Oils,Balsamic vinegar is made from which of the following grapes?,Muscat,Pinot Grigio,Trebbiano,,C,"Balsamic vinegar is aged in barrels the same way wine is. The older the vinegar, the more intense the taste and the higher the price."
+40,Oils,Which Italian city is associated with balsamic vinegar?,Florence,Modena,Turin,,B,Balsamic vinegar has been made in Modena since the Middle Ages. 
+40,Oils,What percentage of the world's olive oil is produced in Spain?,35 Per Cent,50 Per Cent,75 Per Cent,,C,
+40,Oils,Which of the following oils contains saturated fats?,Canola,Coconut,Olive,,B,"It is rare for a non-animal product to contain saturated fat. Nevertheless, the coconut has been the primary source of fat in the diets of millions of people in the tropical world for generations."
+50,Oils,Which of the following oils has the highest smoke point (the temperature at which oil burns)?,Avocado Oil,Coconut Oil,Grapeseed Oil,Sesame Oil,A,The smoke point of avocado oil is 520°F (271°C). 
+50,Oils,Which of the following attributes part of its name to Canada?,Canapé,Can,Canola,Cantaloupe,C,"Can for Canada and ""ola"" for oil low acid. Rapeseed oil was used as industrial oil for hundreds of years."
+50,Oils,Which of the following oils is high in saturated fat?,Canola,Corn,Palm,Peanut,C,"Palm oil contains saturated fat and is semi-solid at room temperature. However, it also contains a high amount of beta-carotene, antioxidants and vitamin E."
+50,Oils,Which of the following makes up over 50 per cent of the world's oil and fat exports?,Palm,Canola (Rapeseed),Soybean,Sunflower,A,Soybean accounts for only 19 per cent. 
+30,Pasta,"True or false? In northern Italy, the preference is for pasta made with added egg.  ",TRUE,FALSE,,,A,Egg pasta originated in Emilia. The added egg strengthens the dough.
+30,Pasta,True or false? The semolina that is used to make pasta is made from  finely ground durum wheat. ,TRUE,FALSE,,,A,Semolina is a food obtained by grinding cereal. Polenta is made from corn semolina. Pasta is made from hard durum wheat semolina. 
+30,Pasta,True or false? Japanese soba noodles are made from rice.  ,TRUE,FALSE,,,B,Soba noodles are made from buckwheat and are traditionally used in soups. 
+30,Pasta,True or false? Spaghetti is thicker than spaghettini.   ,TRUE,FALSE,,,A,
+40,Pasta,"Calzone is a stuffed pizza. What does the word ""calzone"" mean in Italian?",A Lady'S Purse,Shopping Bag,Trouser Leg,,C,"But be careful—in Central and South America ""calzones"" are girls' underpants. "
+40,Pasta,Cappelletti pasta are similar in shape to what other pasta?,Penne,Ravioli,Rotini,,B,"The word ""cappelletti"" means ""little hats"" in Italian. "
+40,Pasta,Which of the following pastas is shaped like a bowtie?,Ditalini,Farfalle,Mostaccioli,,B,
+40,Pasta,Which of the following English translations of Italian words is incorrect?,Capelli: Hair,Linguine: Little Tongues,Ravioli: Little Pillows,,C,"This word means ""little turnips"" in Italian. "
+50,Pasta,Orzo means which of the following in Italian?,Barley,Nut,Rice,Wheat,A,"In North America, orzo is commonly understood as a rice-shaped pasta. "
+30,Processed_Foods,True or false? Peanut butter was originally created as a thickening agent.  ,TRUE,FALSE,,,B,Peanut butter was invented in 1890 by Dr. John Kellogg (who also invented cornflakes) as a healthy protein substitute for meat.
+30,Processed_Foods,"True or false? Tabasco sauce was named after Miguel Tabasco, who first blended it in the early 1900s in Mexico.  ",TRUE,FALSE,,,B,Tabasco sauce is named for the state of Tabasco in southern Mexico. 
+40,Processed_Foods,"Self-rising flour is a blend of all-purpose flour, salt and which of the following?",Baking Powder,Baking Soda,Yeast,,A,
+50,Processed_Foods,Gnocchi is a kind of,Brandy,Dessert,Pasta,Salami,C,"Gnocchi are small dumplings, usually made of flour, semolina or potato. They are boiled and served with sauce or baked. Gnocchi means ""lumps"" in Italian. "
+30,Recipes,True or false? Plums are associated with the term à la Montmorency.  ,TRUE,FALSE,,,B,Dishes prepared à la Montmorency include cherries. 
+30,Recipes,True or false? Aïoli is a tomato-based preparation.  ,TRUE,FALSE,,,B,"Aïoli is a garlic mayonnaise from Provence, in southern France. "
+30,Recipes,True or false? Blinis are made from corn. ,TRUE,FALSE,,,B,"Blinis are usually made from buckwheat. In Russia, blinis are traditionally served warm with caviar and salmon."
+30,Recipes,"True or false? A caroline is a sweet, cream-filled dessert.  ",TRUE,FALSE,,,B,A caroline is a savory éclair made of choux pastry filled with cold liver mousse or hot purée of salmon. 
+30,Recipes,True or false? Carpaccio is beef poached in red wine.  ,TRUE,FALSE,,,B,"Carpaccio is thin slices of raw beef, often served with lemon juice, mayonnaise, capers and onions. "
+30,Recipes,"True or false? Chicken à la king is made with onions, peas and carrots. ",TRUE,FALSE,,,B,"This dish is usually made with mushrooms, green peppers, pimentos, cream and, occasionally, sherry. "
+30,Recipes,"True or false? Cooked potatoes that have been puréed, combined with butter and egg yolks then baked are called Princess potatoes.  ",TRUE,FALSE,,,B,The name for this dish is Duchess potatoes. 
+30,Recipes,True or false? Escabèche is made with fish. ,TRUE,FALSE,,,A,"The fish is sautéed or fried, then marinated and refrigerated. Escabèche is usually served cold, as an appetizer."
+30,Recipes,True or false? A flamiche is a leek and cheese tart.  ,TRUE,FALSE,,,A,"Flamiche, which comes from northern France and Flanders, can also contain onions. Flamiche is a Flemish word for ""cake."
+30,Recipes,True or false? A fricassee is a deep-fried dish of chicken or other meat. ,TRUE,FALSE,,,B,A fricassee is a dish of meat that is sautéed in butter then stewed with vegetables and sometimes wine. 
+30,Recipes,"True or false? The Spanish word for beans is ""frijoles.""",TRUE,FALSE,,,A,
+30,Recipes,True or false? Futomaki is a kind of saki.  ,TRUE,FALSE,,,B,"Futomaki is a thick sushi roll of veggies, fish and tofu wrapped in rice and seaweed. "
+30,Recipes,True or false? Flounder is used in gefilte fish.  ,TRUE,FALSE,,,B,"Carp is used in this Jewish dish. The fish is ground and mixed with eggs, matzo meal and seasonings, formed into patties or balls, and cooked in stock."
+30,Recipes,True or false? Goulash is a dish noted for its use of garlic. ,TRUE,FALSE,,,B,This Hungarian dish is especially noted for its use of paprika. 
+30,Recipes,True or false? Calves' stomaches are used as the casing for the Scottish specialty haggis.  ,TRUE,FALSE,,,B,"Haggis is usually made with the lining of a sheep's stomach, which is filled with the animal's organs, oatmeal, onions and seasonings, then simmered in water for several hours. "
+30,Recipes,True or false? Corn flour is the principal ingredient of the Jewish dish latkes.  ,TRUE,FALSE,,,B,"Latkes are made from grated potato mixed with egg, onion and seasonings, and fried in the form of a pancake. "
+30,Recipes,True or false? Osso buco is an Italian dish made with veal.   ,TRUE,FALSE,,,A,"Osso buco consists of a veal shank, cut across the bone into one-inch slices that are browned and braised in white wine and aromatics. Its name literally means ""bone with a hole."
+30,Recipes,True or false? Piccata is an Italian dish of spiced ham.   ,TRUE,FALSE,,,B,"Piccata is veal scallops, fried in butter and glazed with Marsala wine and lemon juice. "
+30,Recipes,True or false? The Basque specialty known as pipérade usually contains rabbit.   ,TRUE,FALSE,,,B,"Other than onions, green peppers and tomatoes, typical ingredients are egg, garlic or ham. "
+30,Recipes,True or false? Welsh rarebit is made with beef.   ,TRUE,FALSE,,,B,Welsh rarebit (or rabbit) is a slice of toast covered with Cheddar cheese melted in beer. It contains neither beef nor rabbit.
+40,Recipes,À la Marengo refers to veal or chicken prepared with which of the following?,Bacon,Cream And Saffron,Olive Oil And Garlic,,C,"To prepare a dish à la Marengo, the cook first sautés meat, then braises it with tomatoes, onions, garlic and white wine. "
+40,Recipes,What ingredient is a must in dishes prepared à la périgourdine?,Brandy,Saffron,Truffles,,C,
+40,Recipes,A cornmeal and whole wheat dumpling popular in Ghana and used in stews is called,Abaloo,Agidi,Akebia,,A,Akebia is an Asian fruit; agidi is a Nigerian porridge made with corn starch. 
+40,Recipes,Bourride is a classic fish soup from Provence. Which of the following is a key ingredient?,Aïoli,Mustard,Shallots,,A,Aïoli is a garlic mayonnaise that also thickens the soup. 
+40,Recipes,Bubble and squeak is an English dish of potato and which of the following?,Bacon,Cabbage,Sausage,,B,The name is said to come from the sounds the potato–cabbage mixture makes as it cooks. 
+40,Recipes,Cassoulet is a dish from,Belgium,Canada,France,,C,
+40,Recipes,What is ceviche (sometimes spelled seviche)?,A Poached Shrimp Dish,Grilled Beef Kebabs,Marinated Raw Fish,,C,"Ceviche consists of fresh fish or shellfish marinated in lemon or lime juice, herbs and aromatic vegetables. "
+40,Recipes,Which of the following vegetables is used in dishes à la Crécy?,Carrots,Celery,Watercress,,A,Crécy is an area in France that produces fine carrots. 
+40,Recipes,A croque-monsieur is a,Chef'S Hat,French Short Order Cook,Ham And Cheese Sandwich,,C,"Croque-monsieur is dipped in beaten egg and sautéed in butter, sometimes on a special grilling iron. Gruyère is the traditional cheese used in a croque-monsieur."
+40,Recipes,"To make custard, a cook blends sugar, milk and what other ingredient?",Butter,Egg Yolks,Flour,,B,Making custard requires gentle heat and slow cooking to prevent curdling. 
+40,Recipes,Which of the following could be used in making the Indian dish dal?,Coconut,Lentils,Rice,,B,"A variety of pulses, such as lentils, beans, peas or chickpeas, can be used to make this thick and spicy dish. "
+40,Recipes,"In French cuisine, what is a daube?",Beef Dish,Dessert,Soup,,A,"A daube is made with red wine, vegetables and seasonings, and is braised for several hours. "
+40,Recipes,Feijoada is a Brazilian,Meat Kebab,Pastry,Stew,,C,This spicy dish is made with beef and includes red or black beans. It is usually served with rice and green cabbage.
+40,Recipes,Which of the following is the essential ingredient of jambalaya?,Lamb,Turnips,Rice,,C,"Other ingredients can include tomatoes, onions, green peppers, and almost any kind of meat, poultry or seafood. "
+40,Recipes,Kimchi is a spicy Korean dish usually made with,Beans,Chinese Cabbage,Seaweed,,B,"Various seasonings are added to this fermented dish, which is always present at Korean tables. "
+40,Recipes,"Fish that has been seasoned, lightly floured, sautéed in butter and served with lemon-flavored butter is prepared in what style?",Chasseur,Meunière,Normande,,B,"This type of preparation can be used with any kind of fish. The dish is always lightly floured, and this provides the name of the dish—""meunière"" is French for ""a female miller."
+40,Recipes,Which meat is used in moo shu (or moo shoo) dishes?,Beef,Chicken,Pork,,C,Scallions and eggs are also often included in this Northern Chinese dish. 
+40,Recipes,What meat is usually used in mulligatawny?,Beef,Chicken,Lamb,,B,"Originally from India, this highly seasoned spicy soup was adopted by the British and is particularly popular in Australia. "
+40,Recipes,The famous Quebec dish poutine does NOT usually include,Cheese,Gravy,Tomatoes,,C,Poutine consists of french fries topped with cheese curds covered in brown gravy. 
+40,Recipes,A quenelle is a,Dumpling,Shortbread,Small Game Bird,,A,"A quenelle is made of ground or minced fish, chicken or veal mixed with heavy cream and eggs. It is moulded into a small sausage and poached in water or stock."
+40,Recipes,What are rollmops made with?,Herring,Sardines,Sole,,A,"Rollmops are pickled herring fillets rolled around a pickled onion or gherkin. The name comes from the German word ""rollen,"" which means ""to roll,"" and ""Mops,"" which refers to a pug dog."
+40,Recipes,Saltimbocca is an Italian dish whose name literally means,Dances On The Tongue,Fresh Catch Of The Sea,Leap Into The Mouth,,C,
+40,Recipes,The Indian snack samosa always contains,Meat,Potatoes,Rice,,B,"This fried stuffed pastry is usually vegetarian, but it can also be stuffed with meat such as ground lamb. "
+40,Recipes,Which of the following is an ingredient of Scotch broth?,Barley,Oats,Rice,,A,Scotch broth also includes lamb or mutton and various vegetables. 
+40,Recipes,What is shashlik?,Hot Pepper Condiment,Kebab,Lamb Stew,,B,"Shashlik (sometimes spelled shashlyk), a Russian dish that originated in Georgia, consists of cubes of marinated and grilled meat and vegetables. "
+40,Recipes,"What is socca, a local specialty of southeastern France, especially Nice?",An Anise-Based Cocktail,Chickpea Flour,Fish Pie,,B,"Socca is made into a thick porridge, which can be cooked au gratin, used in a tart, or sliced and fried in olive oil and served with sugar. "
+40,Recipes,"Which of the following is a baked dish of spaghetti, chicken and a sherry-parmesan cream sauce, topped with parmesan and bread crumbs",Marengo,Taleggio,Tetrazzini,,C,Turkey is sometimes substituted for chicken in this dish. 
+40,Recipes,Veal piccata is a classic Italian dish made with,Cream,Lemon,Raisins,,B,"The veal escalope is sautéed and served with a sauce of pan drippings, lemon juice and parsley. "
+50,Recipes,À la Clamart refers to dishes garnished with which of the following?,Beets,Carrots,Peas,Asparagus,C,"Clamart is a district near the Seine River, in France, that used to be famous for its pea crops. "
+50,Recipes,What is achar?,Chili Pepper,Poached Fish Preparation,Spiced Pickle,Spice Mixture,C,Achar is popular throughout the East and West Indies. Some achars are spicy; some mild and sweet.
+50,Recipes,Blinis are a dish from,Germany,Hungary,Poland,Russia,D,Blinis are small pancakes served with sour cream and caviar. 
+50,Recipes,What is burek?,Fried Fish,Stuffed Pastry,Lamb Kebab,Pistachio And Honey Confection,B,"Burek is popular in Arab countries and in countries around the Mediterranean. It consists of filo pastry filled with cheese, meat or vegetables. It is baked or fried. "
+50,Recipes,Which of the following is NOT a traditional ingredient in Caesar salad dressing?,Anchovies,Cream,Garlic,Olive Oil,B,
+50,Recipes,What is the main ingredient in chicken Kiev (other than the chicken)?,Butter,Cheese,Ham,Spinach,A,"Chicken Kiev is a chicken breast containing herbed chilled butter dipped in egg and breadcrumbs, then fried. "
+50,Recipes,Confit is a preparation usually made with which of the following?,Duck,Pork,Rabbit,Salmon,A,The duck is cooked and preserved in its own fat. 
+50,Recipes,Which of the following vegetables is used in Du Barry preparations?,Carrot,Cauliflower,Endive,White Asparagus,B,"Du Barry refers to several dishes that contain cauliflower. These dishes were dedicated to the Comtesse du Barry, the favorite of the French King Louis XV."
+50,Recipes,Duxelles is a cooked mixture of finely chopped shallots and which of the following?,Carrots,Celery,Green Peppers,Mushrooms,D,"The ingredients are cooked in butter, and the preparation is used as a garnish or to flavor sauces and soups. "
+50,Recipes,Falafel is made with which of the following?,Chickpeas,Eggplant,Lamb,Pistachios,A,"Falafel consists of deep fried balls of spiced ground chickpeas, served in a pita bread with a yogurt or tahini-based sauce. "
+50,Recipes,"The term ""Florentine"" indicates the use of which vegetable?",Arugula,Broccoli,Onions,Spinach,D,Florentine dishes also usually contain eggs or fish and Mornay sauce. 
+50,Recipes,What country is gado gado from?,Hawaii,Indonesia,The Philippines,Sri Lanka,B,Gado gado is a vegetable concoction that is served with a spicy peanut sauce. 
+50,Recipes,"In French, a grenouille is",A Small Wild Bird,Calf'S Brain,Chicken Gizzards,A Frog,D,
+50,Recipes,Which of the following is the main ingredient in guacamole?,Avocado,Eggplant,Garlic,Green Pepper,A,"Guacamole consists of avocadoes mixed with lemon or lime juice, red pepper, chopped tomato, green onion, cilantro and sometimes chili powder. "
+50,Recipes,What kind of meat is used in hasenpfeffer?,Beef,Pork,Rabbit,Veal,C,Hasenpfeffer is usually served with sour cream and noodles or dumplings. 
+50,Recipes,Kimchi is a dish from,Korea,Indonesia,Japan,Thailand,A,"Kimchee is served with every meal in Korea. There are many varieties of kimchee but the most common North American version consists of fermented cabbage, garlic, sugar and spices."
+50,Recipes,Thermidor is a name associated with,Crab,Lobster,Shrimp,Scallops,B,"Lobster Thermidor is a mixture of cheese, lobster meat, egg yolks, and brandy or sherry, stuffed into a lobster shell and browned. It was created in 1894 at Marie's, a Paris restaurant, in honor of the opening of the play Thermidor."
+50,Recipes,In what country would you find masa harina?,India,Indonesia,Madagascar,Mexico,D,"Masa harina is the dough (""masa"") that is used to make corn tortillas. ""Harina"" is the Spanish word for ""flour."
+50,Recipes,Moussaka is a Greek dish traditionally made with lamb and,Avocado,Beans,Eggplant,Olives,C,"This layered casserole also contains béchamel sauce, cheese, tomatoes and onions. "
+50,Recipes,Muffuletta is the name of a type of,Olive Salad,Salami,Sandwich,Tomato,C,"A muffuletta consists of crusty Italian bread filled with Italian cold cuts, cheese, olives, red bell pepper and a garlic mixture. "
+50,Recipes,"A salad of tomatoes, hard-cooked egg, radish, olives, tuna, potatoes, green beans and sometimes anchovies is called",Chef,Cobb,Niçoise,Waldorf,C,Salade Niçoise is a specialty of the Côte D'Azur region of France; it originated in and is named for the city of Nice. 
+50,Recipes,Potatoes O'Brien is an Irish dish prepared with onions and,Cheese,Cream,Peppers,Tomatoes,C,The potatoes and pepper are fried together in butter and served hot. 
+50,Recipes,Panna cotta is an Italian,Cooking Utensil,Dessert,Fried Cheese,Meat Dish,B,"Panna cotta is made by simmering cream, milk and sugar, adding gelatin and allowing the dish to cool and set. The Italian name literally means ""cooked cream."
+50,Recipes,Which of the following herbs is used in pesto?,Basil,Oregano,Parsley,Tarragon,A,"Pesto is an uncooked sauce that contains basil, garlic, olive oil, Parmigiano or Pecorino cheese and, occasionally, pine nuts. "
+50,Recipes,Risotto Milanese is a rice dish that contains which spice?,Cumin,Nutmeg,Paprika,Saffron,D,
+50,Recipes,Which of the following is the main ingredient of the Greek dish saganaki?,Cheese,Egg,Lamb,Spinach,A,"Kasseri is one of the traditional cheeses used to make saganaki, which consists of a slice of cheese fried in olive oil, sometimes flambéed with brandy or Ouzo, and sprinkled with lemon juice. "
+50,Recipes,Scotch woodcock is made with which of the following?,Anchovies,Woodcock,Scotch,Scotch And Woodcock,A,"Scotch woodcock contains neither Scotch nor woodcock. Instead, it is toast topped with anchovy paste or fillets and scrambled eggs."
+50,Recipes,What is spanakopita?,Fried Cheese,Lamb Kebab,Savory Pie,Sweet Flaky Dessert,C,"Spanakopita consists of spinach, onions, feta cheese, eggs and seasonings with a filo dough crust. "
+50,Recipes,Which of the following is one of the traditional ingredients of succotash?,Green Beans,Green Peppers,Kidney Beans,Lima Beans,D,Succotash is a bean and corn dish from the southern USA. 
+50,Recipes,Tabbouleh is made with which of the following?,Lamb,Oranges,Pistachios,Wheat,D,"This Middle Eastern dish is made from bulgur wheat, chopped tomatoes, onions, parsley, mint, lemon juice and olive oil. "
+50,Recipes,What is tahini made from?,Chickpeas,Lemons,Ripe Olives,Sesame Seeds,D,Tahini is a thick paste of ground sesame seeds used as a flavoring in many Middle Eastern dishes. 
+50,Recipes,"Tapenade is a thick paste made from lemon juice, olive oil, olives, anchovies and which of the following?",Capers,Garlic,Green Peppers,Onions,A,"Tapenade is served with crudités, used as a condiment and served with grilled fish and meat. The word is from the Provençal ""tapeno,"" which means ""caper."
+50,Recipes,Waldorf salad does NOT contain which of the following?,Apples,Celery,Croutons,Walnuts,C,"A Waldorf salad contains diced apple, celery (or celeriac), walnuts and mayonnaise. It is named after the famous New York City Hotel, the Waldorf Astoria."
+30,Sauce,True or false? Albert sauce is made with chutney.  ,TRUE,FALSE,,,B,"Albert sauce is a rich horseradish sauce of butter, flour and cream. It was dedicated to Prince Albert, the husband and consort of Queen Victoria."
+30,Sauce,"True or false? The term ""au jus"" refers to a meat served with tomato sauce.",TRUE,FALSE,,,B,"Au jus refers to meat served with its natural, unthickened pan juices. "
+30,Sauce,True or false? Beurre blanc is a sauce made with butter and flour.  ,TRUE,FALSE,,,B,"Beurre blanc is made by whisking butter into a reduction of white wine, white wine vinegar, shallots and, often, fresh herbs. "
+30,Sauce,True or false? Chasseur sauce is served with meat dishes.  ,TRUE,FALSE,,,A,"Chasseur sauce is a highly seasoned brown sauce usually consisting of mushrooms, shallots and wine. "
+30,Sauce,True or false? Coulis is a kind of sorbet.  ,TRUE,FALSE,,,B,Coulis is a thick sauce of puréed vegetables or fruit. It is sometimes uncooked and served chilled.
+30,Sauce,True or false? Demi-glace is a low-fat ice cream.  ,TRUE,FALSE,,,B,Demi-glace is a rich brown stock in French cuisine that is used by itself or as a base for other sauces. 
+30,Sauce,True or false? Espagnole sauce is a kind of white sauce.  ,TRUE,FALSE,,,B,Espagnole sauce is made with a brown stock. 
+30,Sauce,True or false? Orgeat syrup is made from lemons.  ,TRUE,FALSE,,,B,Orgeat syrup is syrup made from sugar and almond milk and flavored with orange-flower water. 
+30,Sauce,True or false? A roux is made with veal stock and cream.  ,TRUE,FALSE,,,B,A roux is a mixture of flour and butter or another fat and is cooked slowly over low heat. Rouxs are used to thicken soups and sauces.
+30,Sauce,True or false? Velouté sauce is made with vegetable stock.   ,TRUE,FALSE,,,B,"Velouté is made with chicken, veal, or fish stock, and thickened with butter and flour. "
+40,Sauce,What is aspic?,Meat Seasoning,Savory Jelly,Type Of Frosting,,B,Aspic is made from meat stock and gelatin. The latter allows it to set and be used in moulds with meats and vegetables.
+40,Sauce,Chateaubriand is usually served with which classic sauce?,Béarnaise,Béchamel,Hollandaise,,A,"This is a classic French sauce made with a reduction of vinegar, wine, tarragon and shallots, and finished with egg yolks and butter. "
+40,Sauce,What kind of stock is used to make Bercy sauce?,Chicken,Fish,Lamb,,B,White wine and shallots are also included. Bercy is a district in Paris that once had the largest wine market in Europe.
+40,Sauce,"In cooking, beurre manié is primarily used to",Flavor,Sweeten,Thicken,,C,Beurre manié is a dough of soft butter and flour that is used to thicken soups and sauces. It is different from a roux in that it is not cooked before use.
+40,Sauce,Which sauce contains orange juice and orange liqueur?,Bigarade,Cumberland,Velouté,,A,Bigarade is another word for a sour orange. A bigarade sauce is a brown sauce to which orange has been added.
+40,Sauce,Bigarade sauce is usually served with,Duck,Rabbit,Veal,,A,"Bigarade is prepared with bitter orange zest, lemon juice, stock and sugar. "
+40,Sauce,Choron sauce is a variation on which sauce?,Beárnaise,Béchamel,Bourguignonne,,A,Choron sauce is flavored and colored with tomato paste. 
+40,Sauce,Cumberland sauce is made of red currant jelly and which of the following alcoholic beverages?,Cognac,Port,Sherry,,B,
+40,Sauce,What is fumet?,Fish Stock,French Smoked Sausage,A Whisk,,A,"Literally meaning ""aroma"" in French, a fumet is a reduced stock or cooking liquid that is added to another sauce or dish to enhance the flavor. "
+40,Sauce,Which of the following is the base for Hoisin sauce?,Fish Sauce,Oyster Sauce,Soy Sauce,,C,"Garlic, chili peppers, sugar and various spices are also added. "
+40,Sauce,"Lyonnaise sauce is made with white wine, demi-glace and which of the following?",Celery,Green Peppers,Onions,,C,"Lyonnaise sauce is characterized by onions, which are sautéed until they are golden. The sauce is strained before serving."
+40,Sauce,"A highly seasoned sauce made with tomatoes, oregano, garlic and onions is called",Bercy,Marinara,Mousseline,,B,"This popular Italian sauce originated in Naples. Though its name is derived from the Italian word for ""sailor"" (""marinaro""), marinara sauce does not contain fish or seafood."
+40,Sauce,Melba sauce was created by which famous chef?,Paul Bocuse,Julia Child,Auguste Escoffier,,C,He created the sauce in 1892 when he was a chef at the Savoy in London in honor of Dame Nellie Melba. 
+40,Sauce,"Orgeat syrup is made with sugar, rose- or orange-flavored water and which of the following?",Almonds,Peppermint,Pistachios,,A,
+40,Sauce,"Redeye gravy, a sauce from the southern US, is made with",Bone Marrow,Bourbon,Ham Drippings,,C,"Redeye gravy is often served over ham, cornbread, biscuits or grits. "
+40,Sauce,Which of the following is the main ingredient in Indonesian satay sauce?,Oyster Extract,Peanuts,Red Peppers,,B,"Satay is usually spicy and accompanies grilled or broiled skewers of marinated cubes of meat, fish or poultry. "
+40,Sauce,Worcestershire sauce is a British adaptation of a recipe from which country?,India,Jamaica,Nigeria,,A,"Sir Marcus Sandys, of Worcestershire, England, discovered the recipe and asked the English grocers Lea & Perrins to make it commercially. They did, and Worcestershire sauce was launched commercially in 1838."
+40,Sauce,Yakitori refers to which of the following?,Deep-Fried Fish,Grilled Chicken,Lightly Grilled Vegetables,,B,"Yakitori is a Japanese word meaning ""grilled"" (""yaki"") ""fowl"" (""tori""). "
+40,Sauce,Which of the following is an ingredient in zingara sauce?,Cream,Lemon,Tomato,,C,"This rich tomato sauce also contains meat, paprika and chili peppers, and may be garnished with strips of ham and truffles. ""Zingara"" means ""gypsy woman"" in Italian."
+50,Sauce,Albuféra sauce is made with,Beets,Bell Peppers,Cauliflower,Mushrooms,B,Puréed red bell peppers give Albuféra sauce a pink color; chili pepper and saffron add flavor. 
+50,Sauce,"In addition to mayonnaise, pimento and lemon juice, what else is in Andalouse sauce?",Anchovies,Avocado,Spinach,Tomato Paste,D,"Andalouse sauce goes very well with french fries and with large cuts of meat. Paprika, parsley, garlic and Worcestershire sauce are also sometimes added."
+50,Sauce,Which of the following is used to flavor béarnaise sauce?,Cilantro,Parsley,Tarragon,Thyme,C,"Béarnaise sauce is made with vinegar, shallots, wine, egg yolks and butter, and flavored with tarragon. "
+50,Sauce,Which of the following is frequently used to flavor béchamel sauce?,Cinnamon,Mustard Seed,Nutmeg,Oregano,C,
+50,Sauce,Which of the following is NOT an emulsified sauce?,Béarnaise,Béchamel,Hollandaise,Paprika,B,Emulsified sauces are made of a combination of two liquids that do not ordinarily combine smoothly into a uniform mixture. 
+50,Sauce,Genevoise is a classic sauce served with,Ham,Fish,Lamb,Poultry,B,"Genevoise consists of a mirepoix and brown sauce with red wine, fish fumet, anchovy paste and mushrooms. "
+50,Sauce,What is harissa?,A Condiment,Soup,Stew,A Type Of Bean,A,"This North African and Middle Eastern condiment is a purée of hot chili peppers, garlic, cumin and other spices and herbs; it is used as an accompaniment to couscous as well as to other dishes. "
+50,Sauce,"In Cantonese, the sauce known as Hoisin means",Seafood,Southern,Sticky,Sweet Black,A,"Hoisin sauce is made from soya beans, vinegar, sugar, garlic and spices. Even though its name means ""seafood"" it does not contain seafood."
+50,Sauce,In what country did Hollandaise sauce originate?,Belgium,France,Great Britain,Holland,D,Hollandaise is a hot emulsified sauce based on egg yolks and clarified butter. 
+50,Sauce,A maltaise is a hollandaise sauce that includes which of the following?,Brandy,Chicken Stock,Ham,Orange,D,"A maltaise is a sweet or savory sauce based on oranges, particularly the Maltese blood orange. It is excellent with asparagus and green beans."
+50,Sauce,What fruit is Melba sauce made with?,Blueberries,Cherries,Raspberries,Apricots,C,Red currants (in jelly form) are also used. 
+50,Sauce,Which of the following sauces contains cheese?,Béarnaise,Béchamel,Mornay,Véronique,C,Mornay sauce is a béchamel sauce with the addition of Gruyère or Parmigiano cheese. 
+50,Sauce,"Newburg sauce is composed of butter, cream, egg yolks and which of the following?",Brandy,Pernod,Sherry,White Wine,C,Newburg sauce is usually served with cooked shellfish. 
+50,Sauce,Piri-piri is a,Chili Sauce,Fish Soup,Salt Water Fish,Spicy Tomato Sauce,A,Piri-piri originated in Portugal. 
+50,Sauce,Soubise is a rich white sauce made with,Celery,Garlic,Leeks,Onions,D,"Cream is sometimes also added. The sauce is named for an 18th century French aristocrat, Charles de Rohan, Prince of Soubise."
+50,Sauce,Tamari is similar to which of the following?,Corn Starch,Horseradish,Meat Pâté,Soy Sauce,D,The Japanese sauce known as tamari is thicker than soy sauce and is used as a dipping sauce or for basting. 
+30,Science,True or false? Alcohol is the only food that is unaffected by the body's digestive system.  ,TRUE,FALSE,,,A,Alcohol passes through the stomach and intestines and into the bloodstream unchanged. 
+30,Science,True or false? All traces of alcohol disappear from food after at least three hours of cooking.  ,TRUE,FALSE,,,B,"After flaming a dish with brandy or liqueur, about 75 per cent of the alcohol remains. Alcohol also remains in varying percentages in baked dishes."
+30,Science,True or false? Obese children are more likely to have food allergies.  ,TRUE,FALSE,,,A,Obese children are 26 per cent more likely to have food allergies than children of average weight. 
+30,Science,True or false? Clarified or drawn butter has a higher burning or smoking point than unclarified butter. ,TRUE,FALSE,,,A,This is because the milk solids and most of the water have been removed. 
+30,Science,True or false? Quick freezing of food is a key to maintaining its quality.  ,TRUE,FALSE,,,A,"The faster food is frozen, the smaller the ice crystals that form in and around its cells. Slow freezing causes the formation of large ice crystals that can damage proteins."
+30,Science,True or false? Freezing kills bacteria in foods.  ,TRUE,FALSE,,,B,"Freezing stops the growth of bacteria, but only cooking kills them. "
+30,Science,True or false? Salmonella bacteria emit a strong odor.   ,TRUE,FALSE,,,B,Salmonella bacteria are odorless and tasteless. 
+40,Science,Which is the least allergenic of all fruits?,Apples,Bananas,Pears,,C,
+40,Science,"Carotene, a natural orange pigment found in carrots, dark green vegetables and butter, is converted into what when consumed?",Vitamin A,Vitamin B,Vitamin D,,A,Carotene is not lost in cooking because it is not water soluble and is heat stable. 
+40,Science,"In 1912, Wilbur Scoville devised a means of testing the",Calories In Processed Food,Heat Level Of Peppers,Vitamin Content Of Fruits And Vegetables,,B,"The Scoville rating ranges from 0 for sweet bell peppers to 1,041,000 for the naga jolokia pepper, from India, which in 2007 was named the hottest pepper in the world by the Guinness Book of World Records. "
+40,Science,In what year was Vitamin C first extracted and isolated?,1898,1932,1951?,,err,"Components were extracted from lemon juice, and vitamin C was synthesized the following year. "
+50,Science,Which of the following is NOT among the eight foods that cause 90 per cent of allergic reactions?,Eggs,Milk,Sesame Seeds,Tomatoes,D,"The eight foods that cause 90 per cent of allergic reactions are eggs, milk, sesame seeds, peanuts, tree nuts, wheat, soy and sulfites. "
+50,Science,What percentage of American adults have food allergies?,3 To 4 Per Cent,5 To 6 Per Cent,7 To 8 Per Cent,9 To 10 Per Cent,err,
+50,Science,Which of the following can inhibit the absorption of some prescription drugs?,Coffee,Grapefruit,Honey,Peanuts,B,
+50,Science,The tip of the tongue detects which of the following most effectively?,Bitter,Salty,Sour,Sweet,D,
+30,Seafood,True or false? Bombay duck is actually chicken.  ,TRUE,FALSE,,,B,"But it is not duck, either. It is actually a lizardfish, abundant in the waters off Mumbai, India, and is considered a delicacy. R543 When dried and salted it has a very unpleasant odor. The origin of the name ""Bombay duck"" is unknown."
+30,Seafood,True or false? Char is a fresh water fish.  ,TRUE,FALSE,,,A,"The char is related to the salmon and is native to Arctic, sub-Arctic and alpine lakes and coastal waters. "
+30,Seafood,True or false? Cherrystone clams come from the east coast of the USA.  ,TRUE,FALSE,,,A,These fairly large clams measure about 2. 5 inches in diameter.
+30,Seafood,"True or false? When cooking clams, one should not eat the ones that do not open.  ",TRUE,FALSE,,,A,"When a healthy clam is cooked, the muscle that keeps the two halves of the shell closed relaxes, and the shell opens. If the shell does not open, the clam was dead before cooking and should not be eaten."
+30,Seafood,True or false? The United States has more varieties of crab than any other country.  ,TRUE,FALSE,,,A,
+30,Seafood,True or false? Dungeness crab is caught on the west coast of North America.  ,TRUE,FALSE,,,A,Dungeness crab is found from Alaska to Mexico. 
+30,Seafood,True or false? It is always preferable for a lobster to be alive at the time it is cooked or at least to be killed immediately before it is cooked .,TRUE,FALSE,,,A,Pathogenic microorganisms are more numerous in lobsters than in fish. These disease-causing agents multiply rapidly after the lobster dies so the interval between death and cooking is crucial.
+30,Seafood,"True or false? ""Nori"" means ""sea urchin"" in Japanese.  ",TRUE,FALSE,,,B,Nori is seaweed that is usually dried in thin paper sheets and used for wrapping sushi and rice balls. 
+30,Seafood,True or false? Oyster crabs are so called because their shells resemble those of oysters. ,TRUE,FALSE,,,B,The name comes from the fact that these small crabs live inside the gills of oysters; they use the oyster for protection and live on the food that the oyster obtains for itself. 
+30,Seafood,True or false? Periwinkle is a type of candy.   ,TRUE,FALSE,,,B,"A periwinkle is a kind of conical mollusk, about one inch in diameter. "
+30,Seafood,True or false? Saltwater fish have more sodium in their flesh than freshwater fish.   ,TRUE,FALSE,,,B,
+30,Seafood,True or false? Scallops are mollusks. ,TRUE,FALSE,,,A,Scallops are classified into two broad groups: bay scallops and sea scallops. In 1988 the state of New York made the Atlantic bay scallop its state shell.
+30,Seafood,True or false? Snapper is both a saltwater and freshwater fish. ,TRUE,FALSE,,,B,"Snapper is a saltwater fish. Snappers (both red and yellowtail) are popular for their sweet, firm flesh. They are especially good grilled. "
+30,Seafood,True or false? Soft-shell crab are a separate species of crab.   ,TRUE,FALSE,,,B,Crabs must shed their shells periodically in order to grow. Soft-shell crabs are simply crabs whose new soft exterior has not ossified.
+30,Seafood,True or false? Sprats are similar to herrings.   ,TRUE,FALSE,,,A,"Sprats, sometimes called Bristling sardines, are small fish commonly found in the Baltic, the English Channel, the North Sea and the Atlantic. "
+30,Seafood,True or false? The flesh of fish is more tender than the flesh of mammals.   ,TRUE,FALSE,,,A,The connective tissue in fish makes up about 3 per cent of its weight as opposed to 15 per cent for mammals. 
+30,Seafood,True or false? The meat of the female tortoise or turtle is more tender than that of the male.,TRUE,FALSE,,,A,
+30,Seafood,True or false? Yellowtail is a kind of wild duck.   ,TRUE,FALSE,,,B,A yellowtail is a gamefish. 
+40,Seafood,What foods are usually cooked à la nage?,Eggs,Seafood,Vegetables,,B,"The seafood is poached in a court-bouillon or vegetable stock. À la nage literally means ""swimming"" in French."
+40,Seafood,Which of the following is a kind of fish?,Bream,Colcannon,Kuchen,,A,This Japanese fish is also known as porgy (American) or daurade (French). 
+40,Seafood,Caviar is the salted roe or spawn of which fish?,Halibut,Sturgeon,Tuna,,B,Caviar is sturgeons' eggs that have been salted and allowed to mature. Russian caviar is the most prized.
+40,Seafood,"Ounce for ounce, caviar contains how much calcium compared to milk?",Half ,Same,Twice As Much,,C,"Caviar is also high in fat, cholesterol and protein, and extremely high in sodium. "
+40,Seafood,Which fish is NOT a relative of the cod?,Haddock ,Hake,Tuna,,C,
+40,Seafood,Cuttlefish most resembles which of the following?,Flounder ,Squid,Swordfish,,B,A cuttlefish has ten appendages (eight arms and two long tentacles) and can measure up to 16 inches in length. 
+40,Seafood,Which of the following Japanese dishes can cause death if it is prepared incorrectly?,Fugu,Maguro,Yakitori,,A,"This dish is prepared from the blowfish, globefish or puffer fish, whose organs contain a deadly poison. Only licensed cooks are allowed to prepare fugu."
+40,Seafood,Which of the following is NOT a flat fish?,Haddock,Sole,Turbot,,A,Haddock is a round sea fish. 
+40,Seafood,Which of the following is NOT a flat fish?,Hake,Halibut,Sole,,A,"Hake, a member of the cod family, is a sea fish with a long cylindrical body that can measure up to three feet and weigh up to nine pounds. "
+40,Seafood,"Which fish has been referred to as the ""two-eyed steak""?",Herring,Salmon,Tuna,,A,
+40,Seafood,Isinglass is a type of what?,Crystal Stemware,Gelatin,Wine,,B,"Isinglass is a whitish pure gelatin prepared from the air bladders of fish (for example, sturgeon). It is used as a clarifying agent in jellies and glue. In the past it was used to clarify wines. "
+40,Seafood,Which of the following does NOT belong?,Lamprey,Panaché,Shandy,,A,Lamprey is an eel-like fish. Panaché and shandy are beer-based drinks flavored in equal measures with lemonade or ginger ale.
+40,Seafood,Which of the following is the smallest variety of clam?,Cherrystone ,Geoduck,Littleneck,,C,These small clams measure about two inches in diameter. 
+40,Seafood,Petit-gris is a kind of,Clam,Grape,Snail,,C,This small gray snail measures about one inch in diameter. 
+40,Seafood,Which of the following is NOT a type of fish?,Scallops,Smelts,Tilapia,,A,Scallops are bi-valve mollusks. 
+40,Seafood,Shad and alewife are members of which family of fish?,Bass,Herring,Salmon,,B,"Both are anadromous, which means that they migrate from salt water to spawn in fresh water. "
+40,Seafood,Tomalley is found in the liver of which of the following?,Cod,Lobster,Sturgeon,,B,"Tomalley is the soft green substance found in the liver of lobsters. Considered a delicacy, it can be eaten alone or added to sauces."
+40,Seafood,Whitebait are very young,Herring,Sardines,Smelt,,A,These small fish are usually fried and eaten whole. 
+50,Seafood,Anchovy is a type of which of the following?,Fish,Preserved Egg,Spice,Vegetable,A,"The anchovy is a small sea fish that is rarely sold fresh. Instead, anchovies are usually sold salted and in jars, as whole fish in oil or as fillets in cans."
+50,Seafood,"In Portugal, what is dried and salted codfish called?",Bacalhau,Pico,Rabacai,Saloio,A,"It is claimed that there are more than 365 ways to cook bacalhau. Pico, Rabacai and Saloio are all Portuguese cheeses."
+50,Seafood,Which of the following was served in American saloons in the 19th century to encourage drinking?,Beef Jerky,Caviar,Cheese Curds,Soya Nuts,B,"At the beginning of the 19th century, the US was the major producer of caviar. "
+50,seafood,Which is the least desirable type of salmon?,Chinook,Chum,Coho,Sockeye,B,Chum has the lowest oil content of all salmons and is consequently less flavorful. 
+50,Seafood,What is cobia?,Fish,Fruit,Sheep,Tuber,A,"Also known as black king fish or black salmon, cobia are warm water fish that resemble mackerel; they have a firm texture and excellent flavor. "
+50,Seafood,The most widely eaten fish in the world is,Cod ,Herring,Salmon,Tuna,B,"There are fifteen species of this small oily fish, which is found mainly in the cold waters of the North Atlantic and the North Sea. "
+50,Seafood,Matelote is a,Fish Stew,Fruit Tarte,Large Beer Glass,Thin Knife For Filleting,A,"This highly seasoned stew is made with freshwater fish, wine and stock. ""Matelot"" is French for ""sailor."
+50,Seafood,"Monkfish has lean, flavorful white flesh that is often compared to which of the following?",Cod,Crab,Lobster,Tuna,C,The only edible part of the monkfish is the tail. Monkfish can be sustituted for lobster in most dishes.
+50,Seafood,Which state produces nearly half of the US total oyster harvest?,Louisiana,Maine,Texas,Washington,A,"More than 130,000 tons of live oysters are harvested in the US every year. "
+50,Seafood,Which of the following is the most popular seafood in America?,Salmon,Shrimp,Sole,Tuna,B,This small shellfish pushed tuna out of the top spot in 2001. 
+30,Service,"True or false? In restaurants, when possible, beverages should be served from the left.  ",TRUE,FALSE,,,B,Beverages should be served from the right (with the right hand). 
+30,Service,True or false? When clearing a table the server should proceed in a clockwise direction.  ,TRUE,FALSE,,,err,Counterclockwise. 
+30,Service,True or false? A fee charged by some restaurants to open and serve a bottle of wine brought by a patron is referred to as ullage.  ,TRUE,FALSE,,,B,It is called a corkage fee. 
+30,Service,"True or false? An arrangement of china, silverware, a napkin and glassware is called a cover.  ",TRUE,FALSE,,,A,"The contents of the cover can vary, depending on the kind of service. "
+30,Service,"True or false? When possible, food should be served from the left.  ",TRUE,FALSE,,,A,Left side (with the left hand). 
+30,Service,True or false? Etiquette requires diners to fold their dinner napkin in half and place it on their lap.,TRUE,FALSE,,,A,
+30,Service,"True or false? In French service, a réchaud is used to hold unwanted food and used utensils.   ",TRUE,FALSE,,,B,A réchaud is a small stove used to keep food and plates warm before service. 
+30,Service,True or false? Two servers are required in French service.  ,TRUE,FALSE,,,A,"Other staff can include the captain, who seats the patrons, and the sommelier, who serves the wine. "
+30,Service,True or false? The proper way to eat soup is to fill the soup spoon as you move it towards yourself.   ,TRUE,FALSE,,,B,"To eat soup properly, you should fill the spoon as you move it toward the far rim of the bowl, away from yourself. "
+30,Service,True or false? A station is where the maitre d' controls the seating of the dining room.  ,TRUE,FALSE,,,B,The station is a section of the dining room assigned as a work area to a server. 
+30,Service,"True or false? If a server seats three people at a table set for four, he or she should remove the unnecessary fourth table setting.",TRUE,FALSE,,,A,
+40,Service,The table fork was introduced in England in,1501,1601,1701,,err,"Until then, people ate with knives, spoons or their hands. "
+40,Service,What type of service involves finishing the preparation of food at the table rather than in the kitchen?,American,French,Russian,,B,
+40,Service,"In French service, gueridon refers to which of the following?",A Serving Platter,A Serving Utensil,A Side Cart,,C,One purpose of the gueridon is to keep food and plates warm. 
+40,Service,To what person should the sommelier offer the first taste of wine?,The Oldest Woman,The Person Who Made The Reservation,The Person Who Ordered The Wine,,C,
+30,Soup,True or false? Cockles are chestnuts.  ,TRUE,FALSE,,,B,Cockles are bivalve mollusks. 
+30,Soup,True or false? Gazpacho soup is made with beef.  ,TRUE,FALSE,,,B,"Gazpacho is a cold meatless soup that is usually made from puréed tomatoes and other vegetables, garlic and olive oil. It comes from the Andalusian region of Spain."
+30,Soup,True or false? Manhattan clam chowder is made with cream.  ,TRUE,FALSE,,,B,Manhattan clam chowder is made with tomatoes; New England clam chowder is made with cream. 
+30,Soup,"True or false? ""Minestra"" is the Italian word for ""mixed vegetables.""  ",TRUE,FALSE,,,B,"Minestra means ""soup"" in Italian. ""Minestrone"" means a ""thick and hearty soup,"" and ""minestrina"" means ""broth."
+40,Soup,"At its most basic, a bisque is a rich soup made with which of the following?",Cream,Shellfish,Sherry Or Port,,A,The other ingredients are optional. 
+40,Soup,A popular American turtle soup is called which of the following?,Billi-Bi,Boula Boula,Callaloo,,B,Billi-bi (also billy-bi) is a cold mussel soup. Callaloo is a fish soup from South America.
+40,Soup,Which of the following soups is NOT made with seafood?,Bourride,Cioppino,Garbure,,C,"Garbure is a thick vegetable stew that often also contains bacon, pork or sausage. "
+40,soup,Potage Parmentier is a soup made with,Leek And Potato,Mushrooms And Onion,Spinach And Bacon,,A,"Cream and sometimes chicken stock are also included. The soup is named after Antoine Parmentier (1737–1833), a French agronomist who championed the potato in France."
+40,soup,"In Dutch cuisine ""snert"" refers to a",Porridge,Sardine,Soup,,C,"This thick green pea soup, usually a meal in itself, also contains pork, celeriac, celery, onions, potatoes and sausage. "
+50,soup,Menudo refers to a Mexican,Fish Fritter,Fried Pastry,Spicy Soup,Tequila-Based Cocktail,C,Menudo is made with tripe and eaten with corn tortillas. 
+50,Soup,The essential vegetable in Potage Saint-Germain is,Beans,Green Peppers,Peas,Spinach,C,Potage Saint-Germain is a thick green pea soup enriched with butter. 
+50,Soup,"Scotch broth is made with vegetables, barley and which of the following?",Beef,Lamb,Pork,Woodcock,B,Mutton is also used. 
+50,soup,What are you eating if you are eating terrapin?,Crab,Eel,Scallop,Turtle,D,But you shouldn't be eating it. In the US only farm-raised freshwater turtles and a few wild turtles can legally be eaten. The diamondback terrapin is protected by law along the entire eastern seaboard. 
+30,Spirits,True or false? Absinthe is a liqueur.  ,TRUE,FALSE,,,B,"Absinthe is an anise-flavored spirit made from herbs, including the leaves and flowers of wormwood. Because it does not contain added sugar, it is classified as a liquor."
+30,Spirits,True or false? Advocaat is a bitter Swedish liqueur.  ,TRUE,FALSE,,,B,"Advocaat is a liqueur made with brandy, egg yolks and sugar. The best-known brands (for example, Bols) come from the Netherlands."
+30,Spirits,True or false? The oldest French brandy is Cognac.  ,TRUE,FALSE,,,B,"The oldest French brandy is Armagnac, the first-known distillation of which dates back to 1411. "
+30,Spirits,True or false? Benedictine is a whiskey-flavored liqueur.  ,TRUE,FALSE,,,B,"Benedictine is a digestive made in Normandy, France, of a still-secret formula of 27 different plants and spices. "
+30,Spirits,True or false? A boilermaker is a shot of whiskey followed by a chaser of tomato juice.  ,TRUE,FALSE,,,B,The whiskey is followed by a beer. 
+30,Spirits,"True or false? Casque, Karpi and Palo and are types of smoked fish.  ",TRUE,FALSE,,,B,"They are all types of liqueurs. Casque is a honey and brandy-based liqueur from England, Karpi is a cranberry-based liqueur from Finland, and Palo is a thyme-based liqueur from Spain."
+30,Spirits,True or false? Green chartreuse is colored with chlorophyll.  ,TRUE,FALSE,,,A,"Only three Carthusian monks in a monastery at Voiron, near Grenoble, know the identity of the 130 plants that are blended and distilled to make chartreuse. "
+30,Spirits,True or false? Japan has a number of critically acclaimed whiskey producers.  ,TRUE,FALSE,,,A,"The Japanese whiskey industry dates from the 1920s. Examples of brands are Suntory, Yamazaki and Nikka."
+30,Spirits,True or false? The Greek brandy Metaxa is blended with wine.   ,TRUE,FALSE,,,A,Muscat wine from the Greek islands of Samos and Lemnos is used. Metaxa was first made in 1888.
+30,Spirits,True or false? Moutai is a Chinese liquor distilled from fermented sorghum and wheat.  ,TRUE,FALSE,,,A,Moutai (sometimes spelled Maotai) is arguably China's most famous liquor. Some versions contain up to 53 per cent alcohol by volume.
+30,Spirits,True or false? The second bestselling spirit in the US is whiskey.   ,TRUE,FALSE,,,B,It is rum. 
+30,Spirits,True or false? The British Royal Navy maintains a centuries-old custom of pouring a daily tot of rum for all personnel aboard its ships.   ,TRUE,FALSE,,,B,"The Royal Navy ended this custom on July 31, 1970. The anniversary is known as Black Tot Day."
+30,Spirits,"True or false? All rums emerge from the still as clear, colorless liquids.   ",TRUE,FALSE,,,A,Barrel aging and the addition of caramel impart the final color. 
+30,Spirits,True or false? Most dark rums are produced from pot stills.  ,TRUE,FALSE,,,A,Pot stills (also used to produce Cognac and Scotch whiskies) result in richer and more flavorful rums. Light rums are produced in columns or continuous stills.
+30,Spirits,True or false? Sambuca is a coffee-flavored liqueur.   ,TRUE,FALSE,,,B,"Sambuca is a clear anise-flavored semi-sweet Italian liqueur. When served with a couple of coffee beans in it, it is said to be ""con la mosca"" (""with the fly"")."
+30,Spirits,"True or false? The phrase ""straight up"" refers to an alcoholic drink served in a tall glass.   ",TRUE,FALSE,,,B,A drink served straight up is served without ice. 
+30,Spirits,True or false? Tequila is made only from the blue agave plant.   ,TRUE,FALSE,,,A,"There are 136 species of agave in Mexico, of which the blue agave is the only one allowed to be used in tequila production. "
+40,Spirits,"The Latin term ""aqua vitae"" (water of life) was used in ancient times to describe which of the following?",Beer,Spirits,Wine,,B,
+30,Spirits,"True or false? Bottles of brandy should be stored on their side, just as wine is, to ensure proper ageing. ",TRUE,FALSE,,,B,The bottles must be kept upright to avoid contact between the brandy and the cork. This also applies to scotch and other whiskies.
+30,Spirits,True or false? Cognac and Armagnac improve in the bottle after barrel ageing.  ,TRUE,FALSE,,,B,"However, once opened, Cognac and Armagnac will keep for a considerable time without deteriorating. "
+40,Spirits,"The term ""dunder"" is associated with the",Brewing Of Beer,Making Of Rum,Production Of Cheese,,B,Dunder is the yeast-rich leftovers from rum that are used to start the yeast culture of another batch. 
+40,Spirits,What berry is gin made from?,Blackberry,Cranberry,Juniper,,C,"Though too bitter to eat raw, the pungent darkish berries of the juniper tree are used in cooking and for making spirits. Juniper berry oils have diuretic properties that help flush out the urinary system."
+40,Spirits,Irish whiskey has been referred to as the,Elixir Of The Gods,Mother'S Milk,Water Of Life,,C,
+40,Spirits,Which of the following does NOT belong?,Chartreuse,Izarra,Kahlua,,C,"Chartreuse and Izarra are herbal-based liqueurs that come in two types: yellow and green. They are higher proof than Kahlua, which is a coffee-based liqueur."
+40,Spirits,What spirit is made from fermented ripe cherries?,Calvados,Chambord,Kirsch,,C,
+40,Spirits,Which of the following spices characterizes Kümmel schnapps?,Caraway,Cinnamon,Nutmeg,,A,"Though it probably dates to 16th century Holland, Kümmel is a specialty of northern European countries. "
+40,Spirits,"From the perspective of a connoisseur, which of the following is the best way to enjoy whiskey?",Neat,On The Rocks,With Soda,,A,Or with a few drops of room-temperature water. Chilling the whiskey with ice dulls the flavor instead of enhancing it.
+40,Spirits,"In bartending, a ""pony"" refers to which measurement?",One Ounce,One And A Half Ounces,Two Ounces,,A,"A pony is also known as a ""shot"" or a ""jigger. "
+40,Spirits,The USA still uses the proof system to express the percentage of alcohol by volume. 100 proof is equal to what percentage?,45 Per Cent,50 Per Cent,100 Per Cent,,B,
+40,Spirits,What country produces rums that are best known for their dark style?,Barbados,Cuba,Jamaica,,C,"The general style of Jamaican rum is rich, dark, heavy and pungent. Barbadian rums are semi-light, and Cuban rums are light and delicate."
+40,Spirits,"From what area in Scotland do we get the single malt scotches Laphroaig, Lagavulin and Bruichladdich?",Campbeltown,Islay,Lowland,,B,
+40,Spirits,In what year were blended Scotch whiskies were first introduced?,1853,1903,1922,,err,The Edinburgh firm Andrew Usher and Company released the first batch of vatted malt (a blend of whiskies of different ages) in 1853; it was called Old Vatted Glenlivet Whisky. 
+40,Spirits,Which of the following would usually be included in turtle soup?,Cognac,Madeira,White Wine,,B,Sherry is also commonly used. 
+50,Spirits,Which of the following is NOT a fortified wine?,Armagnac,Port,Sherry,Vermouth,A,Armagnac is a type of brandy from southwestern France. 
+50,Spirits,Where does the alcoholic beverage cachaça come from?,Argentina,Brazil,Mexico,Portugal,B,Cachaça is distilled from sugar cane. 
+50,Spirits,Calvados is a brandy derived from which fruit?,Apple,Lemon,Orangepear,Orange,A,"Calvados is made in Calvados, in the Normandy region of France. "
+50,Spirits,Which of the following is NOT an anise-flavored liqueur?,Chartreuse,Ouzo,Pastis,Pernod,A,"Although 130 plants go into making Chartreuse, among them angelica, cinnamon bark, mace and saffron, Chartreuse is not known as an anise-flavored liqueur. "
+50,Spirits,Demerara rum is made from sugar cane grown along the banks of the Demerara river in which Caribbean country?,Jamaica,Guyana,Puerto Rico,Trinidad,B,
+50,Spirits,In what country was gin developed?,Belgium,England,Holland,India,C,A 17th century professor of medicine mixed grain spirit with juniper-berry extract to create gin. 
+50,Spirits,The country with the highest per capita consumption of gin is,Britain,Germany,Holland,Spain,D,"However, the USA is the world's largest market for gin. "
+50,Spirits,Which of the following is a single malt Scotch?,Cutty Sark,Dewar'S,Glenfiddich,Johnnie Walker,C,
+50,Spirits,Which of the following is NOT considered one of the three great French brandies?,Armagnac,Calvados,Cognac,Grand Marnier,D,This orange-flavored beverage is a liqueur not a brandy. 
+50,Spirits,What is grappa?,A Box For Transporting Grapes,A Distilled Beverage From Italy,A Grape Juice,A Soda Pop,B,"Grappa is distilled from the grape seeds, stalks and stems discarded during wine making. "
+50,Spirits,Which of the following is an Irish whiskey?,Glenlivet,Jameson,Jim Beam,Johnnie Walker,B,"This is a blended whiskey, made by Midleton Distillery, one of only three distilleries making Irish whiskey. "
+50,Spirits,What is Okolehao?,A Liqueur,A Pineapple Soda,A Pork Dish,A Tea-Based Beverage,A,This Hawaiian liqueur is made from the root of the ti plant (a member of the agave family) and is about 80 proof (40 per cent alcohol). 
+50,Spirits,"Prior to Prohibition, what was the most popular type of whiskey in America?",Bourbon,Malt,Rye,Vodka,C,After Prohibition rye was replaced by bourbon. 
+50,Spirits,Sabra liqueur is made in,Brazil,Greece,Israel,Portugal,C,"Sabra's main flavor is bittersweet chocolate, which is cut by the sweet and sour taste of jaffa oranges. "
+50,Spirits,What grain is the basis of single malt Scotch?,Barley,Corn,Rye,Wheat,A,"The recipe for Scotch whiskey, the national drink of Scotland, has changed little over hundreds of years. The first step is to dry malted barley over peat fires, which imparts a particular flavor to the whiskey."
+50,Spirits,Slivovitz is a brandy made from,Apples,Cherries,Pears,Plums,D,"The national drink of the Bosnians and Serbs, slivovitz is a true alcohol, not just brandy flavored with fruit. "
+50,Spirits,Southern Comfort is an American liqueur made from bourbon and which of the following?,Apple,Apricot,Orange,Peach,D,"Southern Comfort was first created in 1875 and was known as Cuff and Buttons. A bartender in St. Louis, Missouri, changed its name to Southern Comfort. "
+50,Spirits,In what century was whiskey was first made in the US?,16Th,17Th,18Th,19Th,B,It was made from a mixture of corn and rye. 
+30,Statistics,True or false? The least popular day to eat out in the US is Sunday.  ,TRUE,FALSE,,,B,It is Monday. 
+40,Statistics,"According to the Guinness Book of World Records, what country has the largest restaurant (seating) in the world?",Hong Kong,Russia,Syria,,C,"The Damascus Gate restaurant, in Damascus, can seat 6,014 people. During peak operation, it employs 1,800 staff. The restaurant features such things as waterfalls, fountains and replicas of archeological ruins of Syria. "
+40,Statistics,Where does the US restaurant industry rank with respect to the size of its workforce?,First,Second,Third,,A,
+40,Statistics,What percentage of land in Italy is covered by farmland?,80 Per Cent,50 Per Cent,20 Per Cent,,C,
+40,Statistics,Which country consumes the most wine per capita?,France,Italy,Luxembourg,,A,Luxembourg is second. 
+50,Statistics,What is the favorite dish of most Argentinians?,Chicken Kebab,Shrimp,Spiced Pork,Steak,D,"With its vast grazing lands, Argentina produces a large quantity of beef, which is a principal diet staple. "
+50,Statistics,What country consumes the most beer per capita?,Czech Republic,Germany,Ireland,Usa,A,
+50,Statistics,"In 2005, Americans spent what percentage of their food dollars eating out?",23,35,47,55,err,
+50,Statistics,Americans eat approximately what percentage of their meals away from home each year?,20,30,40,50,err,
+50,Statistics,In which country do people eat the least often at sit-down restaurants?,France,Germany,Italy,Russia,D,
+50,Statistics,What percentage of Americans had their first job in a restaurant?,10,15,20,25,err,
+50,Statistics,What percentage of Americans have worked at a restaurant at some time in their lives?,10,20,30,40,err,
+50,Statistics,Which of the following French terms refers to herbal infusions in beverages?,Aperitif,Mijoté,Salopette,Tisane,D,
+30,Techniques,"True or false? The word ""barbecue"" is derived from a French term.  ",TRUE,FALSE,,,B,"It is believed that it derives from the Arawakan word ""barbacoa,"" which refers to a method of drying and cooking meat on a frame of wooden sticks erected over a fire. "
+30,Techniques,True or false? Wrapping meat with strips of fat (bacon or fatback) is referred to as larding.  ,TRUE,FALSE,,,B,That practise is barding. Larding involves inserting fat into meat using a larding needle.
+30,Techniques,True or false? The key difference between roasting and braising is the use of water. ,TRUE,FALSE,,,A,"Braising uses a small amount of water, in effect cooking with moist heat. "
+30,Techniques,True or false? Broiling and grilling are two methods of cooking that  both require direct heat. ,TRUE,FALSE,,,A,"Two examples of direct heat in cooking are the use of heating elements over food, as in a domestic broiler, or hot coals under the food, as in a barbecue. "
+30,Techniques,True or false? Coddling is a method of pickling eggs.  ,TRUE,FALSE,,,B,Coddling is a method of gently steaming or cooking food in warm water; it is a common method of preparing eggs. 
+40,Techniques,Who is credited with creating the professional kitchen as we know it today?,Jean-Anthelme Brillat-Savarin,Antonin Carême,Auguste Escoffier,,C,"His kitchen was organized by sections, run by chefs de partie. His ""brigade system"" was likely a result of his experience as an army chef in the Franco–Prussian war."
+40,Techniques,Deglazing refers to which of the following?,Icing For Cakes,Making A Sauce For Meats,Topping For Patés,,B,"Deglazing refers to the technique of adding a liquid (e. g., wine) to a pan to dissolve caramelized bits of food. "
+40,Techniques,"If a fish is described as ""drawn,"" it means that it",Is Served With Butter,Has Been Gutted,Has Been Weighed At The Dock,,B,
+40,Techniques,Julienning is a method of food preparation in which food is,Cut Into Small Cubes,Cut Into Thin Strips,Finely Diced,,B,Carrots are often julienned as are potatoes to make thin french fries. 
+50,Techniques,"The cooking term ""à la nage"" refers to",Cake Decorating,Dishes Served With Beets,Meringue-Based Desserts,Poaching Foods,D,Nage is an aromatic court-bouillon in which seafood is cooked. The seafood is then served hot or cold in the cooking stock.
+50,Techniques,"The term ""macerate"" refers to the process of",Ageing,Flattening,Gently Poaching,Soaking,D,"Maceration involves soaking spirits such as rum, brandy or a liqueur to infuse a particular food with the flavor of the liquid. "
+50,Techniques,"What does the phrase ""to muddle"" mean with respect to food?",Mashing Ingredients,Mixing Different Types Of Wine,Preparing Flavored Coffee,Preparing Sauces With Several Different Liquids,A,"To muddle food, one crushes ingredients together with a spoon or similar tool. An example is mint leaves and sugar muddled together for a Mint Julep."
+40,Terms,"In the 17th century, which of the following words referred to an incongruous mixture of liquids that would not ordinarily go together?",Balderdash,Hodgepodge,Mishmash,,A,"This word appeared around the time of Shakespeare; an example of balderdash is beer and buttermilk, or wine and beer. "
+50,terms,In Italian cuisine antipasto refers to,A Pre-Dinner Drink,An Appetizer,Pasta With Cheese,Pasta With Tomato Sauce,B,"From the Italian meaning ""before"" (anti) ""the meal"" (pasto). "
+50,Terms,"What does the Spanish word ""paella"" mean?",Frying Pan,Rice,Seafood Stew,Simmered,A,"However, paella is also a dish from Valencia, Spain. Its main ingredients are rice and saffron and a wide variety of other foods, such as seafood and chicken."
+50,terms,"In what country would you hear the toast ""prosit"" uttered before drinking?",Germany,Hungary,Poland,Russia,A,"Prosit is derived from a Latin word meaning ""may it be beneficial. "
+50,terms,"In Argentina, the term ""sobremesa"" means",Clearing The Table,Talking Around The Table,The Table Setting,The Period Between Meals,B,"There is no exact English translation of this phrase, which refers to the time spent after a meal, usually lunch, when matters big and small are discussed around the table. "
+30,Trivia,True or false? Paul Bocuse is the author of the cookbook titled La Technique.,TRUE,FALSE,,,B,"Jacques Pépin wrote La Technique. However, Paul Bocuse has also written many books about food and cooking, among them Fast Food My Way and The Apprentice: My Life in the Kitchen."
+30,Trivia,True or false? Vodka is the number one selling spirit in the United States.  ,TRUE,FALSE,,,A,
+40,Trivia,"Who said, ""Always do sober what you said you'd do drunk. That will teach you to keep your mouth shut""?",Ozzie Osbourne,Johnny Depp,Ernest Hemingway,,C,
+40,Trivia,Frederick the Great reportedly made his coffee with,Beer,Brandy,Champagne,,C,
+40,Trivia,"Who said, ""The consumption of alcohol may create the illusion that you are tougher, smarter, faster and better looking than most people""?",George Carlin,Chris Rock,Henny Youngman,,C,
+50,Trivia,"Who said, ""Beer is proof that God loves us and wants us to be happy""?",Benjamin Franklin,Dave Barry,John Belushi,,A,
+50,Trivia,"Who said, ""A hotdog at the ballpark is better than a steak at the Ritz""?",Humphrey Bogart,George W. Bush,Billy Crystal,Babe Ruth,A,
+50,Trivia,"Who said, ""Poultry is for the cook what canvas is to the painter""?",James Beard,Brillat-Savarin,Julia Child,Matisse,B,This brilliant French gastronome and epicure wrote The Physiology of Taste in 1825. 
+50,Trivia,"Who said, ""I drink when I have occasion, and sometimes when I have no occasion""?",Miguel De Cervantes,Winston Churchill,Keith Richard,Oscar Wilde,A,
+50,Trivia,In what year was the first recorded Chinese restaurant in the US established?,1849,1876,1901,1917,A,"Called Macao and Woosung, it was located in San Francisco. "
+50,Trivia,"Who said, ""I feel sorry for people who don't drink. When they wake up in the morning, that's as good as they're going to feel all day""?",Richard Harris,Dean Martin,Oliver Reed,Frank Sinatra,D,
+50,Trivia,"Who said, ""Wine is sunlight held together by sunlight""?",Leonardo Da Vinci,Galileo,Picasso,Francis Coppola                       ,B,
+50,Trivia,"Who said, ""It takes only one drink to get me drunk. The trouble is, I can't remember if it's the thirteenth or fourteenth""?",George Burns,Bette Midler,Marilyn Monroe,Joan Rivers,A,
+50,Trivia,Which of the following is NOT a major figure in the world of cooking?,James Beard,Paul Bocuse,Julia Child,Hugh Johnson,D,He is a well-known authority on wine. 
+50,Trivia,"Who said, ""What is better than to sit at the end of the day and drink wine with friends, or substitutes for friends""?",Simone De Beauvoir,Ernest Hemingway,James Joyce,Oscar Wilde,C,
+50,Trivia,"In Turkish cuisine, a meze is",Fried Cheese,Lamb Stew,A Selection Of Appetizers,A Sparkling Non-Alcoholic Drink,C,
+50,Trivia,Ancient Egyptians placed their right hand on what food when taking an oath?,Avocado,Cabbage,Melon,Onion,D,The onion's round shape symbolized eternity. 
+50,Trivia,The most popular pizza topping in Japan is,Sardines,Seaweed,Squid,Tuna,C,
+50,Trivia,"Who said, ""Wine is bottled poetry""?",Shakespeare,Sylvia Plath,Marie Antoinette,Robert Louis Stevenson,D,
+50,Trivia,Spilling salt is considered good luck in,Austria,Chile,Japan,Russia,C,
+30,Utensils,True or false? A bain-marie is a hot-water bath used for cooking or holding food.  ,TRUE,FALSE,,,A,"Also known as a double boiler, a bain-marie allows food such as custards or chocolate to be cooked or kept warm without boiling or scorching. "
+30,Utensils,"True or false? A China cap, or chinois, refers to a lid used to cover a wok while steaming vegetables.  ",TRUE,FALSE,,,B,A China cap is a fine-meshed cone-shaped strainer for passing sauces. 
+30,Utensils,"True or false? Rock, saucer and sour are kinds of candy.  ",TRUE,FALSE,,,B,They are all glassware of varying sizes used for specific kinds of beverages. 
+40,Utensils,"In French cooking, what does ""cocotte"" refer to?",A Casserole,An Egg Holder,A Fine Strainer,,A,"A cocotte is both a baking dish and the ingredients it contains. Watch how you use it, though — ""cocotte"" can also mean ""prostitute"" or ""floozy."
+40,Utensils,"In Spain, a copita is a",Deep Fried Fish Snack,Sherry Glass,Type Of Flatbread,,B,"This traditional glass originated in Jerez, Spain. "
+40,Utensils,What is a mezzaluna?,A Blade For Chopping,A Double Boiler,A Vegetable Peeler,,A,"A mezzaluna is a crescent-shaped blade with wooden knobs at each end; the cook rocks it back and forth on a cutting board. ""Mezzaluna"" means ""half-moon"" in Italian."
+40,Utensils,In what year did the first commercial microwave hit the market?,1947,1959,1964,,err,"It was manufactured by the Massachusetts company Raytheon. Called the Radarange range, the oven was 5 1/2 ft. R543 tall, weighed 750 lbs and cost $5,000. Today Raytheon is the world's largest producer of guided missiles."
+40,Utensils,How many tablespoons are there in one fluid ounce?,One,Two,Three,,B,
+50,Utensils,A mandoline is a kitchen utensil used for,Chopping,Mixing,Sifting,Slicing,D,"This compact, hand-held slicing tool has adjustable blades. "
+50,Utensils,"Since 1756, the name Riedel has been associated with",Cheese Production,Cognac Distillation,Distribution Of Port,Production Of Crystal Stemware,D,
+50,Utensils,"In a professional kitchen, a salamander is used for",Broiling,Dicing And Chopping,Pressure Cooking,Shredding,A,A salamander is a type of oven that directs heat down from the roof and is used especially for glazing and browning. It is named for the legendary animal that was said to be resistant to fire.
+50,Utensils,What is a tandoor?,A Griddle,An Oven,A Pot For Cooking Stews,A Tea Kettle,B,"A tandoor is a cylindrical charcoal-fired clay oven used in India to cook chicken and fish; dishes cooked in it are described as ""tandoori. "
+30,Vegetables,True or false? Both the root and the leaves of the beet plant are edible. ,TRUE,FALSE,,,A,Beetroots range in color from white to deep red; the leaves of the beet plant are green and highly nutritious. 
+30,Vegetables,True or false? The best Belgian endive is green.  ,TRUE,FALSE,,,B,Endive should be white. Exposure to light causes it to turn green and to lose its delicate flavor.
+30,Vegetables,True or false? Broccoli belongs to the cabbage family.  ,TRUE,FALSE,,,A,"The word ""broccoli"" is derived from the Italian word ""broccolo,"" which means""cabbage sprout. "
+30,Vegetables,True or false? One should never trim the tops off bunches of carrots.  ,TRUE,FALSE,,,B,The greens will take moisture and nutrients from the carrot if they are not removed. 
+30,Vegetables,True or false? Eating large quantities of carrots can cause one's skin to turn yellow.  ,TRUE,FALSE,,,A,"This temporary condition, known as carotenosis, is caused by the non-toxic carotenoid pigments found in carrots. "
+30,Vegetables,True or false? An individual piece of celery is referred to as a stalk. ,TRUE,FALSE,,,B,Individual pieces of celery are referred to as ribs; many ribs make up a stalk. 
+30,Vegetables,"True or false? The name ""chicken of the woods"" refers to mushrooms.  ",TRUE,FALSE,,,A,"Also known as ""sulfur shelf,"" this mushroom grows in a variety of trees and often replaces chicken in cooking because of its pleasant taste and meaty texture. "
+30,Vegetables,True or false? Corn is native to Central Africa.  ,TRUE,FALSE,,,B,Corn is native to Central America. 
+30,Vegetables,True or false? Cucumbers are waxed primarily to prevent bruising.  ,TRUE,FALSE,,,B,Waxing helps prevent moisture loss. 
+30,Vegetables,True or false? The garbanzo bean is also known as the chickpea.  ,TRUE,FALSE,,,A,"Chickpeas are used extensively in Indian, Mediterranean and Middle Eastern dishes. "
+30,Vegetables,"True or false? The pink pickled-ginger condiment for sushi is called ""cha.""  ",TRUE,FALSE,,,B,"It is called ""gari. Cha"" is the Japanese word for ""tea."
+30,Vegetables,True or false? The best and most expensive maple syrup is dark.  ,TRUE,FALSE,,,B,"Maple syrup should be light and clear. When it is collected from the tree, maple sap is orange; after being processed into syrup, it is golden."
+30,Vegetables,"True or false? Wood ear, matsutake and cloud ear are varieties of mushrooms. ",TRUE,FALSE,,,A,
+30,Vegetables,"True or false? As a rule, smaller peppers tend to be hotter than larger peppers.   ",TRUE,FALSE,,,A,
+30,Vegetables,True or false? The potato is native to Ireland.  ,TRUE,FALSE,,,B,"Potatoes are native to South America, where they were grown by the Incas. Pizarro discovered them and introduced them to Europe in 1534."
+30,Vegetables,True or false? Most of the heat of a radish is contained in its skin.   ,TRUE,FALSE,,,A,
+30,Vegetables,True or false? Another name for green onion is scallion.  ,TRUE,FALSE,,,A,
+30,Vegetables,True or false? Shitake is a type of Japanese beer. ,TRUE,FALSE,,,B,"Shitake (or Shiitake) is a meaty, flavorful mushroom. "
+30,Vegetables,True or false? Soy milk has a higher protein content than cow's milk.  ,TRUE,FALSE,,,A,"Soy milk is also cholesterol free, and low in fat and sodium. "
+30,Vegetables,True or false? China produces most of the world's soybean crop.   ,TRUE,FALSE,,,B,The USA is the world's largest producer of soybeans. 
+30,Vegetables,True or false? Yams and sweet potatoes are different names for the same vegetable.   ,TRUE,FALSE,,,B,"Though similar in appearance and flavor, they are different. True yams are a tropical tuber with white to yellow flesh. Sweet potatoes are potatoes; they range from brown-skinned with pinkish flesh, to coppery with orange flesh. "
+40,Vegetables,Allonya is a kind of,Ground Nut,Miniature Banana,Yam,,C,Allonyas are starchy yam tubers common in Caribbean cooking. 
+40,Vegetables,Which of the following is a type of Italian rice?,Arborio,Bruschetta,Minestra,,A,This short-grained rice is high in starch and is especially good for making risotto. 
+40,Vegetables,To which vegetable family does arugula belong?,Cabbage,Mustard,Parsley,,B,Arugula is an aromatic salad green with a peppery mustard flavor. 
+40,Vegetables,How is white asparagus produced?,By Crossing It With White Eggplant,By Growing Green Asparagus In The Dark,By Harvesting It Early,,B,
+40,Vegetables,Which food is the least stable in the cupboard?,Dried Beans,Pasta,Plain Rice,,A,"After one year, the soaking times of dried beans can increase significantly. Pasta and rice can be stored for several years without loss of quality."
+40,Vegetables,Cardoons are a close relative of which vegetable?,Artichoke,Okra,Radish,,A,"The cardoon, which is popular in France, Spain and Italy, is available at the end of autumn and in winter. The stalks are especially good fried. They can also be served cold, with vinaigrette. "
+40,Vegetables,"Tomatoes are a member of the nightshade family, Solanaceae. Which of the following is NOT a member of the same family?",Carrots,Eggplants,Potatoes,,A,
+40,Vegetables,What is an alternative name for cassava?,Yam,Yarrow,Yuca,,C,This starchy plant is similar to potatoes in nutrition and is best known for its association with tapioca. 
+40,Vegetables,Which of the following resembles a turnip?,Cardoon,Celeriac,Tomato,,B,"This root vegetable can be peeled, cut into small pieces, boiled until tender and served with butter or sauce. "
+40,Vegetables,A cep is a kind of,Bean,Mushroom,Pastry,,B,"This large mushroom has a brown cap, a thick white stem and an aroma reminiscent of sourdough. "
+40,Vegetables,Which of the following tastes like licorice?,Cardoon,Celeriac,Fennel,,C,"Fennel resembles celery. Its stems can be eaten cooked or uncooked, and it goes well with apple and nuts."
+40,Vegetables,A gherkin is the same thing as which of the following?,Bresaola,Cornichon,Flageolet,,B,Gherkins and cornichons are small tart pickles. 
+40,Vegetables,What is maize?,Barley,Corn,Wheat,,B,"Maize is known as corn in the US and Canada. Christopher Columbus discovered it, and Cortés introduced it to Europe."
+40,Vegetables,The world's largest exporter of mustard seeds is,Canada,Poland,Russia,,A,
+40,Vegetables,Which of the following is NOT a member of the cabbage family?,Kale,Kohlrabi,Okra,,C,
+40,Vegetables,"Picholine, gaeta and niçoise are all types of",Capers,Mushrooms,Olives,,C,
+40,Vegetables,Which of the following is NOT native to the Americas?,Corn,Parsnips,Tomatoes,,B,"The parsnip was brought to North America from Europe in the early 17th century. The parsnip is used in all the same ways as the turnip, and can also be baked or cooked like carrots."
+40,Vegetables,Greening in potatoes is caused by which of the following?,Excess Moisture,Exposure To Light,High Acidity In Soil,,B,"Greening indicates the presence of an alkaloid called solanine, which is toxic in large amounts. "
+30,Vegetables,True or false? Sorrel has a peppery flavor.   ,TRUE,FALSE,,,B,"The herb sorrel contains oxalic acid, which imparts a sharp or acidic taste. Because of this it is usually parblanched before cooking."
+40,Vegetables,Which plant provides a complete protein source?,Barley,Peanut,Soybean,,C,
+40,Vegetables,"Swede and neep are terms used in Britain, particularly in Scotland, to refer to",Rabbit Stew,Sardines,Turnips,,C,
+40,Vegetables,"Which food is referred to as ""meat without bones""?",Breadfruit,Cassava,Tofu,,C,"Also known as doufo in China, bean curd is relatively high in protein (over 10 per cent in firm tofu). It also contains iron and has little fat."
+50,Vegetables,Aubergine is also known as,Artichoke,Eggplant,Shallot,Squash,B,
+50,Vegetables,"The Italian word ""battuto"" refers to a",Batter For Deep Frying,Large Whisk,Mixture Of Chopped Vegetables,Small Sponge Cake,C,"A battuto of chopped raw carrots, celery, onion, garlic and parsley is the base for many sauces and is used to flavor various dishes. "
+50,Vegetables,"To which of the following do cannellino, aduki and borlotto all refer?",Beans,Mushroom,Noodles,Squash,A,"Beans are among the oldest foods, dating back at least 4,000 years. "
+50,Vegetables,"Chantenay, Danvers, Imperator and Nantes are terms that refer to the shapes of which vegetable?",Carrots,Potatoes,Radishes,Yams,A,Chantenay is the shortest of all varieties; Danvers are medium sized; Imperator are the longest and most common variety; Nantes carrots are cylindrical and blunt. 
+50,Vegetables,Which of the following is NOT a type of chili pepper?,Cascabel,Cebolla,Morita,Pasilla,B,"This is the Spanish word for ""onion. "
+50,Vegetables,"The term ""crudités"" refers to",Cheeses,Fruit,Nuts,Vegetables,D,"Whole, shredded or sliced vegetables are served as an appetizer, often with a vinaigrette or dipping sauce. "
+50,Vegetables,"The word ""enoki"" refers to which of the following?",Clams ,Mushrooms,Saki,Spice Bundles,B,"These long, thin mushrooms with a crisp texture are used for soups, salads and other dishes. "
+50,Vegetables,Fava is what type of food?,Beans,Coffee,Flour,Sorbet,A,Fava beans resemble large lima beans and are popular in Mediterranean and Middle Eastern cooking. 
+50,Vegetables,"If properly stored, white garlic can keep for as long as",One Week,One Month,Two Months,Six Months,D,"Pink garlic, a smaller variety, can keep for up to a year. "
+50,Vegetables,Japanese ginger is known as,Chozuke,Domburi,Kuzumochi,Mioga,D,
+50,Vegetables,A girolle is a type of,Cherry,Mushroom,Pastry Bag,Soft Candy,B,This yellow trumpet-shaped mushroom is also known as a chanterelle. 
+50,Vegetables,What is mesclun?,Bean Salad,Flavored Olive Oil,A Mixture Of Greens,Spice Mixture,C,
+50,Vegetables,What is miso?,Bean Paste,Fish-Based Sauce,Kind Of Beer,Spicy Shellfish Soup,A,"Miso is a high-protein fermented Japanese seasoning made of soybeans, salt and (usually) grain. It ranges in taste from very salty to very sweet, and is used to flavor sauces, soups and main dishes."
+50,Vegetables,What is a morel?,Herb,Mushroom,Small Pastry,Sour Cherry,B,"This wild mushroom has a nutty, earthy flavor and is excellent sautéed in butter. "
+50,Vegetables,What are pepitas?,Peanuts,Pistachios,Pumpkin Seeds,Sunflower Seeds,C,Pepitas are popular in Mexican cooking. 
+50,Vegetables,What is polenta made from?,Barley,Corn,Rice,Wheat,B,Polenta is a staple of northern Italian cuisine. 
+50,Vegetables,Queen Anne's lace is the wild form of which vegetable?,Carrot,Chicory,Fennel,Parsley,A,
+50,Vegetables,What is a scarlet runner?,A Bean,A Kind Of Lettuce,A Variety Of Rhubarb,A Sweet Pepper,A,"This large magenta and black bean is a favorite in Great Britain. The word ""scarlet"" comes from the plant's bright red flowers."
+50,Vegetables,Pattypan and crookneck are types of which food?,Melon,Nut,Parsnip,Squash,D,Both are varieties of summer squash. Pattypan squash are small disks with scalloped edges; crooknecks have bright yellow bumpy skin and curved necks.
+50,Vegetables,Which of the following is NOT a type of squash?,Acorn,Buttercup,Butternut,Tiger,D,
+50,Vegetables,In what country did tomatoes originate?,Italy,Mexico,Peru,Spain,C,"Imported into Spain in the 16th century, tomatoes were thought to be poisonous until the 18th century. "
+50,Vegetables,What is witloof?,Asparagus,Celery,Chicory,Leeks,C,Witloof is also called French or Belgian endive. 
+50,Vegetables,True yams are native to,Africa,Europe,Indonesia,South America,A,
+30,Wine,"True or false? The longer grapes hang on the vine, the less acidic they become.  ",TRUE,FALSE,,,A,
+30,Wine,True or false? The Alsace wine region of France borders Spain. ,TRUE,FALSE,,,B,Alsace borders Germany. 
+30,Wine,True or false? Amarone wine is made from dried grapes.  ,TRUE,FALSE,,,A,The fermentation of dried grapes concentrates the flavors. 
+30,Wine,True or false? It is illegal for winemakers to add sugar to grape juice in Australia.  ,TRUE,FALSE,,,A,"It is also unnecessary because the warm climate allows grapes to ripen quickly and, therefore, to attain sweetness. In Europe, however, adding grape juice to wine is permitted."
+30,Wine,True or false? Australia has only one natural grape vine.  ,TRUE,FALSE,,,B,Australia has no natural grapevine. The first grape variety was imported there in 1788.
+30,Wine,True or false? The largest fine wine producing region of Australia is the Barossa Valley.  ,TRUE,FALSE,,,A,The Barossa Valley is situated northeast of Adelaide in southern Australia. 
+30,Wine,"True or false? ""Bodega"" is a Spanish word for a small café.  ",TRUE,FALSE,,,B,"Bodega means a ""winery"" or ""wine cellar"" in Spanish. "
+30,Wine,True or false? Claret is synonymous with red Bordeaux wine.  ,TRUE,FALSE,,,A,
+30,Wine,True or false? Wine can only be white or red.,TRUE,FALSE,,,A,Rosé or pink wines are considered red. 
+30,Wine,True or false? A deep purple color is an indication that a wine is mature. ,TRUE,FALSE,,,B,Deep purple is more indicative of a very young wine. 
+30,Wine,"True or false? In French, the word ""cuvée"" means harvest.  ",TRUE,FALSE,,,B,Cuvée refers to the blend of different grapes that are used to make a specific wine. 
+30,Wine,"True or false? ""Dolce"" means ""soft"" in Italian.  ",TRUE,FALSE,,,B,"Dolce means ""sweet. It is commonly used in reference to wine."
+30,Wine,"True or false? ""Domaine"" and ""château"" are interchangeable terms.  ",TRUE,FALSE,,,A,"They both mean ""a wine-producing property or estate"" in French. "
+30,Wine,True or false? Eiswein is produced from frozen grapes. ,TRUE,FALSE,,,A,"Eiswein is a very sweet German wine made from frozen grapes. When grapes freeze on the vine, the sugars do not freeze, but the water does. This creates a highly concentrated grape must and results in a concentrated, very sweet wine. "
+30,Wine,"True or false? When a wine is referred to as ""fat"" it means that it contains a lot of tannin. ",TRUE,FALSE,,,B,A fat wine has a high glycerine content. 
+30,Wine,"True or false? The word ""fino"" refers to a light-bodied dry sherry.  ",TRUE,FALSE,,,A,
+30,Wine,True or false? Liebfraumilch wines can be either dry or sweet. ,TRUE,FALSE,,,B,Completely dry Liebfraumilch wines are not allowed. 
+30,Wine,True or false? Madeira can be dry or sweet.  ,TRUE,FALSE,,,B,"Madeira, which comes from the Portuguese island of the same name, is always sweet. "
+30,Wine,True or false? The famous Marlborough wine region of New Zealand is situated on the North Island.  ,TRUE,FALSE,,,B,Marlborough is found on the South Island and is well known for its Sauvignon Blanc. 
+30,Wine,True or false? Marsala is a type of Sicilian dessert. ,TRUE,FALSE,,,B,"Marsala is a fortified wine from Sicily that comes in various styles, from dry (""secco"") to sweet (""dolce""). Marsala can also be flavored with almonds, chocolate, coffee, tangerine or egg yolk."
+30,Wine,True or false? Orvieto wine comes from Sicily.   ,TRUE,FALSE,,,B,"Orvieto wine comes from Umbria, in central Italy. "
+30,Wine,"True or false? The French word ""pétillant"" refers to wines that are slightly pink. ",TRUE,FALSE,,,B,"Pétillant means ""slightly sparkling. "
+30,Wine,True or false? Phylloxera is an ancient grape variety from Croatia.  ,TRUE,FALSE,,,B,Phylloxera is a plant louse that is deadly to wine vines. 
+30,Wine,True or false? Prosecco is a sparkling wine.   ,TRUE,FALSE,,,A,Prosecco is a fruity wine from the Tre Venezie region of northeastern Italy. 
+30,Wine,True or false? Rousanne is a white grape from the Rhône region.   ,TRUE,FALSE,,,A,Rousanne is often blended with the Marsanne grape. 
+30,Wine,True or false? Salty foods tend to make red wine taste more tannic.   ,TRUE,FALSE,,,B,Salt makes red wine tend to taste less tannic. 
+30,Wine,"True or false? In France, Sauterne wines can be dry or sweet.   ",TRUE,FALSE,,,B,Sauternes are always sweet. 
+30,Wine,True or false? Genuine sherry comes from Portugal.   ,TRUE,FALSE,,,B,Sherry is a world-famous Spanish fortified wine with an alcohol content between 15. 5 per cent and 22 per cent.
+30,Wine,True or false? Soave is a red wine.   ,TRUE,FALSE,,,B,Soave is a light wine from the Tre Venezie region of northern Italy. 
+30,Wine,"True or false? In Germany, ""Tafelwein"" means ""table wine.""",TRUE,FALSE,,,A,Tafelwein is also known as ordinary wine. 
+30,Wine,True or false? White wines contain about the same amount of tannins as red wine.   ,TRUE,FALSE,,,B,
+30,Wine,True or false? Valpolicella is a red wine.   ,TRUE,FALSE,,,A,This fruity wine is made in the Tre Venezie region of northeastern Italy. 
+30,Wine,True or false? Valpolicella and Bardolino wines come from the Veneto region of Italy.   ,TRUE,FALSE,,,A,
+30,Wine,True or false? The vintage year on a wine label refers to the year the wine was bottled.   ,TRUE,FALSE,,,B,The vintage refers to the year the grapes were harvested. The exception is Eiswein from Germany—the grapes for this wine are picked in January but the label shows the previous year as the vintage.
+30,Wine,True or false? The great white burgundies are aged in oak casks.  ,TRUE,FALSE,,,A,The Chardonnay grape marries well with the taste of oak. 
+40,Wine,Which grape is NOT entitled to enjoy the status of Appellation d’origine contrôlée in Alsace?,Gewurztraminer,Pinot Blanc,Sauvignon Blanc,,C,
+40,Wine,"What does ""amaro"" mean in Italian?",Bitter,Hot,Spicy,,A,
+40,Wine,Bandol is a wine from which region in France?,Bordeaux,Burgundy,Provence,,C,This dark red wine is made from the Mourvèdre grape as well as from other local varieties. 
+40,Wine,"What does the German word ""Bereich"" refer to?",Wine Barrel,Wine Region,Winery,,B,Bereich refers to a rather broad area usually incorporating a number of neighboring villages and vineyards. 
+40,Wine,What is the most southerly French wine region?,Alsace,Bordeaux,Champagne,,B,
+40,Wine,"Generally speaking, if a wine is described as tannic with flavors of chocolate, black currants and tobacco, it is likely made from which grape?",Cabernet,Merlot,Zinfandel,,A,"The intensity of the flavors may vary, however, depending on where the grapes were grown. "
+40,Wine,Chenin Blanc is an important grape in,Alsace,Burgundy,The Loire Valley,,C,Vouvray and Bonnezeaux are two great Chenin-based Loire Valley wines. 
+40,Wine,The Pinotage grape is a cross between Pinot Noir and which of the following grapes?,Cinsault,Grenache,Malbec,,A,"It is grown commercially in South Africa and makes a dark, fruity wine with an earthy character often described as ""paintbox. "
+40,Wine,Red wine is usually in its prime when it is ,Red,Red With Tinges Of Brown And Orange,Purple,,B,
+40,Wine,What is Australia's famous wine district Coonawarra famous for?,Black Volcanic Soil,Red Soil,Yellow Sandy Soil,,B,"Coonawarra is an Aboriginal word meaning ""honeysuckle. "
+40,Wine,"What does the Spanish word ""cosecha"" mean with reference to wine?",Aged In Oak,Slightly Sweet,Vintage,,C,
+40,Wine,"In Italy, DOC wines (controlled name and region) account for what percentage of total production?",10 Per Cent,25 Per Cent,75 Per Cent,,B,
+40,Wine,"When the word ""finish"" is used with respect to wine, it refers to a",Final Wine-Making Step Before Bottling,Lingering Sensation After You Taste The Wine,Last Sip Of Wine,,B,
+40,Wine,"What does ""gallo"" mean in Italian?",Robust,Rooster,Royal,,B,"A rooster is the symbol of Chianti Classico, which was acclaimed by Grand Duke Cosimo III de Medici in 1716. "
+40,Wine,What percentage of German wines are white?,65 Per Cent,85 Per Cent,95 Per Cent,,B,The famous white grape Riesling accounts for about 22 per cent of vine plantings in Germany. 
+40,Wine,"In Spain, Gran Reserva wines must be aged a minimum of how many years?",Three,Five,Seven,,B,This includes at least two years in casks. 
+40,Wine,Hermitage is a French wine from which of the following areas?,Alsace,Côtes Du Rhône,The Loire Valley,,B,This area produces both red and white wines. 
+40,Wine,"When referring to wine, what does the term ""lees"" mean?",Sediment,Stacking Of Barrels,Vineyard Orientation,,A,Lees are the solid particles found at the bottom of the vat after fermentation. 
+40,Wine,How many liters of champagne are there in a magnum?,One,One And A Half,Two,,B,
+40,Wine,In which region of Australia is the Margaret River wine area found?,New South Wales,South Australia,Western Australia,,C,Margaret River enjoys an excellent reputation for Cabernet Sauvignon. 
+40,Wine,"When talking about wine, the term ""meniscus"" refers to",The Amount Of Time For Fermentation To Finish,The Ratio Of Acid To Sugar In A Wine,The Rim Of Wine That Touches The Surface Of A Wine Glass,,C,The color intensity of the meniscus can indicate how concentrated the wine is. 
+40,Wine,Nuits-Saint-Georges is a wine appellation from,Bordeaux,Burgundy,The Rhône Valley,,B,Nuit-Saint-Georges extends from south of Dijon to the edge of Côte de Beaune and produces mainly red wines known for their elegance and robust flavor. 
+40,Wine,Opus One is a high-end wine from California's Napa Valley. The main grape in this wine is,Cabernet Sauvignon,Merlot,Zinfandel,,A,"Other Bordeaux grapes are also included. The winery, also called Opus One, is a joint venture of Baron Philippe de Rothschild and Robert Mondavi."
+40,Wine,"Port, Madeira and sherry have all been topped up with which of the following?",Alcohol,Bitters,Sugar,,A,Alcohols like brandy are commonly used to top up other beverages. 
+40,Wine,"In Germany, the designation ""Pradikat"" on a wine label refers to which of the following?",Number Of Years In Barrels,Ripeness Of The Grapes,Whether A Wine Has Been Aged In Barrels,,B,This is the highest rank in the German system. 
+40,Wine,Quincy is the name of a wine from,Australia'S Adelaide Hills,The Loire Valley In France,Oregon'S Willamette Valley,,B,Quincy is made from Sauvignon Blanc and has a rather high acidity. 
+40,Wine,Which grape produces Germany's greatest wines?,Müller-Thurgau,Riesling,Sylvaner,,B,
+40,Wine,"In Italy, the label ""Reserva Speciale"" refers to wine that",Is Reserved For Export ,Contains More Than 11 Per Cent Alcohol By Volume,Has Undergone Specified Aging,,C,These wines are aged about a year longer than Reserva wines. 
+40,Wine,The Tavel region in the southern Rhône Valley is renowned for which of the following wines?,Red,Rosé,White,,B,Only rosé wines are permitted in this French appellation. 
+40,Wine,A dish of poached trout with a lemon sauce would pair best with which wine?,Chardonnay,Sauvignon Blanc,Viognier,,B,"The acidity of the lemon and the wine will play against each other, making the wine taste fruitier. "
+40,Wine,"Other than Chardonnay, which of the following white wine grape varieties is among the top five being grown in Australia?",Riesling,Sauvignon Blanc,Sémillon,,C,"The others are Colombard, Muscat and Sultana. Riesling is sixth and Sauvignon Blanc is seventh."
+40,Wine,Cava and Sekt  are,Dry Wines,Sparkling Wines,Wines Aged A Minimum Of Three Years,,B,Cava is from Spain and Sekt is from Germany. 
+40,Wine,Which of the following is NOT a grape common in so-called Super Tuscan wines from Italy?,Cabernet Sauvignon,Pinot Noir,Sangiovese,,B,The noted wine expert Robert Parker is credited with inventing the name. 
+40,Wine,How many pounds per square inch (psi) of pressure are there on a  Champagne cork?,10 Psi,25 Psi,70 Psi,,C,"That's a lot of pressure. Therefore, be careful when opening the bottle ."
+40,Wine,"What does the word ""vörös"" on a Hungarian wine bottle mean?",Red,Sparkling,Sweet,White,A,
+50,Wine,"For an American wine, what is the minimum percentage of the named grape required by law?",50 Per Cent,60 Per Cent,75 Per Cent,95 Per Cent,C,
+50,Wine,"In Australia, a wine with a varietal label must contain at least what percentage of that grape?",60 Per Cent,80 Per Cent,90 Per Cent,95 Per Cent,B,
+50,Wine,Which of the following is NOT a European wine region?,Alsace,Barossa,Penedes,Piedmont,B,Barossa is an Australian wine region. 
+50,Wine,Barsac is a wine region in which area of France?,Alsace,Bordeaux,The Loire Valley,The Rhône Valley,B,"Barsac is a subregion of Sauternes, where the greatest sweet wines of the world are made. "
+50,Wine,The main grape of the Beaujolais region is,Gamay,Grenache,Merlot,Pinot Noir ,A,"This red grape produces light, fruity wines that should be consumed when they are still young. "
+50,Wine,"In winemaking, what is the Brix scale associated with?",Alcohol Content,Acid Content,Sugar Content,Tannin Content,C,
+50,Wine,"In vintage California wines, what percentage of the wine must come from the indicated year?",65 Per Cent,80 Per Cent,95 Per Cent,100 Per Cent,C,
+50,Wine,Chablis is a white wine made from which grape?,Aligoté,Chardonnay,Chenin Blanc,Sauvignon Blanc,B,Chablis is a district southeast of Paris in the Burgundy region. 
+50,Wine,The best wines are usually produced from soil that is,Mostly Clay,Poor And Permeable,Rich In Chalk,Rich In Iron,C,
+50,Wine,Which of the following alcoholic beverages is generally considered acceptable to be served with any dish?,Champagne,Cognac,Port,Vodka,A,"For example, it is the only wine that is compatible with egg dishes. "
+50,Wine,"Apple, pear, vanilla and tropical flavors are characteristic of",Chardonnay,Pinot Grigio,Riesling,Sauvignon Blanc,A,
+50,Wine,"The term ""charmat"" is associated with which of the following?",Brandy,Port,Sparkling Wine,Vermouth,C,"Also known as the tank method or metodo Italiano, the charmat process is a quicker and cheaper way of producing wine with smaller, longer lasting bubbles than can be obtained using the traditional method, or methode champenoise. "
+50,Wine,Chianti refers to wine from which Italian region?,Friuli,Piedmont,Tuscany,Veneto,C,
+50,Wine,"In what country would you find the Maipo, Rapel and Casablanca wine regions?",Argentina,Chile,Italy,Spain,B,
+50,Wine,In wine making a cooper is the person who,Crushes The Grapes,Makes The Barrels,Tends The Vines,Transports The Wine From The Vineyard To The Winery,B,
+50,Wine,"Gattinara, an excellent red wine from Italy's Piedmont region, is made from which grape?",Barbera,Nebbiolo,Primitivo,Sangiovese,B,
+50,Wine,Which of the following grapes is known as the king of Alsatian wines?,Gewurztraminer,Pinot Blanc,Pinot Gris,Riesling-Tokay,A,Many wine critics consider this grape to be equal or superior to Chardonnay. 
+50,Wine,Many wine critics consider Hermitage to be the finest Rhône Valley wine. It is based on which grape?,Cinsault,Gamay,Merlot,Syrah,D,
+50,Wine,Which of the following is NOT one of the top three planted grape varietals in Australia?,Cabernet Sauvignon,Chardonnay,Merlot,Shiraz,C,
+50,Wine,What is the preferred wood for making wine barrels?,Beech,Cedar,Oak,Pine,C,
+50,Wine,Where are the largest plantings of Pinot Noir in the world found?,Australia,Burgundy,California,Oregon,B,
+50,Wine,Which of the following grapes is regarded as extremely difficult to grow well outside of France?,Cabernet Sauvignon,Chardonnay,Pinot Noir,Zinfandel,C,
+50,Wine,Which grape usually produces the least tannic wine?,Cabernet Sauvignon,Malbec,Pinot Noir,Syrah,C,"Tannins are found in the skins and seeds of red grapes. Pinot Noir has a much smaller skin than the other grapes, hence the lower tannin content."
+50,Wine,The wine varietal Zinfandel is essentially the same as,Petit Syrah,Primitivo,Sangiovese,Tannat,B,
+50,Wine,In Germany Ruländer is the same as which of the following grape?,Chardonnay,Chenin Blanc,Pinot Blanc,Pinot Gris,D,
+50,Wine,"In California, the Russian River growing region is located in which appellation?",Mendocino County,Napa Valley,Santa Barbara,Sonoma County,D,
+50,Wine,Sangria is a wine-based drink that originated in,Argentina,Mexico,Portugal,Spain,D,"This popular summertime beverage contains fruit, mineral water and white or red wine. Sangria takes its name from ""sangre,"" Spanish for ""blood."
+50,Wine,Which best describes the flavors of Sauvignon Blanc?,"Grapefruit, Grass","Peach, Lychee","Rose Petals, Violets","Vanilla, Spice",A,
+50,Wine,"Oloroso, fino and Amontillado are all terms associated with which type of wine?",Madeira,Port,Sherry,Vermouth,C,
+50,Wine,"What does the Italian word ""spumante"" mean?",Clear,Foaming,Sparkling,Sweet,B,"The Italian word ""spuma"" means ""foam. "
+50,Wine,Tawny is a term used in connection with which alcoholic beverage?,Beer,Cognac,Port,Sherry,C,"One of the greatest dessert wines, port is made from a variety of grapes whose fermentation is arrested by the addition of brandy. A tawny port is a matured ruby port."
+50,Wine,Tokay is a wine from which country?,Georgia,Greece,Hungary,Turkey,C,Tokay is a world-famous sweet white wine that dates from the 16th century. It is at its best served slightly chilled at the end of a meal.
+50,Wine,"What does the term ""Trockenbeerenauslese"" refer to?",Dark Beer,Dessert,Syrup,Wine,D,"This is Germany's highest classification for sweet wines. Such wines are rich and concentrated in flavor. ""Trockenbeerenauslese"" means ""selected harvest of dried berries"" in German. "
+50,Wine,Vouvray is a wine from which area in France?,Alsace,Bordeaux,The Loire Valley,The Rhône Valley,C,"Vouvray includes various white wines, usually made from Chenin Blanc grapes. "
+50,Wine,Which grape is not commonly grown in Australia?,Cabernet,Merlot,Pinot Noir,Zinfandel,D,Zinfandel is a major Californian grape. 

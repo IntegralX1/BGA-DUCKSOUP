@@ -1,42 +1,6 @@
-
 -- ------
 -- BGA framework: Gregory Isabelli & Emmanuel Colin & BoardGameArena
-<<<<<<< HEAD
-<<<<<<< HEAD
--- duckSoup implementation : © RJ Hidson rhidson@gmail.com
-=======
--- duckSoup implementation : © <Your name here> <Your email address here>
->>>>>>> a5170f8f18905c4b293b7e6977542978d2899df4
-=======
--- duckSoup implementation : © <Your name here> <Your email address here>
->>>>>>> a5170f8f18905c4b293b7e6977542978d2899df4
--- 
--- This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
--- See http://en.boardgamearena.com/#!doc/Studio for more information.
--- -----
-
--- dbmodel.sql
-
--- This is the file where you are describing the database schema of your game
--- Basically, you just have to export from PhpMyAdmin your table structure and copy/paste
--- this export here.
--- Note that the database itself and the standard tables ("global", "stats", "gamelog" and "player") are
--- already created and must not be created here
-
--- Note: The database schema is created from this file when the game starts. If you modify this file,
---       you have to restart a game to see your changes in database.
-
--- Example 1: create a standard "card" table to be used with the "Deck" tools (see example game "hearts"):
-
--- CREATE TABLE IF NOT EXISTS `card` (
---   `card_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
---   `card_type` varchar(16) NOT NULL,
---   `card_type_arg` int(11) NOT NULL,
-<<<<<<< HEAD
-<<<<<<< HEAD
---   `card_location` varchar(16) NOT NULL,-- ------
--- BGA framework: Gregory Isabelli & Emmanuel Colin & BoardGameArena
--- duckSoup implementation
+-- duckSoupTheRestaurantGame implementation
 --
 -- dbmodel.sql — Duck Soup complete database schema
 -- ------
@@ -113,13 +77,13 @@ CREATE TABLE IF NOT EXISTS `staff_box` (
 -- =============================================================
 
 CREATE TABLE IF NOT EXISTS `restaurant_card` (
-    `card_id`        INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `card_type`      VARCHAR(32)  NOT NULL COMMENT 'e.g. pay_bank, collect_bank, hire_free, lose_staff, etc.',
-    `description`    TEXT         NOT NULL,
-    `effect_value`   INT          NOT NULL DEFAULT 0 COMMENT 'Duckat amount or modifier; negative = pay',
-    `card_order`     INT UNSIGNED NOT NULL COMMENT 'Shuffled draw order',
-    PRIMARY KEY (`card_id`),
-    KEY `idx_card_order` (`card_order`)
+  `card_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `card_type` VARCHAR(32) NOT NULL COMMENT 'e.g. pay_bank, collect_bank, hire_free, lose_staff, etc.',
+  `description` TEXT NOT NULL,
+  `effect_value` INT NOT NULL DEFAULT 0 COMMENT 'Duckat amount or modifier; negative = pay',
+  `card_order` INT UNSIGNED NOT NULL COMMENT 'Shuffled draw order',
+  PRIMARY KEY (`card_id`),
+  KEY `idx_card_order` (`card_order`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- =============================================================
@@ -156,17 +120,3 @@ CREATE TABLE IF NOT EXISTS `turn_log` (
     PRIMARY KEY (`log_id`),
     KEY `idx_turn` (`turn_number`, `player_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-=======
---   `card_location` varchar(16) NOT NULL,
->>>>>>> a5170f8f18905c4b293b7e6977542978d2899df4
-=======
---   `card_location` varchar(16) NOT NULL,
->>>>>>> a5170f8f18905c4b293b7e6977542978d2899df4
---   `card_location_arg` int(11) NOT NULL,
---   PRIMARY KEY (`card_id`)
--- ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
-
--- Example 2: add a custom field to the standard "player" table
--- ALTER TABLE `player` ADD `player_my_custom_field` INT UNSIGNED NOT NULL DEFAULT '0';
-
