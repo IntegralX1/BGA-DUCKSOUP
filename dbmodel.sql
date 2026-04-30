@@ -2,7 +2,11 @@
 -- ------
 -- BGA framework: Gregory Isabelli & Emmanuel Colin & BoardGameArena
 <<<<<<< HEAD
+<<<<<<< HEAD
 -- duckSoup implementation : © RJ Hidson rhidson@gmail.com
+=======
+-- duckSoup implementation : © <Your name here> <Your email address here>
+>>>>>>> a5170f8f18905c4b293b7e6977542978d2899df4
 =======
 -- duckSoup implementation : © <Your name here> <Your email address here>
 >>>>>>> a5170f8f18905c4b293b7e6977542978d2899df4
@@ -28,6 +32,7 @@
 --   `card_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 --   `card_type` varchar(16) NOT NULL,
 --   `card_type_arg` int(11) NOT NULL,
+<<<<<<< HEAD
 <<<<<<< HEAD
 --   `card_location` varchar(16) NOT NULL,-- ------
 -- BGA framework: Gregory Isabelli & Emmanuel Colin & BoardGameArena
@@ -151,6 +156,9 @@ CREATE TABLE IF NOT EXISTS `turn_log` (
     PRIMARY KEY (`log_id`),
     KEY `idx_turn` (`turn_number`, `player_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+=======
+--   `card_location` varchar(16) NOT NULL,
+>>>>>>> a5170f8f18905c4b293b7e6977542978d2899df4
 =======
 --   `card_location` varchar(16) NOT NULL,
 >>>>>>> a5170f8f18905c4b293b7e6977542978d2899df4
