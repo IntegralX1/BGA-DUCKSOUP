@@ -146,6 +146,5 @@ CREATE TABLE IF NOT EXISTS `game_state_text` (
 -- =============================================================
 
 ALTER TABLE `restaurant_card`
-    ADD COLUMN IF NOT EXISTS `effect_json` TEXT NULL DEFAULT NULL
-        COMMENT 'JSON payout grid for Critic cards; NULL for all other card types'
+    ADD COLUMN `effect_json` TEXT NULL DEFAULT NULL
     AFTER `effect_value`;
