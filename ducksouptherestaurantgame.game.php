@@ -107,7 +107,7 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
     const GS_TURN_NUMBER         = 17;
     const GS_HIRE_TYPE           = 18; // 'kitchen'|'dining_room'|'either' for hireStaff state
     const GS_HIRE_HALF_PRICE     = 19; // 1 = this hire is at half price (card bonus)
-    const GS_CARD_TYPE           = 20; // card_type of drawn restaurant card awaiting roll
+    // GS_CARD_TYPE removed — card type is a string, stored in game_state_text table
 
     function __construct()
     {
@@ -123,7 +123,7 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
             'turnNumber'        => self::GS_TURN_NUMBER,
             'hireType'          => self::GS_HIRE_TYPE,
             'hireHalfPrice'     => self::GS_HIRE_HALF_PRICE,
-            'cardType'          => self::GS_CARD_TYPE,
+            // cardType is stored in game_state_text table (string — not supported by BGA labels)
         ));
     }
 
@@ -212,7 +212,8 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
         self::setGameStateInitialValue('turnNumber',        1);
         self::setGameStateInitialValue('hireType',          0); // 0=kitchen,1=dining_room,2=either
         self::setGameStateInitialValue('hireHalfPrice',     0);
-        self::setGameStateInitialValue('cardType',          0);
+        // cardType stored as string in game_state_text — reset for new game
+        $this->setCardType('');
 
         // --- Init statistics ---
         self::initStat('table', 'totalRounds', 0);
@@ -331,7 +332,7 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
         $result['hireType']      = $this->decodeHireType((int) self::getGameStateValue('hireType'));
         $result['hireHalfPrice'] = (int) self::getGameStateValue('hireHalfPrice');
         $result['halfPriceStaffType'] = $result['hireHalfPrice']
-            ? $this->getHalfPriceStaffType((int) self::getGameStateValue('cardType'))
+            ? $this->getHalfPriceStaffType($this->getCardType())
             : null;
 
         // Current question (reveal to active player only)
@@ -724,14 +725,13 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
         $die1      = bga_rand(1, 6);
         $die2      = bga_rand(1, 6);
         $diceTotal = $die1 + $die2;
+        $cardType  = $this->getCardType();
         $amount    = DuckSoupCardHandler::applyRollEffect(
             $this,
-            (string) self::getGameStateValue('cardType'),
+            $cardType,
             $diceTotal,
             $player_id
         );
-
-        $cardType = (string) self::getGameStateValue('cardType');
 
         self::notifyAllPlayers('cardRollResult',
             clienttranslate('${player_name} rolls ${die1} + ${die2} = ${total} for the card effect'),
@@ -1160,7 +1160,7 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
 
         // Roll-based cards — store card_type and go to restaurantCardRoll
         if ($result['needs_roll']) {
-            self::setGameStateValue('cardType', $result['card_type']);
+            $this->setCardType($result['card_type']);
             $this->gamestate->nextState('toCardRoll');
             return;
         }
@@ -1171,7 +1171,7 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
             $hireTypeCode = $result['hire_type'] === 'kitchen' ? 0 :
                            ($result['hire_type'] === 'dining_room' ? 1 : 2);
             self::setGameStateValue('hireType', $hireTypeCode);
-            self::setGameStateValue('cardType', $result['card_type']);
+            $this->setCardType($result['card_type']);
             $this->gamestate->nextState('toHireStaff');
             return;
         }
@@ -1364,7 +1364,7 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
         self::setGameStateValue('souperDuckatsUsed', 0);
         self::setGameStateValue('hireType',          0);
         self::setGameStateValue('hireHalfPrice',     0);
-        self::setGameStateValue('cardType',          0);
+        $this->setCardType('');
 
         $this->gamestate->nextState('toChooseQuestion');
     }
@@ -1390,7 +1390,7 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
         return array(
             'hire_type'       => $this->decodeHireType((int) self::getGameStateValue('hireType')),
             'half_price'      => (bool) self::getGameStateValue('hireHalfPrice'),
-            'half_price_type' => $this->getHalfPriceStaffType((int) self::getGameStateValue('cardType')),
+            'half_price_type' => $this->getHalfPriceStaffType($this->getCardType()),
         );
     }
 
@@ -1766,13 +1766,39 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
     /**
      * Return the specific staff type required for half-price card hires.
      */
-    private function getHalfPriceStaffType($cardTypeCode)
+    private function getHalfPriceStaffType(string $cardType)
     {
         $map = array(
             'chef_cook_bonus' => 'cook',
             'maitre_d_bonus'  => 'server',
         );
-        return $map[(string)$cardTypeCode] ?? null;
+        return $map[$cardType] ?? null;
+    }
+
+    /**
+     * Read the pending restaurant card type from the game_state_text table.
+     * Returns empty string when no card roll is pending.
+     */
+    private function getCardType(): string
+    {
+        $val = self::getUniqueValueFromDB(
+            "SELECT state_value FROM game_state_text WHERE state_key = 'cardType'"
+        );
+        return $val ?? '';
+    }
+
+    /**
+     * Write the pending restaurant card type to the game_state_text table.
+     * Pass empty string to clear.
+     */
+    private function setCardType(string $cardType): void
+    {
+        $safe = addslashes($cardType);
+        self::DbQuery(
+            "INSERT INTO game_state_text (state_key, state_value)
+             VALUES ('cardType', '{$safe}')
+             ON DUPLICATE KEY UPDATE state_value = '{$safe}'"
+        );
     }
 
     // ==================================================================

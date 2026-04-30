@@ -120,3 +120,32 @@ CREATE TABLE IF NOT EXISTS `turn_log` (
     PRIMARY KEY (`log_id`),
     KEY `idx_turn` (`turn_number`, `player_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- =============================================================
+-- GAME STATE TEXT TABLE
+-- BGA game state labels only support integers. This table
+-- stores string-valued game state that cannot be held in
+-- initGameStateLabels — currently used for:
+--   'cardType' — the card_type of a restaurant card awaiting
+--                a dice roll resolution (e.g. 'renos_repairs',
+--                'food_costs_jump', 'business_great').
+-- One row per key, upserted via ON DUPLICATE KEY UPDATE.
+-- =============================================================
+
+CREATE TABLE IF NOT EXISTS `game_state_text` (
+    `state_key`   VARCHAR(32)  NOT NULL,
+    `state_value` VARCHAR(64)  NOT NULL DEFAULT '',
+    PRIMARY KEY (`state_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- =============================================================
+-- RESTAURANT CARD SCHEMA ADDITION (Phase 3)
+-- effect_json stores tiered payout grids for Critic cards.
+-- Added here so all new game instances have the column.
+-- The three Critic card types use this; all other cards NULL.
+-- =============================================================
+
+ALTER TABLE `restaurant_card`
+    ADD COLUMN IF NOT EXISTS `effect_json` TEXT NULL DEFAULT NULL
+        COMMENT 'JSON payout grid for Critic cards; NULL for all other card types'
+    AFTER `effect_value`;
