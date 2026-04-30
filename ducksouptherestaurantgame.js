@@ -550,10 +550,41 @@ function (dojo, declare) {
                     break;
 
                 case 'resolveRestaurant':
+                    // Server-side automatic state — no player input required
+                    this._showBoardMessage(
+                        _('Restaurant Card'),
+                        _('Resolving Restaurant card...')
+                    );
+                    break;
+
+                case 'restaurantCardRoll':
                     if (this.isCurrentPlayerActive()) {
                         this._showBoardMessage(
-                            _('Restaurant Card'),
-                            _('Draw and resolve the top Restaurant card.')
+                            _('Restaurant Card — Roll Dice'),
+                            _('Roll the dice to resolve the card effect.')
+                        );
+                    }
+                    break;
+
+                case 'hireStaff':
+                    if (this.isCurrentPlayerActive()) {
+                        var hireType    = args && args.args ? args.args.hire_type : 'either';
+                        var isHalfPrice = args && args.args ? args.args.half_price : false;
+                        this._showStaffPicker(hireType, isHalfPrice);
+                        this._showBoardMessage(
+                            _('Hire Staff'),
+                            _('Choose a staff member to hire, or pass.')
+                        );
+                    }
+                    break;
+
+                case 'souperDuckatUse':
+                    if (this.isCurrentPlayerActive()) {
+                        this._setSouperDuckatBuyCashEnabled(false);
+                        this._setSouperDuckatUseEnabled(true);
+                        this._showBoardMessage(
+                            _('Souper Duckats'),
+                            _('Spend Souper Duckats for extra movement, or skip.')
                         );
                     }
                     break;
@@ -600,6 +631,19 @@ function (dojo, declare) {
                 case 'answerQuestion':
                     this._closeQuestionModal();
                     break;
+
+                case 'hireStaff':
+                    this._hideStaffPicker();
+                    break;
+
+                case 'souperDuckatUse':
+                    this._setSouperDuckatUseEnabled(false);
+                    break;
+
+                case 'chooseQuestion':
+                case 'rollMovement':
+                    this._setSouperDuckatBuyCashEnabled(false);
+                    break;
             }
         },
 
@@ -619,17 +663,21 @@ function (dojo, declare) {
                             _('Roll Staff Die'), 'onRollStaffDie');
                         break;
 
+                    case 'chooseQuestion':
+                        // Enable Souper Duckat buy/cash panel pre-roll
+                        this._setSouperDuckatBuyCashEnabled(true);
+                        break;
+
                     case 'rollMovement':
                         this.addActionButton('btn-roll-movement',
                             _('Roll Movement Dice'), 'onRollMovement');
-                        this.addActionButton('btn-play-souper',
-                            _('Play Souper Duckat (+1 square)'), 'onPlaySouperDuckat',
-                            null, false, 'gray');
+                        // Enable Souper Duckat buy/cash until dice are rolled
+                        this._setSouperDuckatBuyCashEnabled(true);
                         break;
 
-                    case 'resolveRestaurant':
-                        this.addActionButton('btn-resolve-restaurant',
-                            _('Resolve Card'), 'onResolveRestaurantCard');
+                    case 'restaurantCardRoll':
+                        this.addActionButton('btn-roll-for-card',
+                            _('Roll Dice'), 'onRollForCard');
                         break;
 
                     case 'helpWantedBid':
@@ -697,20 +745,12 @@ function (dojo, declare) {
             this.bga.actions.performAction('rollMovement', {});
         },
 
-        // --- Play Souper Duckat ---
-        onPlaySouperDuckat: function (evt) {
+        // --- Roll For Card (restaurant card dice roll) ---
+        onRollForCard: function (evt) {
             if (evt) { dojo.stopEvent(evt); }
-            if (!this.checkAction('rollMovement')) { return; }
+            if (!this.checkAction('rollForCard')) { return; }
 
-            this.bga.actions.performAction('playSouperDuckat', { count: 1 });
-        },
-
-        // --- Resolve Restaurant Card ---
-        onResolveRestaurantCard: function (evt) {
-            if (evt) { dojo.stopEvent(evt); }
-            if (!this.checkAction('resolveRestaurantCard')) { return; }
-
-            this.bga.actions.performAction('resolveRestaurantCard', {});
+            this.bga.actions.performAction('rollForCard', {});
         },
 
         // --- Place Bid ---
@@ -733,11 +773,15 @@ function (dojo, declare) {
             this.bga.actions.performAction('passBid', {});
         },
 
-        // --- Hire Staff (called programmatically from hire square UI) ---
-        onHireStaff: function (staffType) {
+        // --- Hire Staff (called from staff picker UI via _onStaffTileSelected) ---
+        // staffType and staffValue are passed from the picker tile data attributes
+        onHireStaff: function (staffType, staffValue) {
             if (!this.checkAction('hireStaff')) { return; }
 
-            this.bga.actions.performAction('hireStaff', { staff_type: staffType });
+            this.bga.actions.performAction('hireStaff', {
+                staff_type:  staffType,
+                staff_value: staffValue
+            });
         },
 
         // ==============================================================
@@ -764,6 +808,10 @@ function (dojo, declare) {
                 ['bidPassed',          500],
                 ['souperDuckatPlayed', 500],
                 ['restaurantCard',     2000],
+                ['cardRollResult',     2000],
+                ['souperDuckatUpdate', 500],
+                ['souperDuckatUsed',   1000],
+                ['duckatUpdate',       500],
                 ['paymentRequired',    1000],
                 ['playerSkipped',      1500],
                 ['gameWon',            3000]
@@ -1019,30 +1067,64 @@ function (dojo, declare) {
         notif_restaurantCard: function (notif) {
             console.log('notif_restaurantCard', notif);
 
-            var card   = notif.args.card;
-            var effect = notif.args.effect;
+            var description = notif.args.description || '';
+            var amount      = notif.args.amount || 0;
+            var effect      = notif.args.effect || '';
 
-            if (!card) {
-                this._showBoardMessage(_('Restaurant Card'), _('No card available.'));
-                return;
+            var effectText = '';
+            if (amount > 0 && effect === 'pay') {
+                effectText = ' — ' + _('Pay ') + amount + _(' Duckats');
+            } else if (amount > 0 && effect === 'collect') {
+                effectText = ' — ' + _('Collect ') + amount + _(' Duckats');
+            } else if (effect === 'all_collect' || effect === 'critic') {
+                effectText = ' — ' + _('All players collect Duckats');
+            } else if (effect === 'all_roll_pay' || effect === 'roll_pay' || effect === 'roll_collect') {
+                effectText = ' — ' + _('Roll dice for effect');
+            } else if (effect === 'movement') {
+                effectText = ' — ' + _('Move to new square');
             }
 
-            var effectText = effect > 0
-                ? _('Collect ') + effect + _(' Duckats')
-                : effect < 0
-                    ? _('Pay ') + Math.abs(effect) + _(' Duckats')
-                    : '';
+            this._showBoardMessage(_('Restaurant Card'), description + effectText);
+        },
 
-            this._showBoardMessage(
-                _('Restaurant Card'),
-                (card.description || '') + (effectText ? ' — ' + effectText : '')
-            );
+        notif_cardRollResult: function (notif) {
+            console.log('notif_cardRollResult', notif);
 
-            var player_id   = notif.args.player_id;
-            var playerDuck  = notif.args.player_duckats;
-            if (playerDuck !== undefined && this.duckatCounters[player_id]) {
-                this.duckatCounters[player_id].setValue(playerDuck);
-            }
+            var amount    = notif.args.amount;
+            var cardType  = notif.args.card_type;
+            var allPlayers = notif.args.all_players;
+
+            var msg = allPlayers
+                ? _('All players affected: ') + amount + _(' Duckats')
+                : amount + _(' Duckats');
+            this._showBoardMessage(_('Card Roll Result'), msg);
+        },
+
+        notif_souperDuckatUpdate: function (notif) {
+            console.log('notif_souperDuckatUpdate', notif);
+
+            var player_id = notif.args.player_id;
+            var duckats   = notif.args.duckats;
+            var souper    = notif.args.souper_duckats;
+
+            this._updateSouperDuckatCount(player_id, souper);
+            this._updateDuckatCount(player_id, duckats);
+        },
+
+        notif_souperDuckatUsed: function (notif) {
+            console.log('notif_souperDuckatUsed', notif);
+
+            var player_id = notif.args.player_id;
+            var souper    = notif.args.souper_duckats;
+            this._updateSouperDuckatCount(player_id, souper);
+        },
+
+        notif_duckatUpdate: function (notif) {
+            console.log('notif_duckatUpdate', notif);
+
+            var player_id    = notif.args.player_id;
+            var player_duckats = notif.args.player_duckats;
+            this._updateDuckatCount(player_id, player_duckats);
         },
 
         notif_paymentRequired: function (notif) {
