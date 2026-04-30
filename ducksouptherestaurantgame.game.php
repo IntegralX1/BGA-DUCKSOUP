@@ -817,7 +817,7 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
      */
     function returnStaffForPayment($staffType)
     {
-        self::checkAction('resolveRestaurantCard');
+        self::checkAction('returnStaffForPayment');
         $player_id = self::getActivePlayerId();
         $staffType = addslashes($staffType);
 

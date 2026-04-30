@@ -132,8 +132,7 @@ $machinestates = array(
     // ---------------------------------------------------------------
     7 => array(
         'name'              => 'resolveRestaurant',
-        'description'       => clienttranslate('${actplayer} is resolving a Restaurant card'),
-        'descriptionmyturn' => clienttranslate('Resolving Restaurant card...'),
+        'description'       => '',
         'type'              => 'game',
         'action'            => 'stResolveRestaurant',
         'transitions'       => array(
