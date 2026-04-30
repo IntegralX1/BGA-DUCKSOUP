@@ -194,6 +194,10 @@ function (dojo, declare) {
             dojo.connect(dojo.byId('left-arrow'),  'onclick', this, '_onLeftArrow');
             dojo.connect(dojo.byId('right-arrow'), 'onclick', this, '_onRightArrow');
 
+            // Wire dice buttons — staff die and movement dice
+            dojo.connect(dojo.byId('staff-die'), 'onclick', this, 'onRollStaffDie');
+            dojo.connect(dojo.byId('move-die'),  'onclick', this, 'onRollMovement');
+
             // Wire letter buttons (A/B/C/D) — active only in chooseQuestion state
             dojo.query('.letter-buttons button').forEach(dojo.hitch(this, function (btn) {
                 dojo.connect(btn, 'onclick', this, '_onLetterButton');
@@ -233,33 +237,18 @@ function (dojo, declare) {
 
             var boardHtml = `
                 <div id="staff-board-${player_id}" class="staff-board-panel" style="display:none;">
-                    <div class="player-header">
-                        <div class="clearfix">
-                            <div class="player-name player-${player_id}"
-                                 style="background-color:#${color};">${name}</div>
-                            <div class="player-stats">
-                                <div class="clearfix">
-                                    <div class="stat-block">
-                                        <div class="clearfix super-duckat">
-                                            <div class="value left" id="souper-duckat-count-${player_id}">${souper}</div>
-                                            <div class="stat-icon">
-                                                <img src="${gameThemeUrl}img/super-duckats.png" alt="Souper Duckats">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="stat-block">
-                                        <div class="clearfix duckat">
-                                            <div class="value left" id="duckat-count-${player_id}">${duckats}</div>
-                                            <div class="left">
-                                                <img src="${gameThemeUrl}img/duckats.png" alt="Duckats">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div class="player-header" style="background-color:#${color};">
+                        <div class="player-name">${name}</div>
+                        <div class="player-stats">
+                            <div class="super-duckat">
+                                <div class="value" id="souper-duckat-count-${player_id}">${souper}</div>
+                                <img src="${gameThemeUrl}img/super-duckats.png" alt="Souper Duckats">
+                            </div>
+                            <div class="duckat">
+                                <div class="value" id="duckat-count-${player_id}">${duckats}</div>
+                                <img src="${gameThemeUrl}img/duckats.png" alt="Duckats">
                             </div>
                         </div>
-                        <div class="player-background player-${player_id}"
-                             style="background-color:#${color};"></div>
                     </div>
                     <div class="staff-board-wrap">
                         <img class="staff-board-img" src="${gameThemeUrl}img/staff-board.jpg" alt="Staff Board">
@@ -447,6 +436,10 @@ function (dojo, declare) {
         _openQuestionModal: function (question) {
             var modal = dojo.byId('question-modal');
             if (!modal) { return; }
+            // Move modal to document.body to escape BGA's pointer-event capture
+            if (modal.parentNode !== document.body) {
+                document.body.appendChild(modal);
+            }
 
             // Set question text
             dojo.byId('question-text').innerHTML = question.question_text || '';
@@ -461,6 +454,7 @@ function (dojo, declare) {
 
                 if (text) {
                     btn.innerHTML = '<strong>' + letter + '.</strong> ' + text;
+                    btn.disabled  = false;  // ensure clickable
                     dojo.style(btn, 'display', 'inline-block');
                 } else {
                     // Hide C/D for True/False and 3-option questions
@@ -512,8 +506,14 @@ function (dojo, declare) {
 
                 case 'answerQuestion':
                     // Modal is opened by questionRevealed notification
-                    // Nothing to do here except ensure non-active players see waiting state
-                    if (!this.isCurrentPlayerActive()) {
+                    if (this.isCurrentPlayerActive()) {
+                        // Ensure answer buttons are enabled for the active player
+                        dojo.query('.answer-btn').forEach(function (btn) {
+                            if (dojo.style(btn, 'display') !== 'none') {
+                                btn.disabled = false;
+                            }
+                        });
+                    } else {
                         this._showBoardMessage(
                             _('Question Time'),
                             _('Waiting for the active player to answer...')
