@@ -5,18 +5,13 @@
  * Duck Soup — The Restaurant Game
  * AJAX action bridge — Phase 3
  *
- * All player actions callable from the front-end via
- * this.bga.actions.performAction('actionName', { args }).
+ * BGA new framework (Bga\GameFramework\Table) requires all action
+ * methods to be prefixed with 'act' for auto-wiring.
+ * JS calls performAction('chooseLetter') → PHP actChooseLetter().
  *
- * Phase 3 additions:
- *   - buySouperDuckat
- *   - cashSouperDuckat
- *   - useSouperDuckats
- *   - skipSouperDuckats
- *   - hireStaff     (updated: now accepts staff_type + staff_value)
- *   - passHire      (new)
- *   - rollForCard   (new)
- *   - returnStaffForPayment (carried from Phase 2)
+ * All player actions callable from the front-end via:
+ *   this.bga.actions.performAction('actionName', { args })
+ * where 'actionName' is the method name WITHOUT the 'act' prefix.
  */
 
 class action_ducksouptherestaurantgame extends APP_GameAction
@@ -36,7 +31,7 @@ class action_ducksouptherestaurantgame extends APP_GameAction
     // QUESTION PHASE
     // ------------------------------------------------------------------
 
-    public function chooseLetter()
+    public function actChooseLetter()
     {
         self::setAjaxMode();
         $letter = self::getArg('letter', AT_alphanum, true);
@@ -44,7 +39,7 @@ class action_ducksouptherestaurantgame extends APP_GameAction
         self::ajaxResponse();
     }
 
-    public function submitAnswer()
+    public function actSubmitAnswer()
     {
         self::setAjaxMode();
         $answer = self::getArg('answer', AT_alphanum, true);
@@ -56,14 +51,14 @@ class action_ducksouptherestaurantgame extends APP_GameAction
     // STAFF DIE & MOVEMENT
     // ------------------------------------------------------------------
 
-    public function rollStaffDie()
+    public function actRollStaffDie()
     {
         self::setAjaxMode();
         $this->game->rollStaffDie();
         self::ajaxResponse();
     }
 
-    public function rollMovement()
+    public function actRollMovement()
     {
         self::setAjaxMode();
         $this->game->rollMovement();
@@ -74,21 +69,21 @@ class action_ducksouptherestaurantgame extends APP_GameAction
     // SOUPER DUCKATS
     // ------------------------------------------------------------------
 
-    public function buySouperDuckat()
+    public function actBuySouperDuckat()
     {
         self::setAjaxMode();
         $this->game->buySouperDuckat();
         self::ajaxResponse();
     }
 
-    public function cashSouperDuckat()
+    public function actCashSouperDuckat()
     {
         self::setAjaxMode();
         $this->game->cashSouperDuckat();
         self::ajaxResponse();
     }
 
-    public function useSouperDuckats()
+    public function actUseSouperDuckats()
     {
         self::setAjaxMode();
         $quantity = self::getArg('quantity', AT_posint, true);
@@ -96,7 +91,7 @@ class action_ducksouptherestaurantgame extends APP_GameAction
         self::ajaxResponse();
     }
 
-    public function skipSouperDuckats()
+    public function actSkipSouperDuckats()
     {
         self::setAjaxMode();
         $this->game->skipSouperDuckats();
@@ -107,14 +102,14 @@ class action_ducksouptherestaurantgame extends APP_GameAction
     // RESTAURANT CARDS
     // ------------------------------------------------------------------
 
-    public function rollForCard()
+    public function actRollForCard()
     {
         self::setAjaxMode();
         $this->game->rollForCard();
         self::ajaxResponse();
     }
 
-    public function returnStaffForPayment()
+    public function actReturnStaffForPayment()
     {
         self::setAjaxMode();
         $staffType = self::getArg('staff_type', AT_alphanum_underscore, true);
@@ -126,7 +121,7 @@ class action_ducksouptherestaurantgame extends APP_GameAction
     // HIRE STAFF
     // ------------------------------------------------------------------
 
-    public function hireStaff()
+    public function actHireStaff()
     {
         self::setAjaxMode();
         $staffType  = self::getArg('staff_type',  AT_alphanum_underscore, true);
@@ -135,7 +130,7 @@ class action_ducksouptherestaurantgame extends APP_GameAction
         self::ajaxResponse();
     }
 
-    public function passHire()
+    public function actPassHire()
     {
         self::setAjaxMode();
         $this->game->passHire();
@@ -146,7 +141,7 @@ class action_ducksouptherestaurantgame extends APP_GameAction
     // AUCTIONS
     // ------------------------------------------------------------------
 
-    public function placeBid()
+    public function actPlaceBid()
     {
         self::setAjaxMode();
         $amount = self::getArg('amount', AT_posint, true);
@@ -154,7 +149,7 @@ class action_ducksouptherestaurantgame extends APP_GameAction
         self::ajaxResponse();
     }
 
-    public function passBid()
+    public function actPassBid()
     {
         self::setAjaxMode();
         $this->game->passBid();
