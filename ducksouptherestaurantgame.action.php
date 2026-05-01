@@ -3,15 +3,11 @@
  * ducksouptherestaurantgame.action.php
  *
  * Duck Soup — The Restaurant Game
- * AJAX action bridge — Phase 3
+ * AJAX action bridge
  *
- * BGA new framework (Bga\GameFramework\Table) requires all action
- * methods to be prefixed with 'act' for auto-wiring.
- * JS calls performAction('chooseLetter') → PHP actChooseLetter().
- *
- * All player actions callable from the front-end via:
- *   this.bga.actions.performAction('actionName', { args })
- * where 'actionName' is the method name WITHOUT the 'act' prefix.
+ * Running on old BGA framework (APP_GameAction).
+ * Methods do NOT use 'act' prefix — old framework routes directly
+ * to method names matching the JS performAction() call.
  */
 
 class action_ducksouptherestaurantgame extends APP_GameAction
@@ -31,7 +27,7 @@ class action_ducksouptherestaurantgame extends APP_GameAction
     // QUESTION PHASE
     // ------------------------------------------------------------------
 
-    public function actChooseLetter()
+    public function chooseLetter()
     {
         self::setAjaxMode();
         $letter = self::getArg('letter', AT_alphanum, true);
@@ -39,7 +35,7 @@ class action_ducksouptherestaurantgame extends APP_GameAction
         self::ajaxResponse();
     }
 
-    public function actSubmitAnswer()
+    public function submitAnswer()
     {
         self::setAjaxMode();
         $answer = self::getArg('answer', AT_alphanum, true);
@@ -51,14 +47,14 @@ class action_ducksouptherestaurantgame extends APP_GameAction
     // STAFF DIE & MOVEMENT
     // ------------------------------------------------------------------
 
-    public function actRollStaffDie()
+    public function rollStaffDie()
     {
         self::setAjaxMode();
         $this->game->rollStaffDie();
         self::ajaxResponse();
     }
 
-    public function actRollMovement()
+    public function rollMovement()
     {
         self::setAjaxMode();
         $this->game->rollMovement();
@@ -69,21 +65,21 @@ class action_ducksouptherestaurantgame extends APP_GameAction
     // SOUPER DUCKATS
     // ------------------------------------------------------------------
 
-    public function actBuySouperDuckat()
+    public function buySouperDuckat()
     {
         self::setAjaxMode();
         $this->game->buySouperDuckat();
         self::ajaxResponse();
     }
 
-    public function actCashSouperDuckat()
+    public function cashSouperDuckat()
     {
         self::setAjaxMode();
         $this->game->cashSouperDuckat();
         self::ajaxResponse();
     }
 
-    public function actUseSouperDuckats()
+    public function useSouperDuckats()
     {
         self::setAjaxMode();
         $quantity = self::getArg('quantity', AT_posint, true);
@@ -91,7 +87,7 @@ class action_ducksouptherestaurantgame extends APP_GameAction
         self::ajaxResponse();
     }
 
-    public function actSkipSouperDuckats()
+    public function skipSouperDuckats()
     {
         self::setAjaxMode();
         $this->game->skipSouperDuckats();
@@ -102,17 +98,20 @@ class action_ducksouptherestaurantgame extends APP_GameAction
     // RESTAURANT CARDS
     // ------------------------------------------------------------------
 
-    public function actRollForCard()
+    public function rollForCard()
     {
         self::setAjaxMode();
         $this->game->rollForCard();
         self::ajaxResponse();
     }
 
-    public function actReturnStaffForPayment()
+    public function returnStaffForPayment()
     {
         self::setAjaxMode();
-        $staffType = self::getArg('staff_type', AT_alphanum_underscore, true);
+        $staffType = self::getArg('staff_type', AT_alphanum, true);
+        if (!preg_match('/^[a-zA-Z0-9_]+$/', $staffType)) {
+            throw new BgaUserException('Invalid staff type.');
+        }
         $this->game->returnStaffForPayment($staffType);
         self::ajaxResponse();
     }
@@ -121,16 +120,19 @@ class action_ducksouptherestaurantgame extends APP_GameAction
     // HIRE STAFF
     // ------------------------------------------------------------------
 
-    public function actHireStaff()
+    public function hireStaff()
     {
         self::setAjaxMode();
-        $staffType  = self::getArg('staff_type',  AT_alphanum_underscore, true);
-        $staffValue = self::getArg('staff_value',  AT_posint,             true);
+        $staffType  = self::getArg('staff_type',  AT_alphanum, true);
+        if (!preg_match('/^[a-zA-Z0-9_]+$/', $staffType)) {
+            throw new BgaUserException('Invalid staff type.');
+        }
+        $staffValue = self::getArg('staff_value',  AT_posint, true);
         $this->game->hireStaff($staffType, $staffValue);
         self::ajaxResponse();
     }
 
-    public function actPassHire()
+    public function passHire()
     {
         self::setAjaxMode();
         $this->game->passHire();
@@ -141,7 +143,7 @@ class action_ducksouptherestaurantgame extends APP_GameAction
     // AUCTIONS
     // ------------------------------------------------------------------
 
-    public function actPlaceBid()
+    public function placeBid()
     {
         self::setAjaxMode();
         $amount = self::getArg('amount', AT_posint, true);
@@ -149,7 +151,7 @@ class action_ducksouptherestaurantgame extends APP_GameAction
         self::ajaxResponse();
     }
 
-    public function actPassBid()
+    public function passBid()
     {
         self::setAjaxMode();
         $this->game->passBid();

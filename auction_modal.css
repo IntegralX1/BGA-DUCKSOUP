@@ -1,0 +1,45 @@
+/* =============================================================
+   Duck Soup: The Restaurant Game
+   Auction Modal CSS — ADD TO ducksouptherestaurantgame.css
+   ============================================================= */
+
+.ds-auction-modal {
+    width: min(460px, 92vw);
+}
+
+.ds-auction-status {
+    font-size: 14px;
+    color: #5a4a30;
+    margin: 0 0 16px 0;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.ds-auction-cant-afford {
+    font-size: 14px;
+    color: #c0392b;
+    font-weight: 600;
+    text-align: center;
+    margin: 8px 0;
+}
+
+.ds-auction-input-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.ds-auction-bid-amount {
+    font-size: 28px;
+    font-weight: 700;
+    color: #b8860b;
+    min-width: 60px;
+    text-align: center;
+}
+
+.ds-auction-duckat-label {
+    font-size: 14px;
+    color: #7a6a50;
+}

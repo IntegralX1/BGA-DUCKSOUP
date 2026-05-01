@@ -56,10 +56,9 @@ function (dojo, declare) {
                 {l: 88, t: 3},  {l: 79, t: 3},  {l: 70, t: 3},
                 {l: 61, t: 3},  {l: 52, t: 3},  {l: 43, t: 3},
                 {l: 34, t: 3},  {l: 25, t: 3},  {l: 16, t: 3},
-                // Left column (top → bottom): squares 27–35
+                // Left column (top → bottom): squares 27–31
                 {l: 3,  t: 3},  {l: 3,  t: 12}, {l: 3,  t: 21},
-                {l: 3,  t: 30}, {l: 3,  t: 39}, {l: 3,  t: 48},
-                {l: 3,  t: 57}, {l: 3,  t: 66}, {l: 3,  t: 79}
+                {l: 3,  t: 30}, {l: 3,  t: 39}
             ];
 
             // Staff type → grid slot index (0-based, matches TPL grid-item order)
@@ -291,6 +290,9 @@ function (dojo, declare) {
                 this.souperDuckatCounters[player_id].setValue(souper);
             }
 
+            // Build Souper Duckat panel inside the player header
+            this._buildSouperDuckatPanel(player_id, souper);
+
             // Apply Excellent staff tiles from gamedatas.staff
             for (var staff_id in this.gamedatas.staff) {
                 var tile = this.gamedatas.staff[staff_id];
@@ -384,7 +386,7 @@ function (dojo, declare) {
             var boardEl = dojo.byId('board');
             if (!pawnEl || !boardEl) { return; }
 
-            var coords = this.squareCoords[position % 36];
+            var coords = this.squareCoords[position % 32];
 
             // Offset slightly per player to avoid exact overlap
             var playerIndex = this.playerOrder.indexOf(String(player_id));
@@ -567,10 +569,20 @@ function (dojo, declare) {
                     break;
 
                 case 'hireStaff':
+                    console.log('[DS] hireStaff entered. isActive:', this.isCurrentPlayerActive(), 'args:', JSON.stringify(args));
                     if (this.isCurrentPlayerActive()) {
-                        var hireType    = args && args.args ? args.args.hire_type : 'either';
-                        var isHalfPrice = args && args.args ? args.args.half_price : false;
-                        this._showStaffPicker(hireType, isHalfPrice);
+                        var hireArgs    = args && args.args && !Array.isArray(args.args) ? args.args : {};
+                        var hireType    = hireArgs.hire_type  || 'either';
+                        var isHalfPrice = hireArgs.half_price || false;
+                        console.log('[DS] picker args — hireType:', hireType, 'isHalfPrice:', isHalfPrice, 'player_id:', this.player_id);
+                        console.log('[DS] gamedatas.players:', JSON.stringify(this.gamedatas.players));
+                        console.log('[DS] gamedatas.staffBox:', JSON.stringify(this.gamedatas.staffBox));
+                        console.log('[DS] gamedatas.myStaff:', JSON.stringify(this.gamedatas.myStaff));
+                        try {
+                            this._showStaffPicker(hireType, isHalfPrice);
+                        } catch(err) {
+                            console.error('[DS] _showStaffPicker threw:', err);
+                        }
                         this._showBoardMessage(
                             _('Hire Staff'),
                             _('Choose a staff member to hire, or pass.')
@@ -591,10 +603,12 @@ function (dojo, declare) {
 
                 case 'staffQuitsBid':
                 case 'helpWantedBid':
-                    this._showBoardMessage(
-                        _('Bidding Open'),
-                        _('Place your bid or pass.')
-                    );
+                    // Multiactive state — all eligible players see the modal.
+                    // Do not gate on isCurrentPlayerActive() here.
+                    var auction = this.gamedatas.auction || null;
+                    if (auction) {
+                        this._showAuctionModal(stateName, auction);
+                    }
                     break;
 
                 case 'gameEnd':
@@ -636,6 +650,11 @@ function (dojo, declare) {
                     this._hideStaffPicker();
                     break;
 
+                case 'staffQuitsBid':
+                case 'helpWantedBid':
+                    this._hideAuctionModal();
+                    break;
+
                 case 'souperDuckatUse':
                     this._setSouperDuckatUseEnabled(false);
                     break;
@@ -673,6 +692,12 @@ function (dojo, declare) {
                             _('Roll Movement Dice'), 'onRollMovement');
                         // Enable Souper Duckat buy/cash until dice are rolled
                         this._setSouperDuckatBuyCashEnabled(true);
+                        break;
+
+                    case 'souperDuckatUse':
+                        this.addActionButton('btn-skip-souper',
+                            _('Skip — Don\'t Spend'), 'onSkipSouperDuckats',
+                            null, false, 'gray');
                         break;
 
                     case 'restaurantCardRoll':
@@ -745,6 +770,13 @@ function (dojo, declare) {
             this.bga.actions.performAction('rollMovement', {});
         },
 
+        // --- Skip Souper Duckats ---
+        onSkipSouperDuckats: function (evt) {
+            if (evt) { dojo.stopEvent(evt); }
+            if (!this.checkAction('skipSouperDuckats')) { return; }
+            this.bga.actions.performAction('skipSouperDuckats', {});
+        },
+
         // --- Roll For Card (restaurant card dice roll) ---
         onRollForCard: function (evt) {
             if (evt) { dojo.stopEvent(evt); }
@@ -753,24 +785,142 @@ function (dojo, declare) {
             this.bga.actions.performAction('rollForCard', {});
         },
 
-        // --- Place Bid ---
+
+        // ==============================================================
+        // AUCTION MODAL
+        // ==============================================================
+
+        _showAuctionModal: function(stateName, auction) {
+            this._hideAuctionModal();
+
+            if (!auction) {
+                console.warn('[DuckSoup] No auction data available');
+                return;
+            }
+
+            var staffType  = auction.staff_type || '';
+            var staffValue = parseInt(auction.staff_value, 10) || 0;
+            var currentBid = parseInt(auction.current_high_bid, 10) || 0;
+            var source     = auction.source || 'help_wanted';
+            var minBid     = currentBid > 0 ? currentBid + 1 : staffValue;
+
+            var staffLabels = {
+                'chef': 'Chef', 'sous_chef': 'Sous Chef', 'first_cook': 'First Cook',
+                'cook': 'Cook', 'maitre_d': "Maitre d'", 'sommelier': 'Sommelier',
+                'captain': 'Captain', 'server': 'Server'
+            };
+            var baseType   = staffType.replace(/_[0-9]+$/, '');
+            var staffLabel = staffLabels[baseType] || staffType;
+
+            var isQuits    = source === 'staff_quits';
+            var title      = isQuits ? 'Staff Quits!' : 'Help Wanted';
+            var subtitle   = isQuits
+                ? staffLabel + ' has quit! Other players may bid to hire them.'
+                : staffLabel + ' is available from the Staff Box. Value: ' + staffValue + ' Duckats.';
+
+            var myDuckats  = this.gamedatas.players[this.player_id]
+                ? parseInt(this.gamedatas.players[this.player_id].duckats, 10) || 0
+                : 0;
+            var canAfford  = myDuckats >= minBid;
+
+            var bidStatus  = currentBid > 0
+                ? 'Current high bid: ' + currentBid + ' Duckats. Minimum next bid: ' + minBid + ' Duckats.'
+                : 'Opening bid: ' + staffValue + ' Duckats (staff value). You have ' + myDuckats + ' Duckats.';
+
+            var bidRowHtml = canAfford
+                ? '<div class="ds-auction-input-row">'
+                  + '<button id="ds-bid-minus" class="ds-sd-counter-btn" type="button">-</button>'
+                  + '<span id="ds-bid-amount" class="ds-auction-bid-amount">' + minBid + '</span>'
+                  + '<button id="ds-bid-plus" class="ds-sd-counter-btn" type="button">+</button>'
+                  + '<span class="ds-auction-duckat-label"> Duckats</span>'
+                  + '</div>'
+                  + '<button id="ds-bid-confirm" class="ds-btn ds-btn--use" type="button">Place Bid</button>'
+                : '<p class="ds-auction-cant-afford">You cannot afford the minimum bid of ' + minBid + ' Duckats.</p>';
+
+            var html = '<div id="ds-auction-overlay" class="ds-modal-overlay" role="dialog">'
+                + '<div class="ds-modal ds-auction-modal">'
+                + '<div class="ds-modal-header">'
+                + '<h2 class="ds-modal-title">' + title + '</h2>'
+                + '<p class="ds-modal-subtitle">' + subtitle + '</p>'
+                + '</div>'
+                + '<div class="ds-modal-body">'
+                + '<p class="ds-auction-status">' + bidStatus + '</p>'
+                + bidRowHtml
+                + '</div>'
+                + '<div class="ds-modal-footer">'
+                + '<button id="ds-bid-pass" class="ds-btn ds-btn--secondary" type="button">Pass</button>'
+                + '</div>'
+                + '</div>'
+                + '</div>';
+
+            document.body.insertAdjacentHTML('beforeend', html);
+
+            var self = this;
+            var currentAmount = minBid;
+
+            if (canAfford) {
+                var amountEl = document.getElementById('ds-bid-amount');
+
+                document.getElementById('ds-bid-minus').addEventListener('click', function() {
+                    if (currentAmount > minBid) {
+                        currentAmount = Math.max(minBid, currentAmount - 5);
+                        amountEl.textContent = currentAmount;
+                    }
+                });
+
+                document.getElementById('ds-bid-plus').addEventListener('click', function() {
+                    if (currentAmount + 5 <= myDuckats) {
+                        currentAmount += 5;
+                        amountEl.textContent = currentAmount;
+                    }
+                });
+
+                document.getElementById('ds-bid-confirm').addEventListener('click', function() {
+                    if (!self.checkAction('placeBid')) { return; }
+                    document.getElementById('ds-bid-confirm').disabled = true;
+                    document.getElementById('ds-bid-pass').disabled = true;
+                    self.bga.actions.performAction('placeBid', { amount: currentAmount })
+                        .then(function() { self._hideAuctionModal(); })
+                        .catch(function() {
+                            document.getElementById('ds-bid-confirm') && (document.getElementById('ds-bid-confirm').disabled = false);
+                            document.getElementById('ds-bid-pass') && (document.getElementById('ds-bid-pass').disabled = false);
+                        });
+                });
+            }
+
+            document.getElementById('ds-bid-pass').addEventListener('click', function() {
+                if (!self.checkAction('passBid')) { return; }
+                document.getElementById('ds-bid-pass').disabled = true;
+                self.bga.actions.performAction('passBid', {})
+                    .then(function() { self._hideAuctionModal(); })
+                    .catch(function() {
+                        document.getElementById('ds-bid-pass') && (document.getElementById('ds-bid-pass').disabled = false);
+                    });
+            });
+        },
+
+        _hideAuctionModal: function() {
+            var el = document.getElementById('ds-auction-overlay');
+            if (el) { el.remove(); }
+        },
+
+        // --- Place Bid (action bar button opens modal) ---
         onPlaceBid: function (evt) {
             if (evt) { dojo.stopEvent(evt); }
-            if (!this.checkAction('placeBid')) { return; }
-
-            // Prompt for bid amount
-            var amount = parseInt(prompt(_('Enter your bid amount in Duckats:')), 10);
-            if (isNaN(amount) || amount <= 0) { return; }
-
-            this.bga.actions.performAction('placeBid', { amount: amount });
+            // Always re-open — hide any stale overlay first, then show fresh
+            this._hideAuctionModal();
+            this._showAuctionModal(
+                this.gamedatas.gamestate.name,
+                this.gamedatas.auction || null
+            );
         },
 
         // --- Pass Bid ---
         onPassBid: function (evt) {
             if (evt) { dojo.stopEvent(evt); }
             if (!this.checkAction('passBid')) { return; }
-
-            this.bga.actions.performAction('passBid', {});
+            this.bga.actions.performAction('passBid', {})
+                .then(() => { this._hideAuctionModal(); });
         },
 
         // --- Hire Staff (called from staff picker UI via _onStaffTileSelected) ---
@@ -804,6 +954,10 @@ function (dojo, declare) {
                 ['staffTransferred',   1500],
                 ['staffReturned',      1500],
                 ['auctionResolved',    2000],
+                ['bidPlaced',          1000],
+                ['bidPassed',          500],
+                ['staffQuits',         1500],
+                ['helpWanted',         1500],
                 ['bidPlaced',          500],
                 ['bidPassed',          500],
                 ['souperDuckatPlayed', 500],
@@ -951,6 +1105,11 @@ function (dojo, declare) {
             var player_id = notif.args.player_id;
             var staffType = notif.args.staff_type;
 
+            // Store auction data for onEnteringState to consume
+            if (this.gamedatas) {
+                this.gamedatas.auction = notif.args;
+            }
+
             // Remove staff tile from the player's board
             this._hideExcellentStaff(player_id, staffType);
 
@@ -962,6 +1121,11 @@ function (dojo, declare) {
 
         notif_helpWanted: function (notif) {
             console.log('notif_helpWanted', notif);
+
+            // Store auction data for onEnteringState to consume
+            if (this.gamedatas) {
+                this.gamedatas.auction = notif.args;
+            }
 
             this._showBoardMessage(
                 _('Help Wanted!'),
@@ -1025,6 +1189,27 @@ function (dojo, declare) {
             );
         },
 
+
+
+
+
+        notif_bidPlaced: function (notif) {
+            console.log('notif_bidPlaced', notif);
+            // Update current bid display in modal if open
+            var statusEl = document.querySelector('.ds-auction-status');
+            if (statusEl) {
+                statusEl.textContent = notif.args.player_name + ' bid ' + notif.args.amount + ' Duckats.';
+            }
+        },
+
+        notif_bidPassed: function (notif) {
+            console.log('notif_bidPassed', notif);
+            var statusEl = document.querySelector('.ds-auction-status');
+            if (statusEl) {
+                statusEl.textContent = notif.args.player_name + ' passed.';
+            }
+        },
+
         notif_auctionResolved: function (notif) {
             console.log('notif_auctionResolved', notif);
 
@@ -1064,27 +1249,111 @@ function (dojo, declare) {
             }
         },
 
+        // Map card_type to image filename in img/rest_cards/
+        _restaurantCardImages: {
+            'air_conditioning':           'Air Conditioning Breaks Down.png',
+            'business_great':             'Business is Great final.jpg',
+            'critic_corky':               'CRITIC - Corky Weinberg.png',
+            'critic_olive':               'CRITIC - Olive McDoyle.png',
+            'critic_riley':               'CRITIC - Riley Baker.png',
+            'competitor_bankrupt':        'Competitor Goes Bankrupt.png',
+            'convention':                 'Convention in Town.png',
+            'dishwasher_breaks':          'Dishwasher Breaks Down.png',
+            'chef_on_tv':                 'Ex Chef on TV.png',
+            'food_costs_jump':            'Food Costs Jump.png',
+            'go_back_one':                'Go Back One Square.png',
+            'go_forward_one':             'Go Forward One Square.png',
+            'go_to_next_hire_dining':     'Go to Next Hire Dining Room.png',
+            'go_to_next_hire_either':     'Go to Next Hire Kitchen or Dining Room.png',
+            'go_to_next_hire_kitchen':    'Go to Next Hire Kitchn.png',
+            'go_to_next_staff_quits':     'Go to Next Staff Quits.png',
+            'chef_cook_bonus':            'If You Have an Ex Chef.png',
+            'maitre_d_bonus':             "If You Have an Ex Maitre d'.png",
+            'mothers_day':                "Mother's Day.png",
+            'plumbing_problems':          'Plumbing Problems.png',
+            'renos_repairs':              'Renos & Repairs final.jpg',
+            'road_construction':          'Road Construction.png',
+            'shuffle_deck':               'Shuffle Deck.png',
+            'smallware_costs':            'Smallware Costs.png',
+            'theft_kitchen':              'Theft from Kitchen.png',
+            'theft_wine':                 'Theft from Wine Cellar.png',
+            'vacation':                   'Vacation - May 2008.jpg',
+        },
+
         notif_restaurantCard: function (notif) {
             console.log('notif_restaurantCard', notif);
 
+            var cardType    = notif.args.card_type || '';
             var description = notif.args.description || '';
             var amount      = notif.args.amount || 0;
             var effect      = notif.args.effect || '';
 
+            // Build effect summary text
             var effectText = '';
             if (amount > 0 && effect === 'pay') {
-                effectText = ' — ' + _('Pay ') + amount + _(' Duckats');
-            } else if (amount > 0 && effect === 'collect') {
-                effectText = ' — ' + _('Collect ') + amount + _(' Duckats');
-            } else if (effect === 'all_collect' || effect === 'critic') {
-                effectText = ' — ' + _('All players collect Duckats');
-            } else if (effect === 'all_roll_pay' || effect === 'roll_pay' || effect === 'roll_collect') {
-                effectText = ' — ' + _('Roll dice for effect');
+                effectText = _('Pay ') + amount + _(' Duckats');
+            } else if (amount > 0 && (effect === 'collect' || effect === 'all_collect')) {
+                effectText = _('Collect ') + amount + _(' Duckats');
+            } else if (effect === 'critic') {
+                effectText = _('All players collect based on staff value');
+            } else if (effect === 'all_roll_pay' || effect === 'roll_pay') {
+                effectText = _('Roll dice — pay 5× roll');
+            } else if (effect === 'roll_collect') {
+                effectText = _('Roll dice — collect 5× roll');
             } else if (effect === 'movement') {
-                effectText = ' — ' + _('Move to new square');
+                effectText = _('Move to new square');
+            } else if (effect === 'vacation') {
+                effectText = _('Lose your next turn');
+            } else if (effect === 'shuffle') {
+                effectText = _('Deck reshuffled');
+            } else if (effect === 'conditional_hire') {
+                effectText = _('Special hire opportunity');
             }
 
-            this._showBoardMessage(_('Restaurant Card'), description + effectText);
+            // Show card image as overlay on inner board
+            this._showRestaurantCardOverlay(cardType, description, effectText);
+        },
+
+        _showRestaurantCardOverlay: function (cardType, description, effectText) {
+            // Remove any existing overlay
+            var existing = document.getElementById('ds-restaurant-card-overlay');
+            if (existing) { existing.remove(); }
+
+            var imgFile = this._restaurantCardImages[cardType] || null;
+            var imgHtml = '';
+            if (imgFile) {
+                var imgUrl = g_gamethemeurl + 'img/rest_cards/' + encodeURIComponent(imgFile);
+                imgHtml = '<img src="' + imgUrl + '" class="ds-restaurant-card-img" alt="' + dojo.string.substitute('${0}', [cardType]) + '" />';
+            }
+
+            var effectHtml = effectText
+                ? '<p class="ds-restaurant-card-effect">' + effectText + '</p>'
+                : '';
+
+            var overlayHtml = '<div id="ds-restaurant-card-overlay" class="ds-restaurant-card-overlay">'
+                + '<div class="ds-restaurant-card-modal">'
+                + imgHtml
+                + '<p class="ds-restaurant-card-desc">' + description + '</p>'
+                + effectHtml
+                + '<button id="ds-restaurant-card-close" class="ds-btn ds-btn--secondary">' + _('OK') + '</button>'
+                + '</div>'
+                + '</div>';
+
+            document.body.insertAdjacentHTML('beforeend', overlayHtml);
+
+            // Auto-dismiss after 4 seconds, or on OK click
+            var self = this;
+            var closeBtn = document.getElementById('ds-restaurant-card-close');
+            var timer = setTimeout(function () {
+                var el = document.getElementById('ds-restaurant-card-overlay');
+                if (el) { el.remove(); }
+            }, 4000);
+
+            closeBtn.addEventListener('click', function () {
+                clearTimeout(timer);
+                var el = document.getElementById('ds-restaurant-card-overlay');
+                if (el) { el.remove(); }
+            });
         },
 
         notif_cardRollResult: function (notif) {
@@ -1210,7 +1479,7 @@ _showStaffPicker: function(hireType, isHalfPrice) {
     this._hideStaffPicker(); // Defensive — remove any stale picker
 
     const gamedatas    = this.gamedatas;
-    const myDuckats    = gamedatas.players[this.player_id].player_duckats;
+    const myDuckats    = gamedatas.players[this.player_id].duckats;
     const staffBox     = gamedatas.staffBox   || {};   // { type: available_count }
     const myStaff      = gamedatas.myStaff    || {};   // { type: owned_count }
 
@@ -1320,8 +1589,9 @@ _showStaffPicker: function(hireType, isHalfPrice) {
 
     const modalHtml = `
         <div id="ds-staff-picker-overlay" class="ds-modal-overlay" role="dialog"
-             aria-modal="true" aria-label="Hire Staff">
-            <div class="ds-modal ds-staff-picker">
+             aria-modal="true" aria-label="Hire Staff"
+             style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;overflow-y:auto;">
+            <div class="ds-modal ds-staff-picker" style="background:#fff;border-radius:8px;padding:24px;max-width:700px;width:90%;max-height:90vh;overflow-y:auto;position:relative;">
                 <div class="ds-modal-header">
                     <h2 class="ds-modal-title">${titleText}</h2>
                     <p class="ds-modal-subtitle">${subtitleText}</p>
@@ -1338,6 +1608,25 @@ _showStaffPicker: function(hireType, isHalfPrice) {
         </div>`;
 
     document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+    // DOM diagnostic — confirm overlay injected and visible
+    var _dbgOverlay = document.getElementById('ds-staff-picker-overlay');
+    if (_dbgOverlay) {
+        var _dbgStyle = window.getComputedStyle(_dbgOverlay);
+        console.log('[DS] picker overlay in DOM:', true,
+            'display:', _dbgStyle.display,
+            'visibility:', _dbgStyle.visibility,
+            'z-index:', _dbgStyle.zIndex,
+            'opacity:', _dbgStyle.opacity,
+            'position:', _dbgStyle.position,
+            'width:', _dbgStyle.width,
+            'height:', _dbgStyle.height
+        );
+        console.log('[DS] sectionsHtml length:', sectionsHtml.length);
+        console.log('[DS] overlay innerHTML snippet:', _dbgOverlay.innerHTML.substring(0, 300));
+    } else {
+        console.error('[DS] picker overlay NOT found in DOM after insert');
+    }
 
     // Wire tile click events
     document.querySelectorAll('.ds-staff-tile[data-clickable="1"]').forEach(tile => {
@@ -1466,9 +1755,11 @@ _trapFocus: function(element) {
 
     // Target: the player header panel already built in setup()
     // Assumes a container with id="ds-player-header-{playerId}" exists.
-    const headerEl = document.getElementById(`ds-player-header-${playerId}`);
+    // Target: .player-header inside staff-board-{playerId}
+    const boardEl  = document.getElementById('staff-board-' + playerId);
+    const headerEl = boardEl ? boardEl.querySelector('.player-header') : null;
     if (!headerEl) {
-        console.warn(`[DuckSoup] Player header not found for player ${playerId}`);
+        console.warn('[DuckSoup] Player header not found for player ' + playerId);
         return;
     }
 
@@ -1771,14 +2062,19 @@ _refreshUseState: function(playerId) {
 // =============================================================
 
 _getSouperDuckatCount: function(playerId) {
-    const el = document.getElementById(`ds-sd-count-${playerId}`);
-    return el ? parseInt(el.textContent, 10) || 0 : 0;
+    // Try panel element first, fall back to header counter
+    var panelEl = document.getElementById('ds-sd-count-' + playerId);
+    if (panelEl) return parseInt(panelEl.textContent, 10) || 0;
+    if (this.souperDuckatCounters && this.souperDuckatCounters[playerId]) {
+        return this.souperDuckatCounters[playerId].getValue() || 0;
+    }
+    return 0;
 },
 
 _getDuckatCount: function(playerId) {
     // Reads from the existing Duckat counter element built in setup().
     // Adjust selector to match the actual element id used in your header.
-    const el = document.getElementById(`ds-player-duckats-${playerId}`);
+    const el = document.getElementById('duckat-count-' + playerId);
     return el ? parseInt(el.textContent, 10) || 0 : 0;
 },
 
@@ -1789,15 +2085,25 @@ _getDuckatCount: function(playerId) {
 // =============================================================
 
 _updateSouperDuckatCount: function(playerId, newCount) {
-    const el = document.getElementById(`ds-sd-count-${playerId}`);
-    if (el) el.textContent = parseInt(newCount, 10) || 0;
+    var count = parseInt(newCount, 10) || 0;
+
+    // Update injected panel count
+    var panelEl = document.getElementById('ds-sd-count-' + playerId);
+    if (panelEl) panelEl.textContent = count;
+
+    // Update existing header counter
+    if (this.souperDuckatCounters && this.souperDuckatCounters[playerId]) {
+        this.souperDuckatCounters[playerId].setValue(count);
+    }
+    var headerEl = document.getElementById('souper-duckat-count-' + playerId);
+    if (headerEl) headerEl.textContent = count;
 
     // Re-evaluate button states if controls are currently visible
-    const buyCashEl = document.getElementById(`ds-sd-buycash-${playerId}`);
+    var buyCashEl = document.getElementById('ds-sd-buycash-' + playerId);
     if (buyCashEl && !buyCashEl.classList.contains('ds-sd-controls--hidden')) {
         this._refreshBuyCashState(playerId);
     }
-    const useEl = document.getElementById(`ds-sd-use-${playerId}`);
+    var useEl = document.getElementById('ds-sd-use-' + playerId);
     if (useEl && !useEl.classList.contains('ds-sd-controls--hidden')) {
         this._refreshUseState(playerId);
     }
@@ -1805,8 +2111,12 @@ _updateSouperDuckatCount: function(playerId, newCount) {
 
 _updateDuckatCount: function(playerId, newCount) {
     // Updates the existing Duckat counter element in the player header.
-    const el = document.getElementById(`ds-player-duckats-${playerId}`);
+    const el = document.getElementById('duckat-count-' + playerId);
     if (el) el.textContent = parseInt(newCount, 10) || 0;
+    // Also update the BGA counter if it exists
+    if (this.duckatCounters && this.duckatCounters[playerId]) {
+        this.duckatCounters[playerId].setValue(parseInt(newCount, 10) || 0);
+    }
 }
 
     });

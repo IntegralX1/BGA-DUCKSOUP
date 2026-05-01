@@ -100,7 +100,7 @@ $machinestates = array(
             'cashSouperDuckat',
         ),
         'transitions'       => array(
-            'toResolveSquare' => 6,
+            'toSouperDuckatUse' => 10,
         ),
     ),
 
@@ -114,7 +114,6 @@ $machinestates = array(
         'type'              => 'game',
         'action'            => 'stResolveSquare',
         'transitions'       => array(
-            'toSouperDuckatUse' => 10,
             'toRestaurant'      => 7,
             'toHireStaff'       => 9,
             'toStaffQuits'      => 11,

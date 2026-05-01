@@ -1,0 +1,53 @@
+/* =============================================================
+   Duck Soup: The Restaurant Game
+   Restaurant Card Overlay CSS
+   ADD TO ducksouptherestaurantgame.css
+   ============================================================= */
+
+.ds-restaurant-card-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.ds-restaurant-card-modal {
+    background: #fdf8f0;
+    border-radius: 14px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.35);
+    padding: 24px;
+    max-width: 400px;
+    width: 90vw;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.ds-restaurant-card-img {
+    width: 100%;
+    max-width: 340px;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    display: block;
+    margin: 0 auto;
+}
+
+.ds-restaurant-card-desc {
+    font-size: 14px;
+    color: #3a3028;
+    line-height: 1.5;
+    margin: 0;
+    font-weight: 500;
+}
+
+.ds-restaurant-card-effect {
+    font-size: 15px;
+    font-weight: 700;
+    color: #b8860b;
+    margin: 0;
+}

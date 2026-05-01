@@ -314,19 +314,32 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
             'staff_id'
         );
 
-        // Staff box availability
+        // Staff box availability — keyed by staff_type, value = available (0 or 1)
+        // JS _showStaffPicker reads staffBox[type] as a numeric availability count.
+        // getCollectionFromDB with 2 columns returns { key: second_col_value }.
         $result['staffBox'] = self::getCollectionFromDB(
-            'SELECT staff_type, staff_location, staff_value, available
-             FROM staff_box',
+            'SELECT staff_type, available FROM staff_box',
             'staff_type'
         );
 
-        // Current player's own staff (for picker affordability checks)
-        $result['myStaff'] = self::getCollectionFromDB(
+        // Current player's own staff — keyed by base type, value = count of excellent slots.
+        // Cook/server have numbered slots (cook_1/cook_2/cook_3); JS uses base type 'cook'
+        // to look up how many are owned. We return base type counts for multi-slot staff
+        // and exact type for single-slot staff, so the picker can compute remainingSlots.
+        $myStaffRaw = self::getCollectionFromDB(
             "SELECT staff_type, is_excellent FROM staff
              WHERE player_id = {$current_player_id} AND is_excellent = 1",
             'staff_type'
         );
+        $myStaffCounts = array();
+        foreach ($myStaffRaw as $sType => $row) {
+            // Strip numbered suffix to get base type (cook_1 → cook, server_2 → server)
+            $baseType = preg_replace('/_\d+$/', '', $sType);
+            $myStaffCounts[$baseType] = isset($myStaffCounts[$baseType])
+                ? $myStaffCounts[$baseType] + 1
+                : 1;
+        }
+        $result['myStaff'] = $myStaffCounts;
 
         // Hire context for hireStaff state
         $result['hireType']      = $this->decodeHireType((int) self::getGameStateValue('hireType'));
@@ -562,8 +575,9 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
             )
         );
 
-        // Go to souperDuckatUse — stSouperDuckatUse auto-skips if count is 0
-        $this->gamestate->nextState('toResolveSquare');
+        // Go to souperDuckatUse — player may spend Souper Duckats before square resolves
+        // stSouperDuckatUse auto-transitions to resolveSquare if player has 0 Souper Duckats
+        $this->gamestate->nextState('toSouperDuckatUse');
     }
 
     /**
@@ -709,7 +723,7 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
     function skipSouperDuckats()
     {
         self::checkAction('skipSouperDuckats');
-        $this->gamestate->nextState('toEndTurn');
+        $this->gamestate->nextState('toResolveSquare');
     }
 
     /**
@@ -933,6 +947,27 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
     // ==================================================================
     // GAME STATE ACTIONS (server-side, no player input required)
     // ==================================================================
+
+    /**
+     * stSouperDuckatUse (server-side entry check)
+     * If the active player has 0 Souper Duckats, auto-skip to resolveSquare.
+     * Called automatically when entering souperDuckatUse state.
+     * Note: BGA calls this via 'action' key if state type were 'game',
+     * but since it's 'activeplayer' we check in onEnteringState JS side.
+     * Server-side safety: we also check here via a dedicated method that
+     * can be called from zombieTurn.
+     */
+    function stCheckSouperDuckats()
+    {
+        $player_id = self::getActivePlayerId();
+        $owned = (int) self::getUniqueValueFromDB(
+            "SELECT player_souper_duckats FROM player WHERE player_id = {$player_id}"
+        );
+        if ($owned === 0) {
+            $this->gamestate->nextState('toResolveSquare');
+        }
+        // If owned > 0, stay in souperDuckatUse for player input
+    }
 
     /**
      * stResolveSquare
