@@ -174,7 +174,8 @@ $machinestates = array(
         'type'              => 'activeplayer',
         'possibleactions'   => array('hireStaff', 'passHire'),
         'transitions'       => array(
-            'toEndTurn' => 13,
+            'toEndTurn'    => 13,
+            'toHelpWanted' => 12,   // Bug #6 — active player passes Help Wanted first-refusal
         ),
     ),
 

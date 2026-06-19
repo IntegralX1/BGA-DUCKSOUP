@@ -107,7 +107,10 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
     const GS_TURN_NUMBER         = 17;
     const GS_HIRE_TYPE           = 18; // 'kitchen'|'dining_room'|'either' for hireStaff state
     const GS_HIRE_HALF_PRICE     = 19; // 1 = this hire is at half price (card bonus)
+    const GS_HELP_WANTED_PENDING = 20; // 1 = hireStaff entered from help_wanted; passHire creates auction
+    const GS_HELP_WANTED_VALUE   = 21; // face value of the help_wanted rolled staff (Duckats)
     // GS_CARD_TYPE removed — card type is a string, stored in game_state_text table
+    // helpWantedStaffType is also a string — stored in game_state_text table
 
     function __construct()
     {
@@ -123,7 +126,9 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
             'turnNumber'        => self::GS_TURN_NUMBER,
             'hireType'          => self::GS_HIRE_TYPE,
             'hireHalfPrice'     => self::GS_HIRE_HALF_PRICE,
-            // cardType is stored in game_state_text table (string — not supported by BGA labels)
+            'helpWantedPending' => self::GS_HELP_WANTED_PENDING,
+            'helpWantedValue'   => self::GS_HELP_WANTED_VALUE,
+            // cardType and helpWantedStaffType stored in game_state_text (strings)
         ));
     }
 
@@ -212,8 +217,11 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
         self::setGameStateInitialValue('turnNumber',        1);
         self::setGameStateInitialValue('hireType',          0); // 0=kitchen,1=dining_room,2=either
         self::setGameStateInitialValue('hireHalfPrice',     0);
+        self::setGameStateInitialValue('helpWantedPending', 0);
+        self::setGameStateInitialValue('helpWantedValue',   0);
         // cardType stored as string in game_state_text — reset for new game
         $this->setCardType('');
+        $this->setHelpWantedStaffType('');
 
         // --- Init statistics ---
         self::initStat('table', 'totalRounds', 0);
@@ -310,43 +318,32 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
             'SELECT staff_id, player_id, staff_type, staff_location,
                     is_excellent, staff_value
              FROM staff
-             ORDER BY player_id, staff_location, staff_value DESC',
-            'staff_id'
+             ORDER BY player_id, staff_location, staff_value DESC'
         );
 
-        // Staff box availability — keyed by staff_type, value = available (0 or 1)
-        // JS _showStaffPicker reads staffBox[type] as a numeric availability count.
-        // getCollectionFromDB with 2 columns returns { key: second_col_value }.
+        // Staff box availability — 2-column query so BGA returns scalar available values (0/1)
+        // JS picker reads parseInt(staffBox[slotKey], 10) — requires scalar, not row object
         $result['staffBox'] = self::getCollectionFromDB(
             'SELECT staff_type, available FROM staff_box',
             'staff_type'
         );
 
-        // Current player's own staff — keyed by base type, value = count of excellent slots.
-        // Cook/server have numbered slots (cook_1/cook_2/cook_3); JS uses base type 'cook'
-        // to look up how many are owned. We return base type counts for multi-slot staff
-        // and exact type for single-slot staff, so the picker can compute remainingSlots.
-        $myStaffRaw = self::getCollectionFromDB(
+        // Current player's own staff (for picker affordability checks)
+        $result['myStaff'] = self::getCollectionFromDB(
             "SELECT staff_type, is_excellent FROM staff
              WHERE player_id = {$current_player_id} AND is_excellent = 1",
             'staff_type'
         );
-        $myStaffCounts = array();
-        foreach ($myStaffRaw as $sType => $row) {
-            // Strip numbered suffix to get base type (cook_1 → cook, server_2 → server)
-            $baseType = preg_replace('/_\d+$/', '', $sType);
-            $myStaffCounts[$baseType] = isset($myStaffCounts[$baseType])
-                ? $myStaffCounts[$baseType] + 1
-                : 1;
-        }
-        $result['myStaff'] = $myStaffCounts;
 
         // Hire context for hireStaff state
-        $result['hireType']      = $this->decodeHireType((int) self::getGameStateValue('hireType'));
-        $result['hireHalfPrice'] = (int) self::getGameStateValue('hireHalfPrice');
+        $result['hireType']           = $this->decodeHireType((int) self::getGameStateValue('hireType'));
+        $result['hireHalfPrice']      = (int) self::getGameStateValue('hireHalfPrice');
         $result['halfPriceStaffType'] = $result['hireHalfPrice']
             ? $this->getHalfPriceStaffType($this->getCardType())
             : null;
+        // Bug #6 — help_wanted first-refusal context
+        $result['helpWantedPending']   = (int) self::getGameStateValue('helpWantedPending');
+        $result['helpWantedStaffType'] = $this->getHelpWantedStaffType();
 
         // Current question (reveal to active player only)
         $questionId = (int) self::getGameStateValue('currentQuestion');
@@ -806,9 +803,12 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
 
         $this->hireFromBox($staffType, $player_id, $expectedCost);
 
-        // Reset hire context
-        self::setGameStateValue('hireHalfPrice', 0);
-        self::setGameStateValue('hireType', 0);
+        // Reset hire context (including help_wanted first-refusal flag if set)
+        self::setGameStateValue('hireHalfPrice',     0);
+        self::setGameStateValue('hireType',          0);
+        self::setGameStateValue('helpWantedPending', 0);
+        self::setGameStateValue('helpWantedValue',   0);
+        $this->setHelpWantedStaffType('');
 
         $this->gamestate->nextState('toEndTurn');
     }
@@ -820,6 +820,46 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
     function passHire()
     {
         self::checkAction('passHire');
+
+        // Bug #6 fix — if this was a help_wanted first-refusal, open the auction
+        // for other players before ending the turn.
+        $helpWantedPending = (int) self::getGameStateValue('helpWantedPending');
+        if ($helpWantedPending) {
+            $staffType  = $this->getHelpWantedStaffType();
+            $staffValue = (int) self::getGameStateValue('helpWantedValue');
+
+            // Clear help_wanted context
+            self::setGameStateValue('helpWantedPending', 0);
+            self::setGameStateValue('helpWantedValue',   0);
+            $this->setHelpWantedStaffType('');
+            self::setGameStateValue('hireHalfPrice', 0);
+            self::setGameStateValue('hireType', 0);
+
+            // Create the auction now that the active player has declined
+            $safeType = addslashes($staffType);
+            self::DbQuery(
+                "INSERT INTO auction (staff_type, staff_value, source, status)
+                 VALUES ('{$safeType}', {$staffValue}, 'help_wanted', 'active')"
+            );
+            $auctionId = self::DbGetLastId();
+            self::setGameStateValue('auctionId', $auctionId);
+
+            self::notifyAllPlayers('helpWantedAuction',
+                clienttranslate('${player_name} passes — ${staff_type} goes to auction!'),
+                array(
+                    'player_id'   => self::getActivePlayerId(),
+                    'player_name' => self::getActivePlayerName(),
+                    'staff_type'  => $staffType,
+                    'staff_value' => $staffValue,
+                    'auction_id'  => $auctionId,
+                    'source'      => 'help_wanted',
+                )
+            );
+
+            $this->gamestate->nextState('toHelpWanted');
+            return;
+        }
+
         self::setGameStateValue('hireHalfPrice', 0);
         self::setGameStateValue('hireType', 0);
         $this->gamestate->nextState('toEndTurn');
@@ -922,7 +962,14 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
             )
         );
 
-        $this->gamestate->setPlayerNonMultiactive($player_id, '');
+        // Bug #13 fix — bidder stays active so others may counter-bid.
+        // Only deactivate (ending the auction) if this player is already the sole
+        // remaining active player (all others have passed).
+        $activePlayers = $this->gamestate->getActivePlayerList();
+        $othersStillIn = array_filter($activePlayers, fn($pid) => (int)$pid !== (int)$player_id);
+        if (empty($othersStillIn)) {
+            $this->gamestate->setPlayerNonMultiactive($player_id, 'toEndTurn');
+        }
     }
 
     /**
@@ -941,7 +988,15 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
             )
         );
 
-        $this->gamestate->setPlayerNonMultiactive($player_id, '');
+        // Bug #13/#15 fix — use 'toEndTurn' (not empty string) so BGA fires the
+        // correct transition when the last player deactivates.
+        $this->gamestate->setPlayerNonMultiactive($player_id, 'toEndTurn');
+
+        // If only one player remains active they are the high bidder — end auction for them.
+        $remaining = $this->gamestate->getActivePlayerList();
+        if (count($remaining) === 1) {
+            $this->gamestate->setPlayerNonMultiactive((int)$remaining[0], 'toEndTurn');
+        }
     }
 
     // ==================================================================
@@ -1249,7 +1304,15 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
             return;
         }
 
-        $this->gamestate->setPlayersMultiactive($biddingPlayers, 'toEndTurn');
+        // Old BGA framework: setAllPlayersMultiactive activates everyone,
+        // then we immediately deactivate excluded players (original owner + vacationers).
+        $this->gamestate->setAllPlayersMultiactive('toEndTurn');
+        $allPlayers2 = self::loadPlayersBasicInfos();
+        foreach ($allPlayers2 as $pid => $pinfo) {
+            if (!in_array((int) $pid, $biddingPlayers)) {
+                $this->gamestate->setPlayerNonMultiactive((int) $pid, 'toEndTurn');
+            }
+        }
     }
 
     /**
@@ -1274,7 +1337,15 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
             return;
         }
 
-        $this->gamestate->setPlayersMultiactive($biddingPlayers, 'toEndTurn');
+        // Old BGA framework: setAllPlayersMultiactive activates everyone,
+        // then deactivate vacationing players.
+        $this->gamestate->setAllPlayersMultiactive('toEndTurn');
+        $allPlayers2 = self::loadPlayersBasicInfos();
+        foreach ($allPlayers2 as $pid => $pinfo) {
+            if (!in_array((int) $pid, $biddingPlayers)) {
+                $this->gamestate->setPlayerNonMultiactive((int) $pid, 'toEndTurn');
+            }
+        }
     }
 
     /**
@@ -1397,9 +1468,12 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
         self::setGameStateValue('staffDieResult',    -1);
         self::setGameStateValue('movementRoll',      0);
         self::setGameStateValue('souperDuckatsUsed', 0);
-        self::setGameStateValue('hireType',          0);
-        self::setGameStateValue('hireHalfPrice',     0);
+        self::setGameStateValue('hireType',           0);
+        self::setGameStateValue('hireHalfPrice',      0);
+        self::setGameStateValue('helpWantedPending',  0);
+        self::setGameStateValue('helpWantedValue',    0);
         $this->setCardType('');
+        $this->setHelpWantedStaffType('');
 
         $this->gamestate->nextState('toChooseQuestion');
     }
@@ -1423,9 +1497,12 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
     function argHireStaff()
     {
         return array(
-            'hire_type'       => $this->decodeHireType((int) self::getGameStateValue('hireType')),
-            'half_price'      => (bool) self::getGameStateValue('hireHalfPrice'),
-            'half_price_type' => $this->getHalfPriceStaffType($this->getCardType()),
+            'hire_type'              => $this->decodeHireType((int) self::getGameStateValue('hireType')),
+            'half_price'             => (bool) self::getGameStateValue('hireHalfPrice'),
+            'half_price_type'        => $this->getHalfPriceStaffType($this->getCardType()),
+            // Bug #6 — help_wanted first-refusal: show only the rolled staff at face value
+            'help_wanted_pending'    => (bool) self::getGameStateValue('helpWantedPending'),
+            'help_wanted_staff_type' => $this->getHelpWantedStaffType(),
         );
     }
 
@@ -1565,6 +1642,11 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
      */
     private function findAvailableSlot($baseType, $playerId)
     {
+        // Normalise: strip any numeric suffix so 'cook_3' → 'cook'.
+        // The picker sends the already-numbered firstAvailableSlotType; without this
+        // normalisation the loop builds 'cook_3_1', 'cook_3_2' etc. (Bug #21).
+        $baseType = preg_replace('/_\d+$/', '', $baseType);
+
         $staffDef = $this->getStaffDefByType($baseType);
         if ($staffDef === null || $staffDef['slots'] === 1) {
             return $baseType; // Single-slot type — return as-is
@@ -1693,6 +1775,7 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
                 'staff_type'  => $type,
                 'staff_value' => $staffDef['value'],
                 'auction_id'  => $auctionId,
+                'source'      => 'staff_quits',   // Bug #15 — JS modal needs this for correct title
             )
         );
 
@@ -1739,25 +1822,28 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
             return;
         }
 
-        self::DbQuery(
-            "INSERT INTO auction (staff_type, staff_value, source, status)
-             VALUES ('{$type}', {$staffDef['value']}, 'help_wanted', 'active')"
-        );
-        $auctionId = self::DbGetLastId();
-        self::setGameStateValue('auctionId', $auctionId);
+        // Bug #6 fix — active player gets first refusal at face value via hireStaff.
+        // Store rolled staff type/value; passHire creates the auction if they decline.
+        $hireTypeCode = ($staffDef['location'] === 'kitchen') ? 0 : 1;
+        self::setGameStateValue('hireType',          $hireTypeCode);
+        self::setGameStateValue('hireHalfPrice',     0);
+        self::setGameStateValue('helpWantedPending', 1);
+        self::setGameStateValue('helpWantedValue',   $staffDef['value']);
+        $this->setHelpWantedStaffType($type);
 
         self::notifyAllPlayers('helpWanted',
-            clienttranslate('${player_name} lands on Help Wanted! ${staff_type} is available.'),
+            clienttranslate('${player_name} lands on Help Wanted! ${staff_type} is available — first right to hire.'),
             array(
                 'player_id'   => $player_id,
                 'player_name' => self::getActivePlayerName(),
                 'staff_type'  => $type,
                 'staff_value' => $staffDef['value'],
-                'auction_id'  => $auctionId,
+                'help_wanted' => true,
             )
         );
 
-        $this->gamestate->nextState('toHelpWanted');
+        // Active player gets first-refusal via hireStaff (picker filtered to this staff only)
+        $this->gamestate->nextState('toHireStaff');
     }
 
     private function drawNextQuestion()
@@ -1832,6 +1918,31 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
         self::DbQuery(
             "INSERT INTO game_state_text (state_key, state_value)
              VALUES ('cardType', '{$safe}')
+             ON DUPLICATE KEY UPDATE state_value = '{$safe}'"
+        );
+    }
+
+    /**
+     * Bug #6 — Read the help_wanted rolled staff base type (e.g. 'sous_chef').
+     */
+    private function getHelpWantedStaffType(): string
+    {
+        $val = self::getUniqueValueFromDB(
+            "SELECT state_value FROM game_state_text WHERE state_key = 'helpWantedStaffType'"
+        );
+        return $val ?? '';
+    }
+
+    /**
+     * Bug #6 — Write the help_wanted rolled staff base type.
+     * Pass empty string to clear.
+     */
+    private function setHelpWantedStaffType(string $type): void
+    {
+        $safe = addslashes($type);
+        self::DbQuery(
+            "INSERT INTO game_state_text (state_key, state_value)
+             VALUES ('helpWantedStaffType', '{$safe}')
              ON DUPLICATE KEY UPDATE state_value = '{$safe}'"
         );
     }

@@ -189,6 +189,9 @@ function (dojo, declare) {
             // Show the first player's staff board
             this._showStaffBoard(0);
 
+            // Apply all Excellent staff tiles after every board is in the DOM
+            this._applyAllExcellentStaff();
+
             // Wire staff board arrow navigation
             dojo.connect(dojo.byId('left-arrow'),  'onclick', this, '_onLeftArrow');
             dojo.connect(dojo.byId('right-arrow'), 'onclick', this, '_onRightArrow');
@@ -293,13 +296,6 @@ function (dojo, declare) {
             // Build Souper Duckat panel inside the player header
             this._buildSouperDuckatPanel(player_id, souper);
 
-            // Apply Excellent staff tiles from gamedatas.staff
-            for (var staff_id in this.gamedatas.staff) {
-                var tile = this.gamedatas.staff[staff_id];
-                if (tile.player_id == player_id && tile.is_excellent == 1) {
-                    this._showExcellentStaff(player_id, tile.staff_type);
-                }
-            }
         },
 
         // ==============================================================
@@ -337,31 +333,79 @@ function (dojo, declare) {
         // STAFF TILE DISPLAY
         // ==============================================================
 
+        // staff_type (DB) → image filename base in img/staff_cards/
+        // Numbered slots (cook_1/2/3, server_1/2/3) share one tile image.
+        _staffTileImage: function (staffType) {
+            var base = staffType.replace(/_\d+$/, '');   // cook_1 -> cook
+            var map = {
+                'chef':       'ex-chef',
+                'sous_chef':  'ex-sous-chef',
+                'first_cook': 'ex-first-cook',
+                'cook':       'ex-cook',
+                'maitre_d':   'ex-maitre-d',
+                'sommelier':  'ex-sommelier',
+                'captain':    'ex-captain',
+                'server':     'ex-server'
+            };
+            return map[base] || null;
+        },
+
+        // staff_type (DB) → DOM id suffix used in the board grid
+        // (matches the ex-...-${player_id} ids built in setup()).
+        _staffSlotIdSuffix: function (staffType) {
+            return staffType.replace(/_/g, '-');   // cook_1 -> cook-1, first_cook -> first-cook
+        },
+
         _showExcellentStaff: function (player_id, staffType) {
-            var slotIndex = this.staffSlotIndex[staffType];
-            if (slotIndex === undefined) { return; }
+            var imgBase = this._staffTileImage(staffType);
+            if (!imgBase) { return; }
 
-            var panel = dojo.byId('staff-board-' + player_id);
-            if (!panel) { return; }
+            var slotId = 'ex-' + this._staffSlotIdSuffix(staffType) + '-' + player_id;
+            var slot   = dojo.byId(slotId);
+            if (!slot) { return; }
 
-            var slots = dojo.query('.grid-item', panel);
-            if (slots[slotIndex]) {
-                dojo.addClass(slots[slotIndex], 'excellent');
-                dojo.removeClass(slots[slotIndex], 'hidden');
+            // Avoid double-injecting if already shown
+            if (slot.querySelector('.ds-excellent-tile')) { return; }
+
+            var imgUrl = this.gameThemeUrl + 'img/staff_cards/' + imgBase + '.jpg';
+
+            // Flexbox overlay container fills the slot and centres the tile,
+            // sitting on top of the average staff printed on the board image.
+            slot.style.position       = 'relative';
+            slot.style.display        = 'flex';
+            slot.style.alignItems     = 'center';
+            slot.style.justifyContent = 'center';
+
+            slot.insertAdjacentHTML('beforeend',
+                '<div class="ds-excellent-tile" style="' +
+                    'position:absolute;top:0;left:0;width:100%;height:100%;' +
+                    'display:flex;align-items:center;justify-content:center;' +
+                    'pointer-events:none;z-index:5;">' +
+                    '<img src="' + imgUrl + '" alt="" style="' +
+                        'max-width:100%;max-height:100%;width:auto;height:auto;' +
+                        'object-fit:contain;display:block;">' +
+                '</div>'
+            );
+        },
+
+        _applyAllExcellentStaff: function () {
+            if (!this.gamedatas || !this.gamedatas.staff) { return; }
+            for (var staff_id in this.gamedatas.staff) {
+                var tile = this.gamedatas.staff[staff_id];
+                if (tile.is_excellent == 1) {
+                    this._showExcellentStaff(tile.player_id, tile.staff_type);
+                }
             }
         },
 
         _hideExcellentStaff: function (player_id, staffType) {
-            var slotIndex = this.staffSlotIndex[staffType];
-            if (slotIndex === undefined) { return; }
+            var slotId = 'ex-' + this._staffSlotIdSuffix(staffType) + '-' + player_id;
+            var slot   = dojo.byId(slotId);
+            if (!slot) { return; }
 
-            var panel = dojo.byId('staff-board-' + player_id);
-            if (!panel) { return; }
-
-            var slots = dojo.query('.grid-item', panel);
-            if (slots[slotIndex]) {
-                dojo.removeClass(slots[slotIndex], 'excellent');
-                dojo.addClass(slots[slotIndex], 'hidden');
+            var tile = slot.querySelector('.ds-excellent-tile');
+            if (tile) {
+                tile.parentNode.removeChild(tile);
             }
         },
 
@@ -572,8 +616,11 @@ function (dojo, declare) {
                     console.log('[DS] hireStaff entered. isActive:', this.isCurrentPlayerActive(), 'args:', JSON.stringify(args));
                     if (this.isCurrentPlayerActive()) {
                         var hireArgs    = args && args.args && !Array.isArray(args.args) ? args.args : {};
-                        var hireType    = hireArgs.hire_type  || 'either';
-                        var isHalfPrice = hireArgs.half_price || false;
+                        // hireType and isHalfPrice from args.args (BGA sends [] not object)
+                        // Fall back to gamedatas values set by getAllDatas() which are always current
+                        var hireType    = hireArgs.hire_type  || (this.gamedatas ? this.gamedatas.hireType    : 'either') || 'either';
+                        var isHalfPrice = hireArgs.half_price != null ? hireArgs.half_price
+                                        : (this.gamedatas ? !!parseInt(this.gamedatas.hireHalfPrice, 10) : false);
                         console.log('[DS] picker args — hireType:', hireType, 'isHalfPrice:', isHalfPrice, 'player_id:', this.player_id);
                         console.log('[DS] gamedatas.players:', JSON.stringify(this.gamedatas.players));
                         console.log('[DS] gamedatas.staffBox:', JSON.stringify(this.gamedatas.staffBox));
@@ -719,6 +766,16 @@ function (dojo, declare) {
                         _('Place Bid'), 'onPlaceBid');
                     this.addActionButton('btn-pass-bid-auction',
                         _('Pass'), 'onPassBid', null, false, 'gray');
+
+                    // Open auction modal here — onUpdateActionButtons fires reliably
+                    // after setup() and gamedatas is fully populated, unlike onEnteringState
+                    // which may fire during log replay before gamedatas is ready.
+                    if (!document.getElementById('ds-auction-overlay')) {
+                        var auctionData = this.gamedatas ? this.gamedatas.auction : null;
+                        if (auctionData) {
+                            this._showAuctionModal(stateName, auctionData);
+                        }
+                    }
                 }
             }
         },
@@ -837,8 +894,9 @@ function (dojo, declare) {
                   + '<button id="ds-bid-confirm" class="ds-btn ds-btn--use" type="button">Place Bid</button>'
                 : '<p class="ds-auction-cant-afford">You cannot afford the minimum bid of ' + minBid + ' Duckats.</p>';
 
-            var html = '<div id="ds-auction-overlay" class="ds-modal-overlay" role="dialog">'
-                + '<div class="ds-modal ds-auction-modal">'
+            var html = '<div id="ds-auction-overlay" class="ds-modal-overlay" role="dialog"'
+                + ' style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;">'
+                + '<div class="ds-modal ds-auction-modal" style="background:#fff;border-radius:8px;padding:24px;max-width:500px;width:90%;position:relative;">'
                 + '<div class="ds-modal-header">'
                 + '<h2 class="ds-modal-title">' + title + '</h2>'
                 + '<p class="ds-modal-subtitle">' + subtitle + '</p>'
@@ -942,33 +1000,30 @@ function (dojo, declare) {
             console.log('Setting up notifications');
 
             var notifs = [
-                ['letterChosen',       500],
-                ['questionRevealed',   500],
-                ['answerResult',       3000],
-                ['staffDieRolled',     2000],
-                ['pawnMoved',          1000],
-                ['squareLanded',       1500],
-                ['staffQuits',         2000],
-                ['helpWanted',         2000],
-                ['staffHired',         1500],
-                ['staffTransferred',   1500],
-                ['staffReturned',      1500],
-                ['auctionResolved',    2000],
-                ['bidPlaced',          1000],
-                ['bidPassed',          500],
-                ['staffQuits',         1500],
-                ['helpWanted',         1500],
-                ['bidPlaced',          500],
-                ['bidPassed',          500],
-                ['souperDuckatPlayed', 500],
-                ['restaurantCard',     2000],
-                ['cardRollResult',     2000],
-                ['souperDuckatUpdate', 500],
-                ['souperDuckatUsed',   1000],
-                ['duckatUpdate',       500],
-                ['paymentRequired',    1000],
-                ['playerSkipped',      1500],
-                ['gameWon',            3000]
+                ['letterChosen',          500],
+                ['questionRevealed',      500],
+                ['answerResult',          3000],
+                ['staffDieRolled',        2000],
+                ['pawnMoved',             1000],
+                ['squareLanded',          1500],
+                ['staffQuits',            2000],
+                ['helpWanted',            2000],
+                ['helpWantedAuction',     2000],   // Bug #6 — active player passed first-refusal
+                ['staffHired',            1500],
+                ['staffTransferred',      1500],
+                ['staffReturned',         1500],
+                ['auctionResolved',       2000],
+                ['bidPlaced',             1000],
+                ['bidPassed',             500],
+                ['souperDuckatPlayed',    500],
+                ['restaurantCard',        2000],
+                ['cardRollResult',        2000],
+                ['souperDuckatUpdate',    500],
+                ['souperDuckatUsed',      1000],
+                ['duckatUpdate',          500],
+                ['paymentRequired',       1000],
+                ['playerSkipped',         1500],
+                ['gameWon',               3000],
             ];
 
             notifs.forEach(dojo.hitch(this, function (pair) {
@@ -1139,7 +1194,28 @@ function (dojo, declare) {
 
             var player_id   = notif.args.player_id;
             var staffType   = notif.args.staff_type;
-            var playerDuck  = notif.args.duckats;
+            var slotType    = notif.args.slot_type || staffType;  // specific numbered slot (e.g. cook_1)
+            var playerDuck  = notif.args.player_duckats;
+
+            // Bug #14 fix — mark the hired slot unavailable in gamedatas so the next
+            // picker open reads the correct availability instead of stale page-load data.
+            if (this.gamedatas && this.gamedatas.staffBox) {
+                this.gamedatas.staffBox[slotType] = '0';
+            }
+
+            // Bug #14 fix (cont.) — mark the slot as owned in myStaff so ownedCount
+            // and remainingSlots are correct for the current player on the next picker open.
+            if (this.gamedatas && String(player_id) === String(this.player_id)) {
+                if (!this.gamedatas.myStaff) { this.gamedatas.myStaff = {}; }
+                this.gamedatas.myStaff[slotType] = '1';
+            }
+
+            // Bug #10 fix — reset hireHalfPrice and hireType in gamedatas so a
+            // subsequent normal hire doesn't fall back to a stale half-price value.
+            if (this.gamedatas) {
+                this.gamedatas.hireHalfPrice = 0;
+                this.gamedatas.hireType      = 'kitchen'; // safe default; argHireStaff overrides on next enter
+            }
 
             this._showExcellentStaff(player_id, staffType);
 
@@ -1195,10 +1271,24 @@ function (dojo, declare) {
 
         notif_bidPlaced: function (notif) {
             console.log('notif_bidPlaced', notif);
-            // Update current bid display in modal if open
-            var statusEl = document.querySelector('.ds-auction-status');
-            if (statusEl) {
-                statusEl.textContent = notif.args.player_name + ' bid ' + notif.args.amount + ' Duckats.';
+
+            // Bug #13 fix — update gamedatas.auction so modal refreshes with correct minimum bid.
+            if (this.gamedatas.auction) {
+                this.gamedatas.auction.current_high_bid    = notif.args.amount;
+                this.gamedatas.auction.current_high_bidder = notif.args.player_id;
+            }
+
+            // Refresh the modal if it is open so all players see the new high bid.
+            var overlay = document.getElementById('ds-auction-overlay');
+            if (overlay && this.isCurrentPlayerActive()) {
+                var stateName = this.gamedatas.gamestate ? this.gamedatas.gamestate.name : '';
+                this._showAuctionModal(stateName, this.gamedatas.auction);
+            } else if (overlay) {
+                // Spectator/non-active: just update the status text
+                var statusEl = document.querySelector('.ds-auction-status');
+                if (statusEl) {
+                    statusEl.textContent = notif.args.player_name + ' bids ' + notif.args.amount + ' Duckats.';
+                }
             }
         },
 
@@ -1207,6 +1297,14 @@ function (dojo, declare) {
             var statusEl = document.querySelector('.ds-auction-status');
             if (statusEl) {
                 statusEl.textContent = notif.args.player_name + ' passed.';
+            }
+        },
+
+        // Bug #6 — active player passed Help Wanted first-refusal; auction now opens for others.
+        notif_helpWantedAuction: function (notif) {
+            console.log('notif_helpWantedAuction', notif);
+            if (this.gamedatas) {
+                this.gamedatas.auction = notif.args;
             }
         },
 
@@ -1498,6 +1596,9 @@ _showStaffPicker: function(hireType, isHalfPrice) {
     // The specific restricted type is indicated by a non-null gamedatas.halfPriceStaffType.
     const halfPriceStaffType = isHalfPrice ? (gamedatas.halfPriceStaffType || null) : null;
 
+    // Bug #6 — Help Wanted first-refusal: picker shows only the rolled staff tile.
+    const helpWantedStaffType = gamedatas.helpWantedStaffType || null;
+
     // Build modal HTML
     let sectionsHtml = '';
     pools.forEach(pool => {
@@ -1508,13 +1609,46 @@ _showStaffPicker: function(hireType, isHalfPrice) {
             if (halfPriceStaffType && staff.type !== halfPriceStaffType) {
                 return;
             }
+            // Bug #6 — Skip if this is a help_wanted first-refusal for a different staff type
+            if (helpWantedStaffType && staff.type !== helpWantedStaffType) {
+                return;
+            }
 
-            const availableInBox = staffBox[staff.type] !== undefined
-                ? parseInt(staffBox[staff.type], 10)
-                : staff.slots;
-            const ownedCount     = myStaff[staff.type]  !== undefined
-                ? parseInt(myStaff[staff.type], 10)
-                : 0;
+            // For multi-slot staff (cook×3, server×3), staffBox uses numbered keys:
+            // cook_1, cook_2, cook_3. Count how many slots are available in the box.
+            // Also find the first available slot type to pass to PHP on hire.
+            let availableInBox = 0;
+            let firstAvailableSlotType = staff.type; // default for single-slot
+            if (staff.slots > 1) {
+                for (let si = 1; si <= staff.slots; si++) {
+                    const slotKey = staff.type + '_' + si;
+                    if (staffBox[slotKey] !== undefined && parseInt(staffBox[slotKey], 10) > 0) {
+                        availableInBox++;
+                        if (firstAvailableSlotType === staff.type) {
+                            firstAvailableSlotType = slotKey; // first available numbered slot
+                        }
+                    }
+                }
+            } else {
+                availableInBox = staffBox[staff.type] !== undefined
+                    ? parseInt(staffBox[staff.type], 10)
+                    : 0;
+            }
+            // For multi-slot staff (cook×3, server×3) count owned by iterating numbered
+            // slots (cook_1, cook_2, cook_3) — myStaff never has a bare 'cook' key.
+            let ownedCount = 0;
+            if (staff.slots > 1) {
+                for (let oi = 1; oi <= staff.slots; oi++) {
+                    const ownedKey = staff.type + '_' + oi;
+                    if (myStaff[ownedKey] !== undefined && parseInt(myStaff[ownedKey], 10) > 0) {
+                        ownedCount++;
+                    }
+                }
+            } else {
+                ownedCount = myStaff[staff.type] !== undefined
+                    ? parseInt(myStaff[staff.type], 10)
+                    : 0;
+            }
             const remainingSlots = staff.slots - ownedCount;
             const canHire        = availableInBox > 0 && remainingSlots > 0;
 
@@ -1559,7 +1693,7 @@ _showStaffPicker: function(hireType, isHalfPrice) {
 
             tilesHtml += `
                 <div class="ds-staff-tile ${stateClass}"
-                     data-staff-type="${staff.type}"
+                     data-staff-type="${firstAvailableSlotType}"
                      data-staff-value="${displayValue}"
                      data-clickable="${clickable ? '1' : '0'}"
                      ${tileTabIndex} ${tileRole}
@@ -1588,6 +1722,26 @@ _showStaffPicker: function(hireType, isHalfPrice) {
     const subtitleText = `You have <strong>${myDuckats}</strong> Duckats`;
 
     const modalHtml = `
+        <style>
+            #ds-staff-picker-overlay .ds-staff-section-label{font-weight:bold;margin:8px 0 4px;font-size:14px;}
+            #ds-staff-picker-overlay .ds-staff-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+            #ds-staff-picker-overlay .ds-staff-tile{border:2px solid #ccc;border-radius:6px;padding:10px;width:120px;text-align:center;cursor:default;font-size:12px;background:#f9f9f9;}
+            #ds-staff-picker-overlay .ds-staff-tile--available{border-color:#4a90d9;background:#e8f4ff;cursor:pointer;}
+            #ds-staff-picker-overlay .ds-staff-tile--available:hover{background:#d0e8ff;border-color:#2270c0;}
+            #ds-staff-picker-overlay .ds-staff-tile--unavailable{opacity:0.5;}
+            #ds-staff-picker-overlay .ds-staff-tile--unaffordable{opacity:0.65;border-color:#e07030;}
+            #ds-staff-picker-overlay .ds-staff-tile--selected{background:#c0dff8;border-color:#1a5ca0;}
+            #ds-staff-picker-overlay .ds-staff-label{font-weight:bold;margin-bottom:4px;}
+            #ds-staff-picker-overlay .ds-staff-value{color:#333;font-size:11px;}
+            #ds-staff-picker-overlay .ds-staff-overlay{font-size:10px;color:#900;font-weight:bold;margin-bottom:4px;}
+            #ds-staff-picker-overlay .ds-modal-title{margin:0 0 4px;font-size:18px;}
+            #ds-staff-picker-overlay .ds-modal-subtitle{margin:0 0 12px;color:#555;}
+            #ds-staff-picker-overlay #ds-staff-picker-cancel{width:100%;padding:10px;background:#888;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:14px;margin-top:8px;}
+            #ds-staff-picker-overlay #ds-staff-picker-cancel:hover{background:#666;}
+            #ds-staff-picker-overlay .ds-pip{display:inline-block;width:8px;height:8px;border-radius:50%;border:1px solid #888;margin:1px;}
+            #ds-staff-picker-overlay .ds-pip--filled{background:#4a90d9;}
+            #ds-staff-picker-overlay .ds-half-price-badge{font-size:10px;background:#e8a020;color:#fff;border-radius:3px;padding:1px 4px;margin-bottom:4px;}
+        </style>
         <div id="ds-staff-picker-overlay" class="ds-modal-overlay" role="dialog"
              aria-modal="true" aria-label="Hire Staff"
              style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;overflow-y:auto;">
@@ -1988,23 +2142,29 @@ _onSouperDuckatUseConfirm: function(playerId) {
     // Disable all use controls during action
     this._setUseControlsDisabled(playerId, true);
 
-    this.bga.actions.performAction('useSouperDuckats', { quantity: qty }).then(() => {
-        this._setSouperDuckatUseEnabled(false);
-    }).catch((err) => {
-        console.error('[DuckSoup] useSouperDuckats failed:', err);
-        this._setUseControlsDisabled(playerId, false);
-    });
+    var usePromise = this.bga.actions.performAction('useSouperDuckats', { quantity: qty });
+    if (usePromise && typeof usePromise.then === 'function') {
+        usePromise.then(() => {
+            this._setSouperDuckatUseEnabled(false);
+        }).catch((err) => {
+            console.error('[DuckSoup] useSouperDuckats failed:', err);
+            this._setUseControlsDisabled(playerId, false);
+        });
+    }
 },
 
 _onSouperDuckatSkip: function(playerId) {
     this._setUseControlsDisabled(playerId, true);
 
-    this.bga.actions.performAction('skipSouperDuckats', {}).then(() => {
-        this._setSouperDuckatUseEnabled(false);
-    }).catch((err) => {
-        console.error('[DuckSoup] skipSouperDuckats failed:', err);
-        this._setUseControlsDisabled(playerId, false);
-    });
+    var skipPromise = this.bga.actions.performAction('skipSouperDuckats', {});
+    if (skipPromise && typeof skipPromise.then === 'function') {
+        skipPromise.then(() => {
+            this._setSouperDuckatUseEnabled(false);
+        }).catch((err) => {
+            console.error('[DuckSoup] skipSouperDuckats failed:', err);
+            this._setUseControlsDisabled(playerId, false);
+        });
+    }
 },
 
 _setUseControlsDisabled: function(playerId, disabled) {
@@ -2045,9 +2205,10 @@ _refreshUseState: function(playerId) {
     const qtyEl       = document.getElementById(`ds-sd-use-qty-${playerId}`);
     if (!qtyEl) return;
 
-    // If player has no Souper Duckats, auto-skip
+    // If player has no Souper Duckats, PHP stCheckSouperDuckats auto-transitions.
+    // Do not fire skipSouperDuckats action here — this may run during state-entry
+    // notification phase when performAction returns undefined and crashes.
     if (souperCount === 0) {
-        this._onSouperDuckatSkip(playerId);
         return;
     }
 
