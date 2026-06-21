@@ -51,6 +51,16 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
     );
 
     // ------------------------------------------------------------------
+    // STAFF BOX STOCK
+    // Copies of each Excellent tile in the shared Staff Box, faithful to
+    // the physical 4-player game. Applied per single-slot role and per
+    // numbered multi-slot row (so cook_1/2/3 each get BOX_COPIES, giving
+    // 12 cooks total; likewise 12 servers). `staff_box.available` is a
+    // COUNT decremented on hire and incremented on return.
+    // ------------------------------------------------------------------
+    const BOX_COPIES = 4;
+
+    // ------------------------------------------------------------------
     // BOARD SQUARES — authoritative 32-square clockwise map
     // Position 0 = Duck Soup (bottom-left corner).
     // Confirmed by PD from physical board image.
@@ -166,13 +176,21 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
         }
 
         // --- Populate staff_box ---
+        // The Staff Box is a SHARED, finite pool faithful to the physical game.
+        // `available` is a COUNT (not a 0/1 flag). The boxed game contains enough
+        // Excellent tiles for all four players to fully staff their boards:
+        //   4 of each single-slot role (Chef, Sous Chef, First Cook, Maitre d',
+        //   Sommelier, Captain) and 12 of each triple-slot role (Cook, Server).
+        // Multi-slot roles are stored as numbered rows (cook_1/2/3, server_1/2/3);
+        // seeding each numbered row at BOX_COPIES yields 3 x 4 = 12 total per role.
         self::DbQuery("DELETE FROM staff_box");
+        $boxCopies   = self::BOX_COPIES; // copies of each tile (full 4-player complement)
         $staffValues = array();
         foreach (self::STAFF as $s) {
             $slots = $s['slots'];
             for ($i = 1; $i <= $slots; $i++) {
                 $type          = $slots > 1 ? $s['type'] . '_' . $i : $s['type'];
-                $staffValues[] = "('{$type}','{$s['location']}',{$s['value']},1)";
+                $staffValues[] = "('{$type}','{$s['location']}',{$s['value']},{$boxCopies})";
             }
         }
         self::DbQuery(
@@ -286,7 +304,7 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
                      WHERE player_id = {$player_id} AND staff_type = '{$slotType}'"
                 );
                 self::DbQuery(
-                    "UPDATE staff_box SET available = 0 WHERE staff_type = '{$slotType}'"
+                    "UPDATE staff_box SET available = available - 1 WHERE staff_type = '{$slotType}'"
                 );
                 $hired++;
             }
@@ -321,18 +339,21 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
              ORDER BY player_id, staff_location, staff_value DESC'
         );
 
-        // Staff box availability — 2-column query so BGA returns scalar available values (0/1)
-        // JS picker reads parseInt(staffBox[slotKey], 10) — requires scalar, not row object
+        // Staff box availability — keyed by staff_type, value = remaining COUNT in box.
+        // getCollectionFromDB's 2nd arg is a BOOLEAN single-value flag (NOT a key name):
+        // with a 2-column SELECT and true, BGA returns { staff_type: available } scalars,
+        // which is exactly what the JS picker reads via parseInt(staffBox[slotKey], 10).
         $result['staffBox'] = self::getCollectionFromDB(
             'SELECT staff_type, available FROM staff_box',
-            'staff_type'
+            true
         );
 
-        // Current player's own staff (for picker affordability checks)
+        // Current player's own Excellent staff, keyed by staff_type (value = is_excellent).
+        // Same boolean single-value flag — yields { staff_type: '1' } for owned Excellent slots.
         $result['myStaff'] = self::getCollectionFromDB(
             "SELECT staff_type, is_excellent FROM staff
              WHERE player_id = {$current_player_id} AND is_excellent = 1",
-            'staff_type'
+            true
         );
 
         // Hire context for hireStaff state
@@ -895,7 +916,7 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
              WHERE player_id = {$player_id} AND staff_type = '{$staffType}'"
         );
         self::DbQuery(
-            "UPDATE staff_box SET available = 1 WHERE staff_type = '{$staffType}'"
+            "UPDATE staff_box SET available = available + 1 WHERE staff_type = '{$staffType}'"
         );
         $this->adjustDuckats($player_id, $refund);
 
@@ -1297,7 +1318,7 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
                 "UPDATE auction SET status = 'no_takers' WHERE auction_id = {$auctionId}"
             );
             self::DbQuery(
-                "UPDATE staff_box SET available = 1
+                "UPDATE staff_box SET available = available + 1
                  WHERE staff_type = '{$auction['staff_type']}'"
             );
             $this->gamestate->nextState('toEndTurn');
@@ -1390,7 +1411,7 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
                              AND staff_type = '{$slotType}'"
                         );
                         self::DbQuery(
-                            "UPDATE staff_box SET available = 0
+                            "UPDATE staff_box SET available = available - 1
                              WHERE staff_type = '{$slotType}'"
                         );
                     }
@@ -1696,7 +1717,7 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
              WHERE player_id = {$playerId} AND staff_type = '{$slotType}'"
         );
         self::DbQuery(
-            "UPDATE staff_box SET available = 0 WHERE staff_type = '{$slotType}'"
+            "UPDATE staff_box SET available = available - 1 WHERE staff_type = '{$slotType}'"
         );
 
         self::notifyAllPlayers('staffHired',
