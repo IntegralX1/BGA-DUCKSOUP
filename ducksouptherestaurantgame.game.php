@@ -166,13 +166,14 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
 
         // --- Extend player rows with Duck Soup fields ---
         foreach ($players as $player_id => $player) {
-            self::DbQuery("UPDATE player SET
-                player_duckats         = " . self::STARTING_DUCKATS . ",
-                player_souper_duckats  = 3,
-                player_board_position  = 0,
-                player_restaurant_name = '',
-                player_on_vacation     = 0
-                WHERE player_id = {$player_id}");
+                self::DbQuery("UPDATE player SET
+                    player_score           = 0,
+                    player_duckats         = " . self::STARTING_DUCKATS . ",
+                    player_souper_duckats  = 3,
+                    player_board_position  = 0,
+                    player_restaurant_name = '',
+                    player_on_vacation     = 0
+                    WHERE player_id = {$player_id}");
         }
 
         // --- Populate staff_box ---
@@ -1444,8 +1445,11 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
 
         // Check win condition
         $activePlayerId = self::getActivePlayerId();
-        if ($this->hasWon($activePlayerId)) {
-            $this->bga->playerScore->inc(1, $activePlayerId);
+            if ($this->hasWon($activePlayerId)) {
+                        self::DbQuery(
+                "UPDATE player SET player_score = player_score + 1
+                WHERE player_id = {$activePlayerId}"
+            );
             self::notifyAllPlayers('gameWon',
                 clienttranslate('${player_name} has hired all 12 Excellent staff and wins the game!'),
                 array(

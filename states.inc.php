@@ -172,6 +172,7 @@ $machinestates = array(
         'description'       => clienttranslate('${actplayer} may hire an Excellent staff member'),
         'descriptionmyturn' => clienttranslate('Choose a staff member to hire, or pass'),
         'type'              => 'activeplayer',
+        "args" => "argHireStaff",
         'possibleactions'   => array('hireStaff', 'passHire'),
         'transitions'       => array(
             'toEndTurn'    => 13,

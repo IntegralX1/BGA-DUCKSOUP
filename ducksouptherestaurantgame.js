@@ -621,6 +621,12 @@ function (dojo, declare) {
                         var hireType    = hireArgs.hire_type  || (this.gamedatas ? this.gamedatas.hireType    : 'either') || 'either';
                         var isHalfPrice = hireArgs.half_price != null ? hireArgs.half_price
                                         : (this.gamedatas ? !!parseInt(this.gamedatas.hireHalfPrice, 10) : false);
+                                var helpWantedPending = hireArgs.help_wanted_pending != null
+                                    ? hireArgs.help_wanted_pending
+                                    : !!(this.gamedatas && this.gamedatas.helpWantedPending);
+                                if (!helpWantedPending && this.gamedatas) {
+                                    this.gamedatas.helpWantedStaffType = null;
+                                }     
                         console.log('[DS] picker args — hireType:', hireType, 'isHalfPrice:', isHalfPrice, 'player_id:', this.player_id);
                         console.log('[DS] gamedatas.players:', JSON.stringify(this.gamedatas.players));
                         console.log('[DS] gamedatas.staffBox:', JSON.stringify(this.gamedatas.staffBox));
@@ -1213,8 +1219,7 @@ function (dojo, declare) {
             // Bug #10 fix — reset hireHalfPrice and hireType in gamedatas so a
             // subsequent normal hire doesn't fall back to a stale half-price value.
             if (this.gamedatas) {
-                this.gamedatas.hireHalfPrice = 0;
-                this.gamedatas.hireType      = 'kitchen'; // safe default; argHireStaff overrides on next enter
+                this.gamedatas.hireHalfPrice = 0; // safe default; argHireStaff overrides on next enter
             }
 
             this._showExcellentStaff(player_id, staffType);
