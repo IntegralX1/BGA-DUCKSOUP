@@ -53,13 +53,46 @@ _staffData: {
 // to determine state of each tile.
 // =============================================================
 
-_showStaffPicker: function(hireType, isHalfPrice) {
+// Bug #17 — staffBox/myStaff are keyed by per-slot type (cook_1, cook_2, cook_3 for
+// multi-slot roles; bare type for single-slot). The picker iterates BASE types, so we
+// must aggregate across numbered slots. Rows arrive as objects from getCollectionFromDB
+// (e.g. { staff_type, available } / { staff_type, is_excellent }), with values as STRINGS
+// ("0"/"1"). Read the field via parseInt, not the row. Missing key → 0.
+_sumStaffSlots: function(collection, baseType, slots, field) {
+    let total = 0;
+    if (slots > 1) {
+        for (let i = 1; i <= slots; i++) {
+            const row = collection[baseType + '_' + i];
+            if (row !== undefined && row !== null) {
+                total += parseInt(row[field], 10) || 0;
+            }
+        }
+    } else {
+        const row = collection[baseType];
+        if (row !== undefined && row !== null) {
+            total += parseInt(row[field], 10) || 0;
+        }
+    }
+    return total;
+},
+
+// pickerArgs: the live state args from argHireStaff (args.args at the call site).
+// Bug #22 — prefer FRESH server data (staffBox / myStaff / duckats) from these args;
+// fall back to the page-load gamedatas snapshot only if args are absent (defensive).
+_showStaffPicker: function(hireType, isHalfPrice, pickerArgs) {
     this._hideStaffPicker(); // Defensive — remove any stale picker
 
     const gamedatas    = this.gamedatas;
-    const myDuckats    = gamedatas.players[this.player_id].player_duckats;
-    const staffBox     = gamedatas.staffBox   || {};   // { type: available_count }
-    const myStaff      = gamedatas.myStaff    || {};   // { type: owned_count }
+    const args         = (pickerArgs && typeof pickerArgs === 'object' && !Array.isArray(pickerArgs))
+                         ? pickerArgs : {};
+
+    // Fresh balance from args; gamedatas only as last-resort fallback (bug #22).
+    const myDuckats    = (args.duckats != null)
+                         ? parseInt(args.duckats, 10)
+                         : parseInt(gamedatas.players[this.player_id].player_duckats, 10);
+    // Fresh box/owned collections from args; gamedatas fallback (bug #22).
+    const staffBox     = args.staffBox || gamedatas.staffBox || {};  // { slotKey: { staff_type, available } }
+    const myStaff      = args.myStaff  || gamedatas.myStaff  || {};  // { slotKey: { staff_type, is_excellent } }
 
     // Determine which pools to show
     const pools = [];
@@ -73,8 +106,11 @@ _showStaffPicker: function(hireType, isHalfPrice) {
     // Half-price filter — only show cook (chef_cook_bonus) or server (maitre_d_bonus)
     // The hireType already scopes the pool; isHalfPrice additionally restricts to one type.
     // Caller sets hireType='kitchen' for chef_cook_bonus, 'dining_room' for maitre_d_bonus.
-    // The specific restricted type is indicated by a non-null gamedatas.halfPriceStaffType.
-    const halfPriceStaffType = isHalfPrice ? (gamedatas.halfPriceStaffType || null) : null;
+    // The specific restricted type is indicated by a non-null half_price_type (args, bug #22)
+    // or the gamedatas fallback.
+    const halfPriceStaffType = isHalfPrice
+        ? (args.half_price_type || gamedatas.halfPriceStaffType || null)
+        : null;
 
     // Build modal HTML
     let sectionsHtml = '';
@@ -87,12 +123,11 @@ _showStaffPicker: function(hireType, isHalfPrice) {
                 return;
             }
 
-            const availableInBox = staffBox[staff.type] !== undefined
-                ? parseInt(staffBox[staff.type], 10)
-                : staff.slots;
-            const ownedCount     = myStaff[staff.type]  !== undefined
-                ? parseInt(myStaff[staff.type], 10)
-                : 0;
+            // Sum availability across numbered slots (cook_1..cook_3) — available is per-slot
+            // "0"/"1"; total = how many copies of this role remain in the box (bug #17).
+            const availableInBox = this._sumStaffSlots(staffBox, staff.type, staff.slots, 'available');
+            // Sum owned excellent copies across this player's numbered slots.
+            const ownedCount     = this._sumStaffSlots(myStaff, staff.type, staff.slots, 'is_excellent');
             const remainingSlots = staff.slots - ownedCount;
             const canHire        = availableInBox > 0 && remainingSlots > 0;
 
