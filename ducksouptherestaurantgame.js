@@ -1582,6 +1582,9 @@ _showStaffPicker: function(hireType, isHalfPrice, pickerArgs) {
     const myDuckats    = (args.duckats != null)
                          ? parseInt(args.duckats, 10)
                          : parseInt(gamedatas.players[this.player_id].duckats, 10);
+    // Bug #26 — staffBox / myStaff are no longer used to GATE hireability (the server now
+    // sends args.staffAvailability, a per-player open-slot map). Retained only as defensive
+    // fallbacks and for any incidental reads; the authoritative availability is staffAvailability.
     const staffBox     = args.staffBox || gamedatas.staffBox || {};  // { slotKey: { staff_type, available } }
     const myStaff      = args.myStaff  || gamedatas.myStaff  || {};  // { slotKey: { staff_type, is_excellent } }
 
@@ -1620,49 +1623,21 @@ _showStaffPicker: function(hireType, isHalfPrice, pickerArgs) {
                 return;
             }
 
-            // For multi-slot staff (cook×3, server×3), staffBox uses numbered keys:
-            // cook_1, cook_2, cook_3. Count how many slots are available in the box.
-            // Values arrive as row objects { staff_type, available:"0"/"1" } (bug #22) — read .available.
-            // Also find the first available slot type to pass to PHP on hire.
-            let availableInBox = 0;
-            let firstAvailableSlotType = staff.type; // default for single-slot
-            if (staff.slots > 1) {
-                for (let si = 1; si <= staff.slots; si++) {
-                    const slotKey = staff.type + '_' + si;
-                    const boxRow  = staffBox[slotKey];
-                    if (boxRow !== undefined && boxRow !== null && parseInt(boxRow.available, 10) > 0) {
-                        availableInBox++;
-                        if (firstAvailableSlotType === staff.type) {
-                            firstAvailableSlotType = slotKey; // first available numbered slot
-                        }
-                    }
-                }
-            } else {
-                const boxRow = staffBox[staff.type];
-                availableInBox = (boxRow !== undefined && boxRow !== null)
-                    ? (parseInt(boxRow.available, 10) || 0)
-                    : 0;
-            }
-            // For multi-slot staff (cook×3, server×3) count owned by iterating numbered
-            // slots (cook_1, cook_2, cook_3) — myStaff never has a bare 'cook' key.
-            // Values arrive as row objects { staff_type, is_excellent:"1" } (bug #22) — read .is_excellent.
-            let ownedCount = 0;
-            if (staff.slots > 1) {
-                for (let oi = 1; oi <= staff.slots; oi++) {
-                    const ownedKey = staff.type + '_' + oi;
-                    const ownRow   = myStaff[ownedKey];
-                    if (ownRow !== undefined && ownRow !== null && parseInt(ownRow.is_excellent, 10) > 0) {
-                        ownedCount++;
-                    }
-                }
-            } else {
-                const ownRow = myStaff[staff.type];
-                ownedCount = (ownRow !== undefined && ownRow !== null)
-                    ? (parseInt(ownRow.is_excellent, 10) || 0)
-                    : 0;
-            }
-            const remainingSlots = staff.slots - ownedCount;
-            const canHire        = availableInBox > 0 && remainingSlots > 0;
+            // Bug #26 — availability is now a PER-PLAYER question answered server-side.
+            // args.staffAvailability[baseType] = how many slots of this role are still OPEN
+            // for the active player (0 = they own them all → "Already Hired"). This replaces
+            // the old global-box count and the client-side ownership math.
+            const staffAvailability = args.staffAvailability || {};
+            const openSlots  = (staffAvailability[staff.type] != null)
+                             ? parseInt(staffAvailability[staff.type], 10)
+                             : staff.slots; // defensive fallback: assume all open if map missing
+            const ownedCount = staff.slots - openSlots; // for pip display (filled = owned)
+
+            // Slot type passed to PHP on hire. The server re-resolves the exact open slot via
+            // findAvailableSlot, so the base type is sufficient here.
+            const firstAvailableSlotType = staff.type;
+
+            const canHire        = openSlots > 0;
 
             const displayValue   = isHalfPrice ? Math.floor(staff.value / 2) : staff.value;
             const canAfford      = myDuckats >= displayValue;
