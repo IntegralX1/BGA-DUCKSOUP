@@ -135,9 +135,10 @@ $machinestates = array(
         'type'              => 'game',
         'action'            => 'stResolveRestaurant',
         'transitions'       => array(
-            'toCardRoll'    => 8,
-            'toHireStaff'   => 9,
-            'toEndTurn'     => 13,
+            'toCardRoll'      => 8,
+            'toHireStaff'     => 9,
+            'toResolveSquare' => 6,
+            'toEndTurn'       => 13,
         ),
     ),
 
