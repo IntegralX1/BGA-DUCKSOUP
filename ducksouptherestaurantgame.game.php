@@ -1497,6 +1497,7 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
 
     function argHireStaff()
     {
+        $active_player_id = self::getActivePlayerId();
         return array(
             'hire_type'              => $this->decodeHireType((int) self::getGameStateValue('hireType')),
             'half_price'             => (bool) self::getGameStateValue('hireHalfPrice'),
@@ -1504,7 +1505,48 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
             // Bug #6 — help_wanted first-refusal: show only the rolled staff at face value
             'help_wanted_pending'    => (bool) self::getGameStateValue('helpWantedPending'),
             'help_wanted_staff_type' => $this->getHelpWantedStaffType(),
+            // Bug #22 — ship the active player's LIVE Duckat balance so the picker does not
+            // fall back to the stale page-load gamedatas snapshot.
+            'duckats'                => $this->getPlayerDuckats($active_player_id),
+            // Bug #17 — per-player open-slot map (baseType => open count) so the picker
+            // gates hireability from the active player's own staff rows, not the global box.
+            'staffAvailability'      => $this->getPlayerStaffAvailability($active_player_id),
         );
+    }
+
+    /**
+     * Bug #17 — Per-player staff availability.
+     * Returns a map of baseType => number of slots still OPEN (not yet Excellent)
+     * for the given player, computed from that player's own `staff` rows.
+     * Single-slot roles yield 0 or 1; multi-slot roles (cook/server) yield 0..slots.
+     * Mirrors findAvailableSlot()'s definition of "open" (is_excellent = 0).
+     */
+    private function getPlayerStaffAvailability($playerId)
+    {
+        $playerId     = (int) $playerId;
+        $availability = array();
+        foreach (self::STAFF as $s) {
+            $baseType = $s['type'];
+            if ($s['slots'] > 1) {
+                // Multi-slot: count numbered rows (cook_1..3) still open for this player.
+                $open = (int) self::getUniqueValueFromDB(
+                    "SELECT COUNT(*) FROM staff
+                     WHERE player_id = {$playerId}
+                     AND staff_type LIKE '" . addslashes($baseType) . "_%'
+                     AND is_excellent = 0"
+                );
+            } else {
+                // Single-slot: open if this player's row for the base type is not Excellent.
+                $open = (int) self::getUniqueValueFromDB(
+                    "SELECT COUNT(*) FROM staff
+                     WHERE player_id = {$playerId}
+                     AND staff_type = '" . addslashes($baseType) . "'
+                     AND is_excellent = 0"
+                );
+            }
+            $availability[$baseType] = $open;
+        }
+        return $availability;
     }
 
     // ==================================================================

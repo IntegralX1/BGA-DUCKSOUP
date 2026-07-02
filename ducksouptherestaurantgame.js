@@ -105,6 +105,21 @@ function (dojo, declare) {
             var gameThemeUrl = g_gamethemeurl; // BGA global — available by setup() time
             this.gameThemeUrl = gameThemeUrl;
 
+                // Root-level art loads on demand via ${gameThemeUrl} in the injected HTML,
+                // so skip BGA's up-front preload to speed up table start.
+                this.bga.images.dontPreloadImages([
+                    'board.jpg',
+                    'inner-board.png',
+                    'staff-board.jpg',
+                    'staff-die.png',
+                    'movement-dice.png',
+                    'super-duckats.png',
+                    'duckats.png',
+                    'dice-1.png', 'dice-2.png', 'dice-3.png',
+                    'dice-4.png', 'dice-5.png', 'dice-6.png',
+                    'pawn-blue.png', 'pawn-green.png', 'pawn-purple.png', 'pawn-red.png'
+                ]);
+
             // ---------------------------------------------------------------
             // Inject full game HTML into BGA game area (replaces TPL/view)
             // ---------------------------------------------------------------
