@@ -667,6 +667,9 @@ function (dojo, declare) {
                     break;
 
                 case 'souperDuckatUse':
+                    // Fresh arrival in the spend state — clear any stale
+                    // in-flight guard so this turn's action is allowed exactly once.
+                    this._souperActionInFlight = false;
                     if (this.isCurrentPlayerActive()) {
                         this._setSouperDuckatBuyCashEnabled(false);
                         this._setSouperDuckatUseEnabled(true);
@@ -736,6 +739,7 @@ function (dojo, declare) {
                     break;
 
                 case 'souperDuckatUse':
+                    this._souperActionInFlight = false;
                     this._setSouperDuckatUseEnabled(false);
                     break;
 
@@ -864,7 +868,23 @@ function (dojo, declare) {
         onSkipSouperDuckats: function (evt) {
             if (evt) { dojo.stopEvent(evt); }
             if (!this.checkAction('skipSouperDuckats')) { return; }
-            this.bga.actions.performAction('skipSouperDuckats', {});
+            // Guard against a duplicate/stale submit: once any Souper Duckat
+            // action is dispatched, block further dispatches until the state
+            // transitions (flag cleared in onLeavingState) or the action errors.
+            // A second call would otherwise reach the server after 10→6→(7)
+            // and throw "transition impossible at state 7".
+            if (this._souperActionInFlight) { return; }
+            this._souperActionInFlight = true;
+            this._setSouperDuckatUseEnabled(false);
+
+            var self = this;
+            var p = this.bga.actions.performAction('skipSouperDuckats', {});
+            if (p && typeof p.then === 'function') {
+                p.catch(function (err) {
+                    console.error('[DuckSoup] skipSouperDuckats failed:', err);
+                    self._souperActionInFlight = false;
+                });
+            }
         },
 
         // --- Roll For Card (restaurant card dice roll) ---
@@ -2385,29 +2405,37 @@ _onSouperDuckatUseConfirm: function(playerId) {
     const qty = parseInt(qtyEl.textContent, 10) || 0;
     if (qty <= 0) return;
 
+    if (this._souperActionInFlight) { return; }
+    this._souperActionInFlight = true;
     // Disable all use controls during action
     this._setUseControlsDisabled(playerId, true);
 
+    var self = this;
     var usePromise = this.bga.actions.performAction('useSouperDuckats', { quantity: qty });
     if (usePromise && typeof usePromise.then === 'function') {
         usePromise.then(() => {
             this._setSouperDuckatUseEnabled(false);
         }).catch((err) => {
             console.error('[DuckSoup] useSouperDuckats failed:', err);
+            self._souperActionInFlight = false;
             this._setUseControlsDisabled(playerId, false);
         });
     }
 },
 
 _onSouperDuckatSkip: function(playerId) {
+    if (this._souperActionInFlight) { return; }
+    this._souperActionInFlight = true;
     this._setUseControlsDisabled(playerId, true);
 
+    var self = this;
     var skipPromise = this.bga.actions.performAction('skipSouperDuckats', {});
     if (skipPromise && typeof skipPromise.then === 'function') {
         skipPromise.then(() => {
             this._setSouperDuckatUseEnabled(false);
         }).catch((err) => {
             console.error('[DuckSoup] skipSouperDuckats failed:', err);
+            self._souperActionInFlight = false;
             this._setUseControlsDisabled(playerId, false);
         });
     }
