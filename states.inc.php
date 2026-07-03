@@ -18,6 +18,7 @@
  *   12  = helpWantedBid      (multi-active auction: help wanted, 3-4 players)
  *   13  = endTurn            (server-side auto)
  *   14  = helpWantedOffer    (2-player: single opponent take-it-or-leave-it at 1.5x face)
+ *   15  = checkSouperDuckats (server-side auto: skip souperDuckatUse if 0 owned)
  *   99  = gameEnd            (BGA reserved)
  */
 
@@ -101,7 +102,7 @@ $machinestates = array(
             'cashSouperDuckat',
         ),
         'transitions'       => array(
-            'toSouperDuckatUse' => 10,
+            'toCheckSouperDuckats' => 15,
         ),
     ),
 
@@ -267,6 +268,24 @@ $machinestates = array(
         'action'            => 'stHelpWantedOffer',
         'transitions'       => array(
             'toEndTurn' => 13,
+        ),
+    ),
+
+    // ---------------------------------------------------------------
+    // 15 — CHECK SOUPER DUCKATS (server-side automatic)
+    // Entry gate before souperDuckatUse (state 10). If the active player
+    // owns 0 Souper Duckats, skip straight to resolveSquare (state 6) so
+    // the turn never dead-ends waiting on a spend the player can't make.
+    // Otherwise, hand off to souperDuckatUse for player input.
+    // ---------------------------------------------------------------
+    15 => array(
+        'name'              => 'checkSouperDuckats',
+        'description'       => '',
+        'type'              => 'game',
+        'action'            => 'stCheckSouperDuckats',
+        'transitions'       => array(
+            'toSouperDuckatUse' => 10,
+            'toResolveSquare'   => 6,
         ),
     ),
 
