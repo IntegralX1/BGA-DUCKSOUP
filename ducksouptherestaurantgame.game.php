@@ -575,9 +575,10 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
             )
         );
 
-        // Go to souperDuckatUse — player may spend Souper Duckats before square resolves
-        // stSouperDuckatUse auto-transitions to resolveSquare if player has 0 Souper Duckats
-        $this->gamestate->nextState('toSouperDuckatUse');
+        // Route through the checkSouperDuckats gate (state 15). If the player
+        // owns 0 Souper Duckats, stCheckSouperDuckats skips straight to
+        // resolveSquare; otherwise it hands off to souperDuckatUse (state 10).
+        $this->gamestate->nextState('toCheckSouperDuckats');
     }
 
     /**
@@ -992,13 +993,15 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
     // ==================================================================
 
     /**
-     * stSouperDuckatUse (server-side entry check)
-     * If the active player has 0 Souper Duckats, auto-skip to resolveSquare.
-     * Called automatically when entering souperDuckatUse state.
-     * Note: BGA calls this via 'action' key if state type were 'game',
-     * but since it's 'activeplayer' we check in onEnteringState JS side.
-     * Server-side safety: we also check here via a dedicated method that
-     * can be called from zombieTurn.
+     * stCheckSouperDuckats — action for state 15 (checkSouperDuckats),
+     * a server-side 'game' state entered from rollMovement before the
+     * player-driven souperDuckatUse state (10).
+     *
+     * If the active player owns 0 Souper Duckats there is nothing to spend,
+     * so we skip the spend state entirely and route straight to resolveSquare
+     * (state 6). Otherwise we hand off to souperDuckatUse (state 10) for
+     * player input. As a 'game'-state action this MUST fire exactly one
+     * transition on every path or the state machine will hang.
      */
     function stCheckSouperDuckats()
     {
@@ -1006,10 +1009,11 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
         $owned = (int) self::getUniqueValueFromDB(
             "SELECT player_souper_duckats FROM player WHERE player_id = {$player_id}"
         );
-        if ($owned === 0) {
+        if ($owned <= 0) {
             $this->gamestate->nextState('toResolveSquare');
+        } else {
+            $this->gamestate->nextState('toSouperDuckatUse');
         }
-        // If owned > 0, stay in souperDuckatUse for player input
     }
 
     /**
