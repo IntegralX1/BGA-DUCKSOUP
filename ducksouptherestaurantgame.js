@@ -105,21 +105,6 @@ function (dojo, declare) {
             var gameThemeUrl = g_gamethemeurl; // BGA global — available by setup() time
             this.gameThemeUrl = gameThemeUrl;
 
-                // Root-level art loads on demand via ${gameThemeUrl} in the injected HTML,
-                // so skip BGA's up-front preload to speed up table start.
-                this.bga.images.dontPreloadImages([
-                    'board.jpg',
-                    'inner-board.png',
-                    'staff-board.jpg',
-                    'staff-die.png',
-                    'movement-dice.png',
-                    'super-duckats.png',
-                    'duckats.png',
-                    'dice-1.png', 'dice-2.png', 'dice-3.png',
-                    'dice-4.png', 'dice-5.png', 'dice-6.png',
-                    'pawn-blue.png', 'pawn-green.png', 'pawn-purple.png', 'pawn-red.png'
-                ]);
-
             // ---------------------------------------------------------------
             // Inject full game HTML into BGA game area (replaces TPL/view)
             // ---------------------------------------------------------------
@@ -628,6 +613,7 @@ function (dojo, declare) {
                     break;
 
                 case 'hireStaff':
+                    console.log('[DS] hireStaff entered. isActive:', this.isCurrentPlayerActive(), 'args:', JSON.stringify(args));
                     if (this.isCurrentPlayerActive()) {
                         var hireArgs    = args && args.args && !Array.isArray(args.args) ? args.args : {};
                         // hireType and isHalfPrice from args.args (BGA sends [] not object)
@@ -635,10 +621,12 @@ function (dojo, declare) {
                         var hireType    = hireArgs.hire_type  || (this.gamedatas ? this.gamedatas.hireType    : 'either') || 'either';
                         var isHalfPrice = hireArgs.half_price != null ? hireArgs.half_price
                                         : (this.gamedatas ? !!parseInt(this.gamedatas.hireHalfPrice, 10) : false);
+                        console.log('[DS] picker args — hireType:', hireType, 'isHalfPrice:', isHalfPrice, 'player_id:', this.player_id);
+                        console.log('[DS] gamedatas.players:', JSON.stringify(this.gamedatas.players));
+                        console.log('[DS] gamedatas.staffBox:', JSON.stringify(this.gamedatas.staffBox));
+                        console.log('[DS] gamedatas.myStaff:', JSON.stringify(this.gamedatas.myStaff));
                         try {
-                            // Bug #22 — pass hireArgs (fresh staffBox/myStaff/duckats from
-                            // argHireStaff) so the picker reads live data, not stale gamedatas.
-                            this._showStaffPicker(hireType, isHalfPrice, hireArgs);
+                            this._showStaffPicker(hireType, isHalfPrice);
                         } catch(err) {
                             console.error('[DS] _showStaffPicker threw:', err);
                         }
@@ -1474,7 +1462,7 @@ function (dojo, declare) {
             var allPlayers = notif.args.all_players;
 
             var msg = allPlayers
-                ? _('All players affected: ') + amount + _(' Duckats')
+                ? _('All players pay ') + amount + _(' to the bank')
                 : amount + _(' Duckats');
             this._showBoardMessage(_('Card Roll Result'), msg);
         },
@@ -1585,23 +1573,13 @@ function (dojo, declare) {
 // to determine state of each tile.
 // =============================================================
 
-_showStaffPicker: function(hireType, isHalfPrice, pickerArgs) {
+_showStaffPicker: function(hireType, isHalfPrice) {
     this._hideStaffPicker(); // Defensive — remove any stale picker
 
     const gamedatas    = this.gamedatas;
-    // Bug #22 — prefer FRESH state args from argHireStaff (staffBox / myStaff / duckats)
-    // over the page-load gamedatas snapshot, which goes stale after setup/any hire and
-    // caused the picker to show every role "Already Hired". gamedatas is a defensive fallback.
-    const args         = (pickerArgs && typeof pickerArgs === 'object' && !Array.isArray(pickerArgs))
-                         ? pickerArgs : {};
-    const myDuckats    = (args.duckats != null)
-                         ? parseInt(args.duckats, 10)
-                         : parseInt(gamedatas.players[this.player_id].duckats, 10);
-    // Bug #26 — staffBox / myStaff are no longer used to GATE hireability (the server now
-    // sends args.staffAvailability, a per-player open-slot map). Retained only as defensive
-    // fallbacks and for any incidental reads; the authoritative availability is staffAvailability.
-    const staffBox     = args.staffBox || gamedatas.staffBox || {};  // { slotKey: { staff_type, available } }
-    const myStaff      = args.myStaff  || gamedatas.myStaff  || {};  // { slotKey: { staff_type, is_excellent } }
+    const myDuckats    = gamedatas.players[this.player_id].duckats;
+    const staffBox     = gamedatas.staffBox   || {};   // { type: available_count }
+    const myStaff      = gamedatas.myStaff    || {};   // { type: owned_count }
 
     // Determine which pools to show
     const pools = [];
@@ -1614,14 +1592,12 @@ _showStaffPicker: function(hireType, isHalfPrice, pickerArgs) {
 
     // Half-price filter — only show cook (chef_cook_bonus) or server (maitre_d_bonus)
     // The hireType already scopes the pool; isHalfPrice additionally restricts to one type.
-    // Bug #22 — prefer fresh args.half_price_type; gamedatas is a fallback.
-    const halfPriceStaffType = isHalfPrice
-        ? (args.half_price_type || gamedatas.halfPriceStaffType || null)
-        : null;
+    // Caller sets hireType='kitchen' for chef_cook_bonus, 'dining_room' for maitre_d_bonus.
+    // The specific restricted type is indicated by a non-null gamedatas.halfPriceStaffType.
+    const halfPriceStaffType = isHalfPrice ? (gamedatas.halfPriceStaffType || null) : null;
 
     // Bug #6 — Help Wanted first-refusal: picker shows only the rolled staff tile.
-    // Bug #22 — prefer fresh args.help_wanted_staff_type; gamedatas is a fallback.
-    const helpWantedStaffType = args.help_wanted_staff_type || gamedatas.helpWantedStaffType || null;
+    const helpWantedStaffType = gamedatas.helpWantedStaffType || null;
 
     // Build modal HTML
     let sectionsHtml = '';
@@ -1638,21 +1614,43 @@ _showStaffPicker: function(hireType, isHalfPrice, pickerArgs) {
                 return;
             }
 
-            // Bug #26 — availability is now a PER-PLAYER question answered server-side.
-            // args.staffAvailability[baseType] = how many slots of this role are still OPEN
-            // for the active player (0 = they own them all → "Already Hired"). This replaces
-            // the old global-box count and the client-side ownership math.
-            const staffAvailability = args.staffAvailability || {};
-            const openSlots  = (staffAvailability[staff.type] != null)
-                             ? parseInt(staffAvailability[staff.type], 10)
-                             : staff.slots; // defensive fallback: assume all open if map missing
-            const ownedCount = staff.slots - openSlots; // for pip display (filled = owned)
-
-            // Slot type passed to PHP on hire. The server re-resolves the exact open slot via
-            // findAvailableSlot, so the base type is sufficient here.
-            const firstAvailableSlotType = staff.type;
-
-            const canHire        = openSlots > 0;
+            // For multi-slot staff (cook×3, server×3), staffBox uses numbered keys:
+            // cook_1, cook_2, cook_3. Count how many slots are available in the box.
+            // Also find the first available slot type to pass to PHP on hire.
+            let availableInBox = 0;
+            let firstAvailableSlotType = staff.type; // default for single-slot
+            if (staff.slots > 1) {
+                for (let si = 1; si <= staff.slots; si++) {
+                    const slotKey = staff.type + '_' + si;
+                    if (staffBox[slotKey] !== undefined && parseInt(staffBox[slotKey], 10) > 0) {
+                        availableInBox++;
+                        if (firstAvailableSlotType === staff.type) {
+                            firstAvailableSlotType = slotKey; // first available numbered slot
+                        }
+                    }
+                }
+            } else {
+                availableInBox = staffBox[staff.type] !== undefined
+                    ? parseInt(staffBox[staff.type], 10)
+                    : 0;
+            }
+            // For multi-slot staff (cook×3, server×3) count owned by iterating numbered
+            // slots (cook_1, cook_2, cook_3) — myStaff never has a bare 'cook' key.
+            let ownedCount = 0;
+            if (staff.slots > 1) {
+                for (let oi = 1; oi <= staff.slots; oi++) {
+                    const ownedKey = staff.type + '_' + oi;
+                    if (myStaff[ownedKey] !== undefined && parseInt(myStaff[ownedKey], 10) > 0) {
+                        ownedCount++;
+                    }
+                }
+            } else {
+                ownedCount = myStaff[staff.type] !== undefined
+                    ? parseInt(myStaff[staff.type], 10)
+                    : 0;
+            }
+            const remainingSlots = staff.slots - ownedCount;
+            const canHire        = availableInBox > 0 && remainingSlots > 0;
 
             const displayValue   = isHalfPrice ? Math.floor(staff.value / 2) : staff.value;
             const canAfford      = myDuckats >= displayValue;

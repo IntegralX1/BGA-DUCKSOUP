@@ -15,8 +15,9 @@
  *   9   = hireStaff          (player picks staff to hire)
  *   10  = souperDuckatUse    (player optionally spends Souper Duckats post-move)
  *   11  = staffQuitsBid      (multi-active auction: staff quits)
- *   12  = helpWantedBid      (multi-active auction: help wanted)
+ *   12  = helpWantedBid      (multi-active auction: help wanted, 3-4 players)
  *   13  = endTurn            (server-side auto)
+ *   14  = helpWantedOffer    (2-player: single opponent take-it-or-leave-it at 1.5x face)
  *   99  = gameEnd            (BGA reserved)
  */
 
@@ -117,7 +118,8 @@ $machinestates = array(
             'toRestaurant'      => 7,
             'toHireStaff'       => 9,
             'toStaffQuits'      => 11,
-            'toHelpWanted'      => 12,
+            'toHelpWanted'      => 12,   // 3-4 players: bidding auction
+            'toHelpWantedOffer' => 14,   // 2 players: single-opponent 1.5x offer
             'toEndTurn'         => 13,
         ),
     ),
@@ -135,10 +137,9 @@ $machinestates = array(
         'type'              => 'game',
         'action'            => 'stResolveRestaurant',
         'transitions'       => array(
-            'toCardRoll'      => 8,
-            'toHireStaff'     => 9,
-            'toResolveSquare' => 6,
-            'toEndTurn'       => 13,
+            'toCardRoll'    => 8,
+            'toHireStaff'   => 9,
+            'toEndTurn'     => 13,
         ),
     ),
 
@@ -176,8 +177,9 @@ $machinestates = array(
         "args" => "argHireStaff",
         'possibleactions'   => array('hireStaff', 'passHire'),
         'transitions'       => array(
-            'toEndTurn'    => 13,
-            'toHelpWanted' => 12,   // Bug #6 — active player passes Help Wanted first-refusal
+            'toEndTurn'         => 13,
+            'toHelpWanted'      => 12,   // Bug #6 — active passes Help Wanted first-refusal (3-4p auction)
+            'toHelpWantedOffer' => 14,   // FR-2 — active passes/can't hire in a 2-player game
         ),
     ),
 
@@ -243,6 +245,28 @@ $machinestates = array(
         'transitions'       => array(
             'toChooseQuestion' => 2,
             'toGameEnd'        => 99,
+        ),
+    ),
+
+    // ---------------------------------------------------------------
+    // 14 — HELP WANTED OFFER (multi-active, 2-player games only)
+    // FR-2: When the active player lands on Help Wanted and either cannot
+    // hire the rolled staff (already owns all slots of that type) or passes,
+    // the single opponent is offered that staff at ceil(1.5x face value) as a
+    // take-it-or-leave-it hire (no bidding). The opponent sees the standard
+    // staff picker with the marked-up price. stHelpWantedOffer activates only
+    // the opponent; if they cannot afford the offer the server skips this state.
+    // ---------------------------------------------------------------
+    14 => array(
+        'name'              => 'helpWantedOffer',
+        'description'       => clienttranslate('${actplayer} may hire the available staff at a premium'),
+        'descriptionmyturn' => clienttranslate('Hire this staff member at 1.5x value, or pass'),
+        'type'              => 'multipleactiveplayer',
+        'args'              => 'argHelpWantedOffer',
+        'possibleactions'   => array('hireHelpWantedOffer', 'passHelpWantedOffer'),
+        'action'            => 'stHelpWantedOffer',
+        'transitions'       => array(
+            'toEndTurn' => 13,
         ),
     ),
 
