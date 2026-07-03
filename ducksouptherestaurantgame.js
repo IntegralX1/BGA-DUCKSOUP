@@ -105,6 +105,21 @@ function (dojo, declare) {
             var gameThemeUrl = g_gamethemeurl; // BGA global — available by setup() time
             this.gameThemeUrl = gameThemeUrl;
 
+                // Root-level art loads on demand via ${gameThemeUrl} in the injected HTML,
+                // so skip BGA's up-front preload to speed up table start.
+                this.bga.images.dontPreloadImages([
+                    'board.jpg',
+                    'inner-board.png',
+                    'staff-board.jpg',
+                    'staff-die.png',
+                    'movement-dice.png',
+                    'super-duckats.png',
+                    'duckats.png',
+                    'dice-1.png', 'dice-2.png', 'dice-3.png',
+                    'dice-4.png', 'dice-5.png', 'dice-6.png',
+                    'pawn-blue.png', 'pawn-green.png', 'pawn-purple.png', 'pawn-red.png'
+                ]);
+
             // ---------------------------------------------------------------
             // Inject full game HTML into BGA game area (replaces TPL/view)
             // ---------------------------------------------------------------
@@ -613,7 +628,6 @@ function (dojo, declare) {
                     break;
 
                 case 'hireStaff':
-                    console.log('[DS] hireStaff entered. isActive:', this.isCurrentPlayerActive(), 'args:', JSON.stringify(args));
                     if (this.isCurrentPlayerActive()) {
                         var hireArgs    = args && args.args && !Array.isArray(args.args) ? args.args : {};
                         // hireType and isHalfPrice from args.args (BGA sends [] not object)
@@ -621,18 +635,33 @@ function (dojo, declare) {
                         var hireType    = hireArgs.hire_type  || (this.gamedatas ? this.gamedatas.hireType    : 'either') || 'either';
                         var isHalfPrice = hireArgs.half_price != null ? hireArgs.half_price
                                         : (this.gamedatas ? !!parseInt(this.gamedatas.hireHalfPrice, 10) : false);
-                        console.log('[DS] picker args — hireType:', hireType, 'isHalfPrice:', isHalfPrice, 'player_id:', this.player_id);
-                        console.log('[DS] gamedatas.players:', JSON.stringify(this.gamedatas.players));
-                        console.log('[DS] gamedatas.staffBox:', JSON.stringify(this.gamedatas.staffBox));
-                        console.log('[DS] gamedatas.myStaff:', JSON.stringify(this.gamedatas.myStaff));
                         try {
-                            this._showStaffPicker(hireType, isHalfPrice);
+                            // Bug #22 — pass hireArgs (fresh staffBox/myStaff/duckats from
+                            // argHireStaff) so the picker reads live data, not stale gamedatas.
+                            this._showStaffPicker(hireType, isHalfPrice, hireArgs);
                         } catch(err) {
                             console.error('[DS] _showStaffPicker threw:', err);
                         }
                         this._showBoardMessage(
                             _('Hire Staff'),
                             _('Choose a staff member to hire, or pass.')
+                        );
+                    }
+                    break;
+
+                case 'helpWantedOffer':
+                    // FR-2 — 2-player single-opponent offer. The opponent (multiactive)
+                    // sees the standard staff picker with a MARKED-UP price (1.5x face).
+                    if (this.isCurrentPlayerActive()) {
+                        var offerArgs = args && args.args && !Array.isArray(args.args) ? args.args : {};
+                        try {
+                            this._showHelpWantedOfferPicker(offerArgs);
+                        } catch (err) {
+                            console.error('[DS] _showHelpWantedOfferPicker threw:', err);
+                        }
+                        this._showBoardMessage(
+                            _('Help Wanted — Premium Offer'),
+                            _('Hire this staff member at 1.5x value, or pass.')
                         );
                     }
                     break;
@@ -694,6 +723,10 @@ function (dojo, declare) {
                     break;
 
                 case 'hireStaff':
+                    this._hideStaffPicker();
+                    break;
+
+                case 'helpWantedOffer':
                     this._hideStaffPicker();
                     break;
 
@@ -1009,6 +1042,9 @@ function (dojo, declare) {
                 ['staffQuits',            2000],
                 ['helpWanted',            2000],
                 ['helpWantedAuction',     2000],   // Bug #6 — active player passed first-refusal
+                ['helpWantedOfferMade',    2000],  // FR-2 — 2p single-opponent offer presented
+                ['helpWantedOfferDeclined',2000],  // FR-2 — opponent declined
+                ['helpWantedNoTaker',      2000],  // FR-2 — no valid taker, turn ends
                 ['staffHired',            1500],
                 ['staffTransferred',      1500],
                 ['staffReturned',         1500],
@@ -1308,6 +1344,20 @@ function (dojo, declare) {
             }
         },
 
+        // FR-2 — 2-player offer notifications. Log-only; the actual hire/duckat
+        // update rides on the existing staffHired notif fired by hireFromBox.
+        notif_helpWantedOfferMade: function (notif) {
+            console.log('notif_helpWantedOfferMade', notif);
+        },
+
+        notif_helpWantedOfferDeclined: function (notif) {
+            console.log('notif_helpWantedOfferDeclined', notif);
+        },
+
+        notif_helpWantedNoTaker: function (notif) {
+            console.log('notif_helpWantedNoTaker', notif);
+        },
+
         notif_auctionResolved: function (notif) {
             console.log('notif_auctionResolved', notif);
 
@@ -1462,7 +1512,7 @@ function (dojo, declare) {
             var allPlayers = notif.args.all_players;
 
             var msg = allPlayers
-                ? _('All players pay ') + amount + _(' to the bank')
+                ? _('All players affected: ') + amount + _(' Duckats')
                 : amount + _(' Duckats');
             this._showBoardMessage(_('Card Roll Result'), msg);
         },
@@ -1573,13 +1623,23 @@ function (dojo, declare) {
 // to determine state of each tile.
 // =============================================================
 
-_showStaffPicker: function(hireType, isHalfPrice) {
+_showStaffPicker: function(hireType, isHalfPrice, pickerArgs) {
     this._hideStaffPicker(); // Defensive — remove any stale picker
 
     const gamedatas    = this.gamedatas;
-    const myDuckats    = gamedatas.players[this.player_id].duckats;
-    const staffBox     = gamedatas.staffBox   || {};   // { type: available_count }
-    const myStaff      = gamedatas.myStaff    || {};   // { type: owned_count }
+    // Bug #22 — prefer FRESH state args from argHireStaff (staffBox / myStaff / duckats)
+    // over the page-load gamedatas snapshot, which goes stale after setup/any hire and
+    // caused the picker to show every role "Already Hired". gamedatas is a defensive fallback.
+    const args         = (pickerArgs && typeof pickerArgs === 'object' && !Array.isArray(pickerArgs))
+                         ? pickerArgs : {};
+    const myDuckats    = (args.duckats != null)
+                         ? parseInt(args.duckats, 10)
+                         : parseInt(gamedatas.players[this.player_id].duckats, 10);
+    // Bug #26 — staffBox / myStaff are no longer used to GATE hireability (the server now
+    // sends args.staffAvailability, a per-player open-slot map). Retained only as defensive
+    // fallbacks and for any incidental reads; the authoritative availability is staffAvailability.
+    const staffBox     = args.staffBox || gamedatas.staffBox || {};  // { slotKey: { staff_type, available } }
+    const myStaff      = args.myStaff  || gamedatas.myStaff  || {};  // { slotKey: { staff_type, is_excellent } }
 
     // Determine which pools to show
     const pools = [];
@@ -1592,12 +1652,14 @@ _showStaffPicker: function(hireType, isHalfPrice) {
 
     // Half-price filter — only show cook (chef_cook_bonus) or server (maitre_d_bonus)
     // The hireType already scopes the pool; isHalfPrice additionally restricts to one type.
-    // Caller sets hireType='kitchen' for chef_cook_bonus, 'dining_room' for maitre_d_bonus.
-    // The specific restricted type is indicated by a non-null gamedatas.halfPriceStaffType.
-    const halfPriceStaffType = isHalfPrice ? (gamedatas.halfPriceStaffType || null) : null;
+    // Bug #22 — prefer fresh args.half_price_type; gamedatas is a fallback.
+    const halfPriceStaffType = isHalfPrice
+        ? (args.half_price_type || gamedatas.halfPriceStaffType || null)
+        : null;
 
     // Bug #6 — Help Wanted first-refusal: picker shows only the rolled staff tile.
-    const helpWantedStaffType = gamedatas.helpWantedStaffType || null;
+    // Bug #22 — prefer fresh args.help_wanted_staff_type; gamedatas is a fallback.
+    const helpWantedStaffType = args.help_wanted_staff_type || gamedatas.helpWantedStaffType || null;
 
     // Build modal HTML
     let sectionsHtml = '';
@@ -1614,43 +1676,21 @@ _showStaffPicker: function(hireType, isHalfPrice) {
                 return;
             }
 
-            // For multi-slot staff (cook×3, server×3), staffBox uses numbered keys:
-            // cook_1, cook_2, cook_3. Count how many slots are available in the box.
-            // Also find the first available slot type to pass to PHP on hire.
-            let availableInBox = 0;
-            let firstAvailableSlotType = staff.type; // default for single-slot
-            if (staff.slots > 1) {
-                for (let si = 1; si <= staff.slots; si++) {
-                    const slotKey = staff.type + '_' + si;
-                    if (staffBox[slotKey] !== undefined && parseInt(staffBox[slotKey], 10) > 0) {
-                        availableInBox++;
-                        if (firstAvailableSlotType === staff.type) {
-                            firstAvailableSlotType = slotKey; // first available numbered slot
-                        }
-                    }
-                }
-            } else {
-                availableInBox = staffBox[staff.type] !== undefined
-                    ? parseInt(staffBox[staff.type], 10)
-                    : 0;
-            }
-            // For multi-slot staff (cook×3, server×3) count owned by iterating numbered
-            // slots (cook_1, cook_2, cook_3) — myStaff never has a bare 'cook' key.
-            let ownedCount = 0;
-            if (staff.slots > 1) {
-                for (let oi = 1; oi <= staff.slots; oi++) {
-                    const ownedKey = staff.type + '_' + oi;
-                    if (myStaff[ownedKey] !== undefined && parseInt(myStaff[ownedKey], 10) > 0) {
-                        ownedCount++;
-                    }
-                }
-            } else {
-                ownedCount = myStaff[staff.type] !== undefined
-                    ? parseInt(myStaff[staff.type], 10)
-                    : 0;
-            }
-            const remainingSlots = staff.slots - ownedCount;
-            const canHire        = availableInBox > 0 && remainingSlots > 0;
+            // Bug #26 — availability is now a PER-PLAYER question answered server-side.
+            // args.staffAvailability[baseType] = how many slots of this role are still OPEN
+            // for the active player (0 = they own them all → "Already Hired"). This replaces
+            // the old global-box count and the client-side ownership math.
+            const staffAvailability = args.staffAvailability || {};
+            const openSlots  = (staffAvailability[staff.type] != null)
+                             ? parseInt(staffAvailability[staff.type], 10)
+                             : staff.slots; // defensive fallback: assume all open if map missing
+            const ownedCount = staff.slots - openSlots; // for pip display (filled = owned)
+
+            // Slot type passed to PHP on hire. The server re-resolves the exact open slot via
+            // findAvailableSlot, so the base type is sufficient here.
+            const firstAvailableSlotType = staff.type;
+
+            const canHire        = openSlots > 0;
 
             const displayValue   = isHalfPrice ? Math.floor(staff.value / 2) : staff.value;
             const canAfford      = myDuckats >= displayValue;
@@ -1864,6 +1904,212 @@ _onStaffPickerPass: function() {
         this._hideStaffPicker();
     }).catch((err) => {
         console.error('[DuckSoup] passHire action failed:', err);
+        document.getElementById('ds-staff-picker-cancel').disabled = false;
+    });
+},
+
+// =============================================================
+// _showHelpWantedOfferPicker( offerArgs )   [FR-2]
+// 2-player single-opponent offer. Shows ONE staff tile at the marked-up
+// price (ceil(1.5x face), sent as args.offer_price). Accept fires
+// hireHelpWantedOffer; decline fires passHelpWantedOffer. Reuses the same
+// overlay id / CSS as _showStaffPicker so _hideStaffPicker and _trapFocus
+// apply unchanged. Kept separate from _showStaffPicker to avoid disturbing
+// the hire/half-price/first-refusal paths.
+// =============================================================
+
+_showHelpWantedOfferPicker: function(offerArgs) {
+    this._hideStaffPicker(); // Defensive — remove any stale picker
+
+    const gamedatas = this.gamedatas;
+    const args      = (offerArgs && typeof offerArgs === 'object' && !Array.isArray(offerArgs))
+                      ? offerArgs : {};
+
+    const staffType  = args.help_wanted_staff_type || gamedatas.helpWantedStaffType || null;
+    const offerPrice = (args.offer_price != null) ? parseInt(args.offer_price, 10) : null;
+    const myDuckats  = (args.duckats != null)
+                       ? parseInt(args.duckats, 10)
+                       : parseInt(gamedatas.players[this.player_id].duckats, 10);
+
+    // Look up the staff definition (label, base face value) from the static data.
+    let staffDef = null;
+    ['kitchen', 'dining_room'].forEach(loc => {
+        (this._staffData[loc] || []).forEach(s => {
+            if (s.type === staffType) staffDef = s;
+        });
+    });
+
+    if (!staffDef || offerPrice == null) {
+        console.error('[DS] offer picker: missing staffDef or offer_price', staffType, offerPrice);
+        return;
+    }
+
+    // Per-player open-slot availability for THIS opponent (server-sent).
+    const staffAvailability = args.staffAvailability || {};
+    const openSlots  = (staffAvailability[staffDef.type] != null)
+                     ? parseInt(staffAvailability[staffDef.type], 10)
+                     : staffDef.slots;
+    const ownedCount = staffDef.slots - openSlots;
+
+    const canHire   = openSlots > 0;
+    const canAfford = myDuckats >= offerPrice;
+
+    let stateClass  = '';
+    let overlayHtml = '';
+    if (!canHire) {
+        stateClass  = 'ds-staff-tile--unavailable';
+        overlayHtml = '<div class="ds-staff-overlay ds-staff-overlay--hired">Already Hired</div>';
+    } else if (!canAfford) {
+        stateClass  = 'ds-staff-tile--unaffordable';
+        overlayHtml = '<div class="ds-staff-overlay ds-staff-overlay--broke">Can\'t Afford</div>';
+    } else {
+        stateClass  = 'ds-staff-tile--available';
+    }
+
+    let pipsHtml = '';
+    if (staffDef.slots > 1) {
+        for (let i = 0; i < staffDef.slots; i++) {
+            const filled = i < ownedCount ? 'ds-pip--filled' : 'ds-pip--empty';
+            pipsHtml += `<span class="ds-pip ${filled}"></span>`;
+        }
+        pipsHtml = `<div class="ds-staff-pips">${pipsHtml}</div>`;
+    }
+
+    const clickable    = canHire && canAfford;
+    const tileTabIndex = clickable ? 'tabindex="0"' : '';
+    const tileRole     = clickable ? 'role="button"' : '';
+
+    // Premium badge (mirrors half-price badge styling, marked up instead of down).
+    const premiumBadge = '<div class="ds-premium-badge">1.5&times; Value</div>';
+
+    const tileHtml = `
+        <div class="ds-staff-tile ${stateClass}"
+             data-staff-type="${staffDef.type}"
+             data-staff-value="${offerPrice}"
+             data-clickable="${clickable ? '1' : '0'}"
+             ${tileTabIndex} ${tileRole}
+             aria-label="${staffDef.label}, ${offerPrice} Duckats${!canHire ? ', already hired' : !canAfford ? ', cannot afford' : ''}">
+            ${premiumBadge}
+            ${overlayHtml}
+            <div class="ds-staff-icon ds-staff-icon--${staffDef.type}"></div>
+            <div class="ds-staff-label">${staffDef.label}</div>
+            <div class="ds-staff-value">
+                <span class="ds-staff-value--original">${staffDef.value}</span>
+                <span class="ds-staff-value--display">${offerPrice}</span>
+                <span class="ds-staff-value--unit">Duckats</span>
+            </div>
+            ${pipsHtml}
+        </div>`;
+
+    const sectionsHtml = `
+        <div class="ds-staff-section">
+            <h3 class="ds-staff-section-label">Available Staff (offered by opponent)</h3>
+            <div class="ds-staff-grid">${tileHtml}</div>
+        </div>`;
+
+    const titleText    = 'Help Wanted — Premium Offer';
+    const subtitleText = `You have <strong>${myDuckats}</strong> Duckats`;
+
+    const modalHtml = `
+        <style>
+            #ds-staff-picker-overlay .ds-staff-section-label{font-weight:bold;margin:8px 0 4px;font-size:14px;}
+            #ds-staff-picker-overlay .ds-staff-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+            #ds-staff-picker-overlay .ds-staff-tile{border:2px solid #ccc;border-radius:6px;padding:10px;width:120px;text-align:center;cursor:default;font-size:12px;background:#f9f9f9;position:relative;}
+            #ds-staff-picker-overlay .ds-staff-tile--available{border-color:#4a90d9;background:#e8f4ff;cursor:pointer;}
+            #ds-staff-picker-overlay .ds-staff-tile--available:hover{background:#d0e8ff;border-color:#2270c0;}
+            #ds-staff-picker-overlay .ds-staff-tile--unavailable{opacity:0.5;}
+            #ds-staff-picker-overlay .ds-staff-tile--unaffordable{opacity:0.65;border-color:#e07030;}
+            #ds-staff-picker-overlay .ds-staff-tile--selected{background:#c0dff8;border-color:#1a5ca0;}
+            #ds-staff-picker-overlay .ds-staff-label{font-weight:bold;margin-bottom:4px;}
+            #ds-staff-picker-overlay .ds-staff-value{color:#333;font-size:11px;}
+            #ds-staff-picker-overlay .ds-staff-value--original{text-decoration:line-through;color:#999;margin-right:4px;}
+            #ds-staff-picker-overlay .ds-staff-overlay{font-size:10px;color:#900;font-weight:bold;margin-bottom:4px;}
+            #ds-staff-picker-overlay .ds-modal-title{margin:0 0 4px;font-size:18px;}
+            #ds-staff-picker-overlay .ds-modal-subtitle{margin:0 0 12px;color:#555;}
+            #ds-staff-picker-overlay #ds-staff-picker-cancel{width:100%;padding:10px;background:#888;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:14px;margin-top:8px;}
+            #ds-staff-picker-overlay #ds-staff-picker-cancel:hover{background:#666;}
+            #ds-staff-picker-overlay .ds-pip{display:inline-block;width:8px;height:8px;border-radius:50%;border:1px solid #888;margin:1px;}
+            #ds-staff-picker-overlay .ds-pip--filled{background:#4a90d9;}
+            #ds-staff-picker-overlay .ds-premium-badge{font-size:10px;background:#b0561f;color:#fff;border-radius:3px;padding:1px 4px;margin-bottom:4px;}
+        </style>
+        <div id="ds-staff-picker-overlay" class="ds-modal-overlay" role="dialog"
+             aria-modal="true" aria-label="Help Wanted Premium Offer"
+             style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;overflow-y:auto;">
+            <div class="ds-modal ds-staff-picker" style="background:#fff;border-radius:8px;padding:24px;max-width:700px;width:90%;max-height:90vh;overflow-y:auto;position:relative;">
+                <div class="ds-modal-header">
+                    <h2 class="ds-modal-title">${titleText}</h2>
+                    <p class="ds-modal-subtitle">${subtitleText}</p>
+                </div>
+                <div class="ds-modal-body">
+                    ${sectionsHtml}
+                </div>
+                <div class="ds-modal-footer">
+                    <button id="ds-staff-picker-cancel" class="ds-btn ds-btn--secondary">
+                        Pass — End Turn
+                    </button>
+                </div>
+            </div>
+        </div>`;
+
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+    // Wire the single tile (if clickable)
+    document.querySelectorAll('.ds-staff-tile[data-clickable="1"]').forEach(tile => {
+        const handler = (e) => {
+            if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+            e.preventDefault();
+            this._onHelpWantedOfferAccept(tile);
+        };
+        tile.addEventListener('click',   handler);
+        tile.addEventListener('keydown', handler);
+    });
+
+    // Wire pass/decline button
+    document.getElementById('ds-staff-picker-cancel')
+        .addEventListener('click', () => this._onHelpWantedOfferDecline());
+
+    this._trapFocus(document.getElementById('ds-staff-picker-overlay'));
+},
+
+// =============================================================
+// _onHelpWantedOfferAccept( tile )   [FR-2]
+// Opponent accepts the 1.5x offer → hireHelpWantedOffer (no args; the
+// server holds the staff type and marked-up price in game state).
+// =============================================================
+
+_onHelpWantedOfferAccept: function(tile) {
+    if (!this.checkAction('hireHelpWantedOffer')) { return; }
+
+    tile.classList.add('ds-staff-tile--selected');
+    document.querySelectorAll('.ds-staff-tile[data-clickable="1"]').forEach(t => {
+        t.setAttribute('data-clickable', '0');
+    });
+    document.getElementById('ds-staff-picker-cancel').disabled = true;
+
+    this.bga.actions.performAction('hireHelpWantedOffer', {}).then(() => {
+        this._hideStaffPicker();
+    }).catch((err) => {
+        console.error('[DuckSoup] hireHelpWantedOffer action failed:', err);
+        tile.classList.remove('ds-staff-tile--selected');
+        tile.setAttribute('data-clickable', '1');
+        document.getElementById('ds-staff-picker-cancel').disabled = false;
+    });
+},
+
+// =============================================================
+// _onHelpWantedOfferDecline()   [FR-2]
+// Opponent declines the 1.5x offer → passHelpWantedOffer. Turn ends.
+// =============================================================
+
+_onHelpWantedOfferDecline: function() {
+    if (!this.checkAction('passHelpWantedOffer')) { return; }
+
+    document.getElementById('ds-staff-picker-cancel').disabled = true;
+
+    this.bga.actions.performAction('passHelpWantedOffer', {}).then(() => {
+        this._hideStaffPicker();
+    }).catch((err) => {
+        console.error('[DuckSoup] passHelpWantedOffer action failed:', err);
         document.getElementById('ds-staff-picker-cancel').disabled = false;
     });
 },

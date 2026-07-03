@@ -109,6 +109,7 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
     const GS_HIRE_HALF_PRICE     = 19; // 1 = this hire is at half price (card bonus)
     const GS_HELP_WANTED_PENDING = 20; // 1 = hireStaff entered from help_wanted; passHire creates auction
     const GS_HELP_WANTED_VALUE   = 21; // face value of the help_wanted rolled staff (Duckats)
+    const GS_HELP_WANTED_OFFER   = 22; // FR-2: 1 = 2-player single-opponent offer at 1.5x face (markup hire)
     // GS_CARD_TYPE removed — card type is a string, stored in game_state_text table
     // helpWantedStaffType is also a string — stored in game_state_text table
 
@@ -128,6 +129,7 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
             'hireHalfPrice'     => self::GS_HIRE_HALF_PRICE,
             'helpWantedPending' => self::GS_HELP_WANTED_PENDING,
             'helpWantedValue'   => self::GS_HELP_WANTED_VALUE,
+            'helpWantedOffer'   => self::GS_HELP_WANTED_OFFER,
             // cardType and helpWantedStaffType stored in game_state_text (strings)
         ));
     }
@@ -219,6 +221,7 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
         self::setGameStateInitialValue('hireHalfPrice',     0);
         self::setGameStateInitialValue('helpWantedPending', 0);
         self::setGameStateInitialValue('helpWantedValue',   0);
+        self::setGameStateInitialValue('helpWantedOffer',   0);
         // cardType stored as string in game_state_text — reset for new game
         $this->setCardType('');
         $this->setHelpWantedStaffType('');
@@ -758,20 +761,6 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
             )
         );
 
-        // food_costs_jump deducts from every player in applyRollEffect(); broadcast
-        // each player's refreshed balance so all on-screen totals update. Other roll
-        // cards (renos_repairs / business_great) affect only the active player and
-        // are tracked separately.
-        if ($cardType === 'food_costs_jump') {
-            $players = self::loadPlayersBasicInfos();
-            foreach ($players as $pid => $pinfo) {
-                self::notifyAllPlayers('duckatUpdate', '', array(
-                    'player_id'      => $pid,
-                    'player_duckats' => $this->getPlayerDuckats($pid),
-                ));
-            }
-        }
-
         $this->gamestate->nextState('toEndTurn');
     }
 
@@ -835,42 +824,27 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
     {
         self::checkAction('passHire');
 
-        // Bug #6 fix — if this was a help_wanted first-refusal, open the auction
-        // for other players before ending the turn.
+        // Bug #6 / #28 / FR-2 — if this was a help_wanted first-refusal, the active
+        // player has now voluntarily declined. Offer the staff to the other player(s):
+        // routeHelpWantedToOthers forks to a 3-4p auction or a 2p single-opponent
+        // 1.5x offer. Same routing as the cannot-hire branch in initiateHelpWanted.
         $helpWantedPending = (int) self::getGameStateValue('helpWantedPending');
         if ($helpWantedPending) {
             $staffType  = $this->getHelpWantedStaffType();
             $staffValue = (int) self::getGameStateValue('helpWantedValue');
 
-            // Clear help_wanted context
-            self::setGameStateValue('helpWantedPending', 0);
-            self::setGameStateValue('helpWantedValue',   0);
-            $this->setHelpWantedStaffType('');
-            self::setGameStateValue('hireHalfPrice', 0);
-            self::setGameStateValue('hireType', 0);
-
-            // Create the auction now that the active player has declined
-            $safeType = addslashes($staffType);
-            self::DbQuery(
-                "INSERT INTO auction (staff_type, staff_value, source, status)
-                 VALUES ('{$safeType}', {$staffValue}, 'help_wanted', 'active')"
-            );
-            $auctionId = self::DbGetLastId();
-            self::setGameStateValue('auctionId', $auctionId);
-
-            self::notifyAllPlayers('helpWantedAuction',
-                clienttranslate('${player_name} passes — ${staff_type} goes to auction!'),
+            self::notifyAllPlayers('helpWanted',
+                clienttranslate('${player_name} passes on ${staff_type} — it is offered to the other player(s).'),
                 array(
                     'player_id'   => self::getActivePlayerId(),
                     'player_name' => self::getActivePlayerName(),
                     'staff_type'  => $staffType,
                     'staff_value' => $staffValue,
-                    'auction_id'  => $auctionId,
-                    'source'      => 'help_wanted',
+                    'help_wanted' => true,
                 )
             );
 
-            $this->gamestate->nextState('toHelpWanted');
+            $this->routeHelpWantedToOthers($staffType, $staffValue);
             return;
         }
 
@@ -1257,8 +1231,9 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
                     'square_type' => $this->getBoardSquare($result['move_to_square']),
                 )
             );
-            // Re-resolve the new square
-            $this->gamestate->nextState('toEndTurn');
+            // Re-resolve the new square so the destination's effect fires
+            // (Staff Quits, Help Wanted, Business Is Great, hire squares, etc.)
+            $this->gamestate->nextState('toResolveSquare');
             return;
         }
 
@@ -1334,10 +1309,16 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
      */
     function stHelpWantedBid()
     {
+        $activePlayerId = (int) self::getActivePlayerId();
         $allPlayers     = self::loadPlayersBasicInfos();
         $biddingPlayers = array();
 
         foreach ($allPlayers as $pid => $pinfo) {
+            // Bug #28 — the active player forfeited by declining first refusal and
+            // cannot bid on the staff they passed. Exclude them from the auction.
+            if ((int) $pid === $activePlayerId) {
+                continue;
+            }
             $onVacation = (int) self::getUniqueValueFromDB(
                 "SELECT player_on_vacation FROM player WHERE player_id = {$pid}"
             );
@@ -1352,7 +1333,7 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
         }
 
         // Old BGA framework: setAllPlayersMultiactive activates everyone,
-        // then deactivate vacationing players.
+        // then deactivate vacationing players and the active (passing) player.
         $this->gamestate->setAllPlayersMultiactive('toEndTurn');
         $allPlayers2 = self::loadPlayersBasicInfos();
         foreach ($allPlayers2 as $pid => $pinfo) {
@@ -1360,6 +1341,137 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
                 $this->gamestate->setPlayerNonMultiactive((int) $pid, 'toEndTurn');
             }
         }
+    }
+
+    // ==================================================================
+    // FR-2 — HELP WANTED OFFER (2-player single-opponent, state 14)
+    // The one opponent is offered the rolled staff at ceil(1.5x face value)
+    // via the standard staff picker with a marked-up price. Take-it-or-leave-it.
+    // ==================================================================
+
+    /**
+     * stHelpWantedOffer — activate ONLY the single opponent (the non-active,
+     * non-vacation player). If none qualifies, end the turn. routeHelpWantedToOthers
+     * has already verified affordability/slot before routing here, but we re-guard.
+     */
+    function stHelpWantedOffer()
+    {
+        $activePlayerId = (int) self::getActivePlayerId();
+        $opponentId     = null;
+
+        foreach (self::loadPlayersBasicInfos() as $pid => $pinfo) {
+            if ((int) $pid === $activePlayerId) {
+                continue;
+            }
+            $onVacation = (int) self::getUniqueValueFromDB(
+                "SELECT player_on_vacation FROM player WHERE player_id = {$pid}"
+            );
+            if (!$onVacation) {
+                $opponentId = (int) $pid;
+                break;
+            }
+        }
+
+        if ($opponentId === null) {
+            $this->gamestate->nextState('toEndTurn');
+            return;
+        }
+
+        // Activate everyone, then deactivate all but the single opponent.
+        $this->gamestate->setAllPlayersMultiactive('toEndTurn');
+        foreach (self::loadPlayersBasicInfos() as $pid => $pinfo) {
+            if ((int) $pid !== $opponentId) {
+                $this->gamestate->setPlayerNonMultiactive((int) $pid, 'toEndTurn');
+            }
+        }
+    }
+
+    /**
+     * argHelpWantedOffer — feed the opponent's staff picker. Mirrors argHireStaff
+     * but flags markup mode and ships the already-computed offer price as the value.
+     * duckats/staffAvailability are the OPPONENT's (the active multiactive player).
+     */
+    function argHelpWantedOffer()
+    {
+        $activePlayerId = (int) self::getActivePlayerId();
+        $offerPlayerId  = null;
+        foreach ($this->gamestate->getActivePlayerList() as $pid) {
+            $offerPlayerId = (int) $pid;
+            break;
+        }
+        if ($offerPlayerId === null) {
+            $offerPlayerId = $activePlayerId; // fallback; should not happen
+        }
+
+        return array(
+            'help_wanted_offer'      => true,
+            'help_wanted_staff_type' => $this->getHelpWantedStaffType(),
+            // Marked-up price the opponent pays (already ceil(1.5x) from routing).
+            'offer_price'            => (int) self::getGameStateValue('helpWantedValue'),
+            'duckats'                => $this->getPlayerDuckats($offerPlayerId),
+            'staffAvailability'      => $this->getPlayerStaffAvailability($offerPlayerId),
+        );
+    }
+
+    /**
+     * Action hireHelpWantedOffer — the opponent accepts the 1.5x offer.
+     * Callable only by the multiactive opponent in state 14.
+     */
+    function hireHelpWantedOffer()
+    {
+        self::checkAction('hireHelpWantedOffer');
+        $playerId = (int) self::getCurrentPlayerId();
+
+        $staffType  = $this->getHelpWantedStaffType();
+        $offerPrice = (int) self::getGameStateValue('helpWantedValue');
+
+        // Re-validate: markup mode active, opponent has an open slot and can afford it.
+        if ((int) self::getGameStateValue('helpWantedOffer') !== 1) {
+            throw new BgaUserException(self::_('This offer is no longer available.'));
+        }
+        $slot = $this->findAvailableSlot($staffType, $playerId);
+        if ($slot === null) {
+            throw new BgaUserException(self::_('You have no open slot for this staff member.'));
+        }
+        if ($this->getPlayerDuckats($playerId) < $offerPrice) {
+            throw new BgaUserException(self::_('You cannot afford this staff member.'));
+        }
+
+        // hireFromBox handles slot resolution, payment, DB write and the staffHired notify.
+        $this->hireFromBox($staffType, $playerId, $offerPrice);
+
+        // Clear offer context and end the turn.
+        self::setGameStateValue('helpWantedOffer', 0);
+        self::setGameStateValue('helpWantedValue', 0);
+        $this->setHelpWantedStaffType('');
+
+        $this->gamestate->setPlayerNonMultiactive($playerId, 'toEndTurn');
+    }
+
+    /**
+     * Action passHelpWantedOffer — the opponent declines the 1.5x offer.
+     * Callable only by the multiactive opponent in state 14. Turn ends.
+     */
+    function passHelpWantedOffer()
+    {
+        self::checkAction('passHelpWantedOffer');
+        $playerId = (int) self::getCurrentPlayerId();
+
+        $staffType = $this->getHelpWantedStaffType();
+        self::notifyAllPlayers('helpWantedOfferDeclined',
+            clienttranslate('${player_name} declines ${staff_type}. The turn ends.'),
+            array(
+                'player_id'   => $playerId,
+                'player_name' => self::getPlayerNameById($playerId),
+                'staff_type'  => $staffType,
+            )
+        );
+
+        self::setGameStateValue('helpWantedOffer', 0);
+        self::setGameStateValue('helpWantedValue', 0);
+        $this->setHelpWantedStaffType('');
+
+        $this->gamestate->setPlayerNonMultiactive($playerId, 'toEndTurn');
     }
 
     /**
@@ -1510,6 +1622,7 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
 
     function argHireStaff()
     {
+        $active_player_id = self::getActivePlayerId();
         return array(
             'hire_type'              => $this->decodeHireType((int) self::getGameStateValue('hireType')),
             'half_price'             => (bool) self::getGameStateValue('hireHalfPrice'),
@@ -1517,7 +1630,48 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
             // Bug #6 — help_wanted first-refusal: show only the rolled staff at face value
             'help_wanted_pending'    => (bool) self::getGameStateValue('helpWantedPending'),
             'help_wanted_staff_type' => $this->getHelpWantedStaffType(),
+            // Bug #22 — ship the active player's LIVE Duckat balance so the picker does not
+            // fall back to the stale page-load gamedatas snapshot.
+            'duckats'                => $this->getPlayerDuckats($active_player_id),
+            // Bug #17 — per-player open-slot map (baseType => open count) so the picker
+            // gates hireability from the active player's own staff rows, not the global box.
+            'staffAvailability'      => $this->getPlayerStaffAvailability($active_player_id),
         );
+    }
+
+    /**
+     * Bug #17 — Per-player staff availability.
+     * Returns a map of baseType => number of slots still OPEN (not yet Excellent)
+     * for the given player, computed from that player's own `staff` rows.
+     * Single-slot roles yield 0 or 1; multi-slot roles (cook/server) yield 0..slots.
+     * Mirrors findAvailableSlot()'s definition of "open" (is_excellent = 0).
+     */
+    private function getPlayerStaffAvailability($playerId)
+    {
+        $playerId     = (int) $playerId;
+        $availability = array();
+        foreach (self::STAFF as $s) {
+            $baseType = $s['type'];
+            if ($s['slots'] > 1) {
+                // Multi-slot: count numbered rows (cook_1..3) still open for this player.
+                $open = (int) self::getUniqueValueFromDB(
+                    "SELECT COUNT(*) FROM staff
+                     WHERE player_id = {$playerId}
+                     AND staff_type LIKE '" . addslashes($baseType) . "_%'
+                     AND is_excellent = 0"
+                );
+            } else {
+                // Single-slot: open if this player's row for the base type is not Excellent.
+                $open = (int) self::getUniqueValueFromDB(
+                    "SELECT COUNT(*) FROM staff
+                     WHERE player_id = {$playerId}
+                     AND staff_type = '" . addslashes($baseType) . "'
+                     AND is_excellent = 0"
+                );
+            }
+            $availability[$baseType] = $open;
+        }
+        return $availability;
     }
 
     // ==================================================================
@@ -1802,37 +1956,30 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
         $staffDef = $result['staff'];
         $type     = $staffDef['type'];
 
-        // Find an available slot in the box for this type
-        $availableSlot = null;
-        if ($staffDef['slots'] > 1) {
-            for ($i = 1; $i <= $staffDef['slots']; $i++) {
-                $slotType  = $type . '_' . $i;
-                $available = (int) self::getUniqueValueFromDB(
-                    "SELECT available FROM staff_box WHERE staff_type = '{$slotType}'"
-                );
-                if ($available) {
-                    $availableSlot = $slotType;
-                    break;
-                }
-            }
-        } else {
-            $available = (int) self::getUniqueValueFromDB(
-                "SELECT available FROM staff_box WHERE staff_type = '{$type}'"
-            );
-            if ($available) $availableSlot = $type;
-        }
+        // Bug #27 — availability for the ACTIVE player's own hire is a per-player
+        // question, not a global Staff Box question. Physical availability is per
+        // player board (each player has their own slot for every role). Use the
+        // player's own staff rows via findAvailableSlot (is_excellent = 0 = open).
+        // Returns the first open numbered/single slot, or null if the active player
+        // already owns every slot of this type.
+        $availableSlot = $this->findAvailableSlot($type, $player_id);
 
         if ($availableSlot === null) {
-            self::notifyAllPlayers('squareLanded',
-                clienttranslate('${player_name} lands on Help Wanted! Rolls ${staff_type} — not available in the Staff Box. Turn ends.'),
+            // Active player already owns all slots of this role and cannot hire it.
+            // Bug #28 / FR-2 — the staff does not vanish: the other player(s) may
+            // hire it. Route to the auction (3-4p) or the single-opponent 1.5x
+            // offer (2p) instead of ending the turn.
+            self::notifyAllPlayers('helpWanted',
+                clienttranslate('${player_name} lands on Help Wanted! Rolls ${staff_type} — already fully staffed, so it is offered to the other player(s).'),
                 array(
                     'player_id'   => $player_id,
                     'player_name' => self::getActivePlayerName(),
-                    'square_type' => 'help_wanted',
                     'staff_type'  => $type,
+                    'staff_value' => $staffDef['value'],
+                    'help_wanted' => true,
                 )
             );
-            $this->gamestate->nextState('toEndTurn');
+            $this->routeHelpWantedToOthers($type, (int) $staffDef['value']);
             return;
         }
 
@@ -1858,6 +2005,120 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
 
         // Active player gets first-refusal via hireStaff (picker filtered to this staff only)
         $this->gamestate->nextState('toHireStaff');
+    }
+
+    /**
+     * Bug #28 / FR-2 — route a Help Wanted staff to the OTHER player(s) after the
+     * active player declines or cannot hire it. Called from initiateHelpWanted
+     * (cannot-hire branch) and passHire (voluntary-pass branch), so both paths
+     * behave identically.
+     *
+     *   3-4 players: standard rulebook auction. Opening bid = face value (the first
+     *                interested player offers the value of the staff), enforced by
+     *                seeding current_high_bid = faceValue - 1 so the first valid bid
+     *                must be >= faceValue. Routes to state 12 (helpWantedBid).
+     *
+     *   2 players:   FR-2 single-opponent offer. No bidding. The one opponent is
+     *                offered the staff at ceil(1.5 x faceValue), take-it-or-leave-it,
+     *                shown via the standard staff picker with a marked-up price.
+     *                Routes to state 14 (helpWantedOffer). If the opponent cannot
+     *                afford the markup or has no open slot, the turn ends here.
+     */
+    private function routeHelpWantedToOthers($staffType, $staffValue)
+    {
+        // Clear the first-refusal context; we are past the active player's option.
+        self::setGameStateValue('helpWantedPending', 0);
+        self::setGameStateValue('hireHalfPrice',     0);
+        self::setGameStateValue('hireType',          0);
+
+        $numPlayers = count(self::loadPlayersBasicInfos());
+
+        if ($numPlayers <= 2) {
+            // ---- FR-2: 2-player single-opponent offer at ceil(1.5x) ----
+            $activePlayerId = (int) self::getActivePlayerId();
+
+            // Identify the single opponent (the one non-active player).
+            $opponentId = null;
+            foreach (self::loadPlayersBasicInfos() as $pid => $pinfo) {
+                if ((int) $pid !== $activePlayerId) {
+                    $opponentId = (int) $pid;
+                    break;
+                }
+            }
+
+            $offerPrice = (int) ceil($staffValue * 1.5);
+
+            // Valid taker requires: opponent exists, has an OPEN slot for this role
+            // on their own board, and can afford the marked-up price.
+            $opponentSlot = ($opponentId !== null)
+                ? $this->findAvailableSlot($staffType, $opponentId)
+                : null;
+            $opponentDuckats = ($opponentId !== null)
+                ? $this->getPlayerDuckats($opponentId)
+                : 0;
+
+            if ($opponentId === null || $opponentSlot === null || $opponentDuckats < $offerPrice) {
+                self::notifyAllPlayers('helpWantedNoTaker',
+                    clienttranslate('No one hires ${staff_type}. It returns to the Staff Box and the turn ends.'),
+                    array(
+                        'staff_type' => $staffType,
+                    )
+                );
+                self::setGameStateValue('helpWantedOffer', 0);
+                self::setGameStateValue('helpWantedValue', 0);
+                $this->setHelpWantedStaffType('');
+                $this->gamestate->nextState('toEndTurn');
+                return;
+            }
+
+            // Store offer context. helpWantedValue holds the MARKED-UP price the
+            // opponent pays; helpWantedOffer flags markup mode for the picker.
+            self::setGameStateValue('helpWantedOffer', 1);
+            self::setGameStateValue('helpWantedValue', $offerPrice);
+            $this->setHelpWantedStaffType($staffType);
+
+            self::notifyAllPlayers('helpWantedOfferMade',
+                clienttranslate('${staff_type} is offered to ${opponent_name} for ${amount} Duckats (1.5x value).'),
+                array(
+                    'staff_type'    => $staffType,
+                    'opponent_name' => self::getPlayerNameById($opponentId),
+                    'amount'        => $offerPrice,
+                    'opponent_id'   => $opponentId,
+                )
+            );
+
+            $this->gamestate->nextState('toHelpWantedOffer');
+            return;
+        }
+
+        // ---- 3-4 players: standard rulebook auction, opening bid = face value ----
+        self::setGameStateValue('helpWantedOffer', 0);
+        self::setGameStateValue('helpWantedValue', 0);
+        $this->setHelpWantedStaffType('');
+
+        $safeType = addslashes($staffType);
+        // Seed current_high_bid = faceValue - 1 so the first valid bid must be >= faceValue
+        // (rulebook: the first interested player offers the value of the staff). Bug #28 Q2.
+        $floor = max(0, (int) $staffValue - 1);
+        self::DbQuery(
+            "INSERT INTO auction (staff_type, staff_value, source, current_high_bid, status)
+             VALUES ('{$safeType}', " . (int) $staffValue . ", 'help_wanted', {$floor}, 'active')"
+        );
+        $auctionId = self::DbGetLastId();
+        self::setGameStateValue('auctionId', $auctionId);
+
+        self::notifyAllPlayers('helpWantedAuction',
+            clienttranslate('${staff_type} goes to auction — opening bid ${amount} Duckats!'),
+            array(
+                'staff_type'  => $staffType,
+                'staff_value' => (int) $staffValue,
+                'amount'      => (int) $staffValue,
+                'auction_id'  => $auctionId,
+                'source'      => 'help_wanted',
+            )
+        );
+
+        $this->gamestate->nextState('toHelpWanted');
     }
 
     private function drawNextQuestion()

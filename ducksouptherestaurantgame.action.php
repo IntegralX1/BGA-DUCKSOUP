@@ -157,4 +157,24 @@ class action_ducksouptherestaurantgame extends APP_GameAction
         $this->game->passBid();
         self::ajaxResponse();
     }
+
+    // ------------------------------------------------------------------
+    // HELP WANTED OFFER (FR-2, 2-player single-opponent 1.5x offer)
+    // No args: staff type and marked-up price come from game state, set
+    // server-side during routing. The client only signals accept/decline.
+    // ------------------------------------------------------------------
+
+    public function hireHelpWantedOffer()
+    {
+        self::setAjaxMode();
+        $this->game->hireHelpWantedOffer();
+        self::ajaxResponse();
+    }
+
+    public function passHelpWantedOffer()
+    {
+        self::setAjaxMode();
+        $this->game->passHelpWantedOffer();
+        self::ajaxResponse();
+    }
 }
