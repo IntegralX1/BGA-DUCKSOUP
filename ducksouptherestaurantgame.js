@@ -1273,7 +1273,13 @@ function (dojo, declare) {
                 this.gamedatas.hireType      = 'kitchen'; // safe default; argHireStaff overrides on next enter
             }
 
-            this._showExcellentStaff(player_id, staffType);
+            // Bug #30 fix — render against the server-resolved numbered slot
+            // (slot_type, e.g. cook_2/server_3), not the bare staff_type. For
+            // multi-slot roles the bare key maps to a non-existent DOM id
+            // (ex-cook-<pid>) or an already-occupied slot, so the new tile
+            // silently failed to appear. slotType is authoritative (it is the
+            // slot that received is_excellent=1 in the DB).
+            this._showExcellentStaff(player_id, slotType);
 
             if (this.duckatCounters[player_id]) {
                 this.duckatCounters[player_id].setValue(playerDuck);
