@@ -572,9 +572,11 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
             )
         );
 
-        // Go to souperDuckatUse — player may spend Souper Duckats before square resolves
-        // stSouperDuckatUse auto-transitions to resolveSquare if player has 0 Souper Duckats
-        $this->gamestate->nextState('toSouperDuckatUse');
+        // Route through the checkSouperDuckats gate (state 15). That server-side state
+        // sends players with 0 Souper Duckats straight to resolveSquare, and players who
+        // own some to souperDuckatUse (state 10) for the spend decision. State 5 no longer
+        // has a direct toSouperDuckatUse transition — it must go via toCheckSouperDuckats.
+        $this->gamestate->nextState('toCheckSouperDuckats');
     }
 
     /**
@@ -1018,10 +1020,14 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
         $owned = (int) self::getUniqueValueFromDB(
             "SELECT player_souper_duckats FROM player WHERE player_id = {$player_id}"
         );
+        // State 15 is a server-side auto state — it MUST fire a transition on every path,
+        // or the turn freezes here. 0 owned → skip the spend step and resolve the square;
+        // otherwise hand off to souperDuckatUse (state 10) for the player's spend decision.
         if ($owned === 0) {
             $this->gamestate->nextState('toResolveSquare');
+        } else {
+            $this->gamestate->nextState('toSouperDuckatUse');
         }
-        // If owned > 0, stay in souperDuckatUse for player input
     }
 
     /**
