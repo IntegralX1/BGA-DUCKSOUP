@@ -161,7 +161,8 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
                 player_souper_duckats  = 3,
                 player_board_position  = 0,
                 player_restaurant_name = '',
-                player_on_vacation     = 0
+                player_on_vacation     = 0,
+                player_score           = 0
                 WHERE player_id = {$player_id}");
         }
 
@@ -321,19 +322,14 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
              ORDER BY player_id, staff_location, staff_value DESC'
         );
 
-        // Staff box availability — 2-column query so BGA returns scalar available values (0/1)
-        // JS picker reads parseInt(staffBox[slotKey], 10) — requires scalar, not row object
-        $result['staffBox'] = self::getCollectionFromDB(
-            'SELECT staff_type, available FROM staff_box',
-            'staff_type'
-        );
-
-        // Current player's own staff (for picker affordability checks)
-        $result['myStaff'] = self::getCollectionFromDB(
-            "SELECT staff_type, is_excellent FROM staff
-             WHERE player_id = {$current_player_id} AND is_excellent = 1",
-            'staff_type'
-        );
+        // Per-player staff availability for the Hire picker. Bug #26 / #17/#22 — the
+        // client gates hireability on staffAvailability[baseType] (open-slot counts),
+        // sourced from the per-player `staff` table, NOT the vestigial global staff_box.
+        // Shipped here too so a picker opened right after a page reload has the map
+        // before the fresh argHireStaff args arrive. myStaff (owned Excellent) is kept
+        // for the client's incidental gamedatas bookkeeping in notif_staffHired.
+        $result['staffAvailability'] = $this->getPlayerStaffAvailability($current_player_id);
+        $result['myStaff']           = $this->getMyStaffData($current_player_id);
 
         // Hire context for hireStaff state
         $result['hireType']           = $this->decodeHireType((int) self::getGameStateValue('hireType'));
@@ -781,11 +777,13 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
             throw new BgaUserException(clienttranslate('Invalid staff type.'));
         }
 
-        // Validate box availability
-        $available = (int) self::getUniqueValueFromDB(
-            "SELECT available FROM staff_box WHERE staff_type = '{$staffType}'"
-        );
-        if (!$available) {
+        // Validate availability on THIS player's OWN board (per-player source of truth,
+        // not the vestigial global staff_box). Option A / #26 — a staff member is
+        // hireable iff the active player still has an open (non-Excellent) slot of that
+        // type. The bare-key staff_box lookup here previously returned nothing for
+        // multi-slot roles (keyed cook_1..3 / server_1..3), wrongly rejecting valid
+        // cook/server hires (the "hireStaff action failed" console errors).
+        if (!$this->playerCanHireType($staffType, $player_id)) {
             throw new BgaUserException(clienttranslate('That staff member is not available.'));
         }
 
@@ -1250,7 +1248,7 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
                 )
             );
             // Re-resolve the new square
-            $this->gamestate->nextState('toEndTurn');
+            $this->gamestate->nextState('toResolveSquare');
             return;
         }
 
@@ -1430,7 +1428,14 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
         // Check win condition
         $activePlayerId = self::getActivePlayerId();
         if ($this->hasWon($activePlayerId)) {
-            $this->bga->playerScore->inc(1, $activePlayerId);
+            // Bug #25 — old-framework codebase: the new-framework score API
+            // ($this->bga->playerScore->inc) is not wired up here and throws
+            // "player N is not initialized for player counter player_score" on the
+            // winning (12th) hire. Increment the standard player_score column directly.
+            self::DbQuery(
+                "UPDATE player SET player_score = player_score + 1
+                 WHERE player_id = {$activePlayerId}"
+            );
             self::notifyAllPlayers('gameWon',
                 clienttranslate('${player_name} has hired all 12 Excellent staff and wins the game!'),
                 array(
@@ -1502,6 +1507,7 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
 
     function argHireStaff()
     {
+        $playerId = (int) self::getActivePlayerId();
         return array(
             'hire_type'              => $this->decodeHireType((int) self::getGameStateValue('hireType')),
             'half_price'             => (bool) self::getGameStateValue('hireHalfPrice'),
@@ -1509,6 +1515,15 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
             // Bug #6 — help_wanted first-refusal: show only the rolled staff at face value
             'help_wanted_pending'    => (bool) self::getGameStateValue('helpWantedPending'),
             'help_wanted_staff_type' => $this->getHelpWantedStaffType(),
+            // Bug #17/#22 + #26 (restore) — ship FRESH per-player state so the picker
+            // never falls back to the stale page-load snapshot or the "all slots open"
+            // default:
+            //   duckats           — current balance (fixes stale 145-vs-305 display)
+            //   staffAvailability — base-type-keyed OPEN-slot counts for THIS player;
+            //                       0 = fully owned → greyed "Already Hired". This is the
+            //                       exact key/shape the running client picker consumes.
+            'duckats'                => $this->getPlayerDuckats($playerId),
+            'staffAvailability'      => $this->getPlayerStaffAvailability($playerId),
         );
     }
 
@@ -1640,6 +1655,100 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
             );
             return $isExcellent ? $halfVal : 0;
         }
+    }
+
+    /**
+     * Per-player staff availability for the Hire picker (Bug #26 / #17/#22 model).
+     * Returns a map keyed by BASE staff type → number of slots of that role still
+     * OPEN (non-Excellent) for this player:
+     *   e.g. { chef:1, sous_chef:0, first_cook:0, cook:1, maitre_d:0, sommelier:0,
+     *          captain:1, server:2 }   (0 = player owns them all → greyed "Already Hired")
+     * This is the authoritative shape the running client picker consumes as
+     * args.staffAvailability[baseType]; when the key is absent the picker defaults
+     * every role to "all slots open" (nothing greyed, empty pips) — which is exactly
+     * the regression this restores. Sourced from the per-player `staff` table (source
+     * of truth), never the vestigial global staff_box.
+     * @param int $playerId
+     * @return array  base type => open-slot count (int)
+     */
+    private function getPlayerStaffAvailability($playerId)
+    {
+        $playerId     = (int) $playerId;
+        $availability = array();
+
+        foreach (self::STAFF as $staffDef) {
+            $type  = $staffDef['type'];
+            $slots = (int) $staffDef['slots'];
+
+            if ($slots > 1) {
+                // Multi-slot role (cook_1..3 / server_1..3): count owned Excellent slots.
+                $owned = (int) self::getUniqueValueFromDB(
+                    "SELECT COUNT(*) FROM staff
+                     WHERE player_id = {$playerId}
+                     AND staff_type LIKE '" . addslashes($type) . "_%'
+                     AND is_excellent = 1"
+                );
+            } else {
+                // Single-slot role: 1 if this player owns it Excellent, else 0.
+                $owned = (int) self::getUniqueValueFromDB(
+                    "SELECT is_excellent FROM staff
+                     WHERE player_id = {$playerId} AND staff_type = '" . addslashes($type) . "'"
+                );
+            }
+
+            $availability[$type] = max(0, $slots - $owned);
+        }
+
+        return $availability;
+    }
+
+    /**
+     * Per-player OWNED Excellent staff, keyed by numbered slot type. Drives the
+     * picker's ownedCount / greyed-out ("Already Hired") tiles. Same boolean-flag
+     * caveat as getPlayerStaffAvailability() — no truthy 2nd arg.
+     * @param int $playerId
+     * @return array
+     */
+    private function getMyStaffData($playerId)
+    {
+        $playerId = (int) $playerId;
+        return self::getCollectionFromDB(
+            "SELECT staff_type, is_excellent FROM staff
+             WHERE player_id = {$playerId} AND is_excellent = 1"
+        );
+    }
+
+    /**
+     * True iff $playerId still has at least one open (non-Excellent) slot of
+     * $baseType on their OWN board. Per-player hire gate that replaces the global
+     * staff_box availability check in hireStaff() (Option A / #26). Handles both
+     * single-slot roles (direct is_excellent check) and multi-slot roles (an open
+     * numbered slot exists via findAvailableSlot).
+     * @param string $baseType  base or numbered type (cook / cook_2 both accepted)
+     * @param int    $playerId
+     * @return bool
+     */
+    private function playerCanHireType($baseType, $playerId)
+    {
+        $baseType = preg_replace('/_\d+$/', '', $baseType);
+        $playerId = (int) $playerId;
+
+        $staffDef = $this->getStaffDefByType($baseType);
+        if ($staffDef === null) {
+            return false;
+        }
+
+        if ($staffDef['slots'] > 1) {
+            // Multi-slot: hireable iff an open numbered slot remains for this player.
+            return $this->findAvailableSlot($baseType, $playerId) !== null;
+        }
+
+        // Single-slot: hireable iff this player does not already own it Excellent.
+        $owned = (int) self::getUniqueValueFromDB(
+            "SELECT is_excellent FROM staff
+             WHERE player_id = {$playerId} AND staff_type = '" . addslashes($baseType) . "'"
+        );
+        return $owned === 0;
     }
 
     /**
