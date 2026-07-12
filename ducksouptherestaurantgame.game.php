@@ -270,11 +270,13 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
                     if ($alreadyExcellent) continue;
                 }
 
-                // Check box availability
-                $available = (int) self::getUniqueValueFromDB(
-                    "SELECT available FROM staff_box WHERE staff_type = '{$slotType}'"
-                );
-                if (!$available) continue;
+                // Bug #27 (same defect class) — NO global staff_box gate here.
+                // staff_box holds one row per slot type for the entire game, so if two
+                // players rolled the same single-slot role at setup, the second one hit
+                // available=0 and silently `continue`d away with NO Excellent staff at
+                // all — starting a tile down. The rulebook only rerolls when the player
+                // ALREADY HAS that staff (a per-player test, handled above), never on
+                // box supply. Per-player `staff` table is the source of truth.
 
                 // Hire
                 $cost = $staffDef['value'];
@@ -992,10 +994,20 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
         // correct transition when the last player deactivates.
         $this->gamestate->setPlayerNonMultiactive($player_id, 'toEndTurn');
 
-        // If only one player remains active they are the high bidder — end auction for them.
+        // If only one player remains active AND a bid is already on the table,
+        // that lone player is the high bidder — end the auction for them (they win).
+        // If NO bid has been placed yet (e.g. the other player opened by passing),
+        // keep the remaining player active so they still get their chance to bid or
+        // pass; otherwise an opening pass would rob the opponent of their turn.
         $remaining = $this->gamestate->getActivePlayerList();
         if (count($remaining) === 1) {
-            $this->gamestate->setPlayerNonMultiactive((int)$remaining[0], 'toEndTurn');
+            $auctionId = (int) self::getGameStateValue('auctionId');
+            $currentHigh = (int) self::getUniqueValueFromDB(
+                "SELECT current_high_bid FROM auction WHERE auction_id = {$auctionId}"
+            );
+            if ($currentHigh > 0) {
+                $this->gamestate->setPlayerNonMultiactive((int)$remaining[0], 'toEndTurn');
+            }
         }
     }
 
@@ -1285,15 +1297,37 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
         $originalOwner = (int) $auction['original_owner'];
         $allPlayers    = self::loadPlayersBasicInfos();
 
-        $biddingPlayers = array();
+        $staffType   = $auction['staff_type'];
+        $playerCount = count($allPlayers);
+
+        // Non-owner candidates: not on vacation, and with an open slot for this
+        // staff type on their own board (a player who already fully owns this role
+        // cannot place the tile, so cannot bid — Bug #24 / RJ's "Chef quits but the
+        // other player already has a Chef" case).
+        $nonOwnerEligible = array();
         foreach ($allPlayers as $pid => $pinfo) {
-            // Exclude original owner; exclude vacationing players
+            $pid        = (int) $pid;
             $onVacation = (int) self::getUniqueValueFromDB(
                 "SELECT player_on_vacation FROM player WHERE player_id = {$pid}"
             );
-            if ((int) $pid !== $originalOwner && !$onVacation) {
-                $biddingPlayers[] = (int) $pid;
+            if ($pid !== $originalOwner && !$onVacation && $this->hasOpenSlot($staffType, $pid)) {
+                $nonOwnerEligible[] = $pid;
             }
+        }
+
+        // Build the bidding pool.
+        //   3-4 players: only the non-owner candidates bid (rulebook — the owner
+        //                does not reclaim their own quit staff).
+        //   2 players (Option B, digital house rule per Greg): the owner MAY bid to
+        //                reclaim, but only when the single opponent can actually take
+        //                the tile. If the opponent is full for this role there is no
+        //                contest, so no auction runs and the owner loses the staff.
+        //   INTENTIONAL DEVIATION from the printed rulebook — see Feature Requests FR-1.
+        $biddingPlayers = $nonOwnerEligible;
+        if ($playerCount === 2
+            && !empty($nonOwnerEligible)
+            && $this->hasOpenSlot($staffType, $originalOwner)) {
+            $biddingPlayers[] = $originalOwner;
         }
 
         if (empty($biddingPlayers)) {
@@ -1327,16 +1361,39 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
         $allPlayers     = self::loadPlayersBasicInfos();
         $biddingPlayers = array();
 
+        // The turn's active player already had first refusal on this staff (or
+        // auto-passed because they can't hire it) — they do not bid in the auction.
+        $activePlayerId = (int) self::getActivePlayerId();
+
+        $auctionId = (int) self::getGameStateValue('auctionId');
+        $auction   = self::getObjectFromDB(
+            "SELECT * FROM auction WHERE auction_id = {$auctionId}"
+        );
+        $staffType = $auction ? $auction['staff_type'] : '';
+
         foreach ($allPlayers as $pid => $pinfo) {
+            $pid        = (int) $pid;
             $onVacation = (int) self::getUniqueValueFromDB(
                 "SELECT player_on_vacation FROM player WHERE player_id = {$pid}"
             );
-            if (!$onVacation) {
-                $biddingPlayers[] = (int) $pid;
+            // Exclude the active player, vacationers, and anyone with no open slot
+            // for this role (they could not place the tile — Bug #24).
+            if ($pid !== $activePlayerId && !$onVacation && $this->hasOpenSlot($staffType, $pid)) {
+                $biddingPlayers[] = $pid;
             }
         }
 
         if (empty($biddingPlayers)) {
+            // No eligible taker — the staff stays in the box and the turn ends.
+            if ($auctionId > 0) {
+                self::DbQuery(
+                    "UPDATE auction SET status = 'no_takers' WHERE auction_id = {$auctionId}"
+                );
+            }
+            self::notifyAllPlayers('helpWantedNoTaker',
+                clienttranslate('No other player can hire this staff. Turn ends.'),
+                array()
+            );
             $this->gamestate->nextState('toEndTurn');
             return;
         }
@@ -1781,6 +1838,45 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
     }
 
     /**
+     * Auction eligibility check: does $playerId have at least one OPEN slot for
+     * this staff type on their own board?
+     *
+     * Distinct from findAvailableSlot(), which returns the bare type for
+     * single-slot roles regardless of whether that role is already Excellent —
+     * so a plain (findAvailableSlot === null) test never excludes a filled
+     * single-slot role (Chef/Sous Chef/First Cook/Maitre d'/Sommelier/Captain).
+     * hasOpenSlot() checks actual occupancy for BOTH single- and multi-slot roles.
+     */
+    private function hasOpenSlot($baseType, $playerId)
+    {
+        $baseType = preg_replace('/_\d+$/', '', $baseType);
+        $staffDef = $this->getStaffDefByType($baseType);
+        if ($staffDef === null) {
+            return false;
+        }
+
+        if ((int) $staffDef['slots'] === 1) {
+            $isExcellent = (int) self::getUniqueValueFromDB(
+                "SELECT is_excellent FROM staff
+                 WHERE player_id = {$playerId} AND staff_type = '{$baseType}'"
+            );
+            return $isExcellent === 0;
+        }
+
+        for ($i = 1; $i <= (int) $staffDef['slots']; $i++) {
+            $slotType    = $baseType . '_' . $i;
+            $isExcellent = (int) self::getUniqueValueFromDB(
+                "SELECT is_excellent FROM staff
+                 WHERE player_id = {$playerId} AND staff_type = '{$slotType}'"
+            );
+            if ($isExcellent === 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Look up a staff definition by base type name (e.g. 'cook', 'chef').
      * Also accepts numbered types ('cook_1') by stripping the suffix.
      */
@@ -1912,8 +2008,13 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
         $availableSlot = $this->findAvailableSlot($type, $player_id);
 
         if ($availableSlot === null) {
+            // Bug #28 — the active player already fully owns this role, so they cannot
+            // hire it themselves. Per rulebook, other players may now try to hire it:
+            // open the auction directly (the active player is auto-excluded in
+            // stHelpWantedBid). If no other player has an open slot, that state emits
+            // helpWantedNoTaker and the turn ends.
             self::notifyAllPlayers('squareLanded',
-                clienttranslate('${player_name} lands on Help Wanted! Rolls ${staff_type} — already fully staffed for that role. Turn ends.'),
+                clienttranslate('${player_name} lands on Help Wanted! Rolls ${staff_type} — already fully staffed. Other players may hire.'),
                 array(
                     'player_id'   => $player_id,
                     'player_name' => self::getActivePlayerName(),
@@ -1921,30 +2022,42 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
                     'staff_type'  => $type,
                 )
             );
-            $this->gamestate->nextState('toEndTurn');
-            return;
-        }
 
-        // Player has room for this staff type. Confirm the tile is still in the global
-        // Staff Box (someone else may have hired the last one). The box check uses the
-        // resolved numbered slot type returned by findAvailableSlot for multi-slot roles.
-        $boxAvailable = (int) self::getUniqueValueFromDB(
-            "SELECT available FROM staff_box WHERE staff_type = '{$availableSlot}'"
-        );
+            $safeType = addslashes($type);
+            self::DbQuery(
+                "INSERT INTO auction (staff_type, staff_value, source, status)
+                 VALUES ('{$safeType}', {$staffDef['value']}, 'help_wanted', 'active')"
+            );
+            $auctionId = self::DbGetLastId();
+            self::setGameStateValue('auctionId', $auctionId);
 
-        if (!$boxAvailable) {
-            self::notifyAllPlayers('squareLanded',
-                clienttranslate('${player_name} lands on Help Wanted! Rolls ${staff_type} — none left in the Staff Box. Turn ends.'),
+            self::notifyAllPlayers('helpWantedAuction',
+                clienttranslate('${staff_type} goes to auction!'),
                 array(
                     'player_id'   => $player_id,
                     'player_name' => self::getActivePlayerName(),
-                    'square_type' => 'help_wanted',
                     'staff_type'  => $type,
+                    'staff_value' => $staffDef['value'],
+                    'auction_id'  => $auctionId,
+                    'source'      => 'help_wanted',
                 )
             );
-            $this->gamestate->nextState('toEndTurn');
+
+            $this->gamestate->nextState('toHelpWanted');
             return;
         }
+
+        // Bug #27 — NO global staff_box gate here.
+        // staff_box seeds exactly ONE row per slot type for the whole game, so once any
+        // player hired e.g. the Chef, that row flipped to available=0 and every other
+        // player was permanently locked out of hiring a Chef — even with an open Chef
+        // slot on their own board. The rulebook has no such scarcity: at setup EVERY
+        // player takes an Excellent tile from the box, so two players holding an
+        // Excellent Chef at once is normal and expected.
+        // Per PD-approved Option A (2026-07-10), the per-player `staff` table is the
+        // sole source of truth for slot availability; staff_box is vestigial (writes
+        // are left in place but inert — full table removal is Phase 4).
+        // findAvailableSlot() above has already confirmed this player has room.
 
         // Bug #6 fix — active player gets first refusal at face value via hireStaff.
         // Store rolled staff type/value; passHire creates the auction if they decline.
