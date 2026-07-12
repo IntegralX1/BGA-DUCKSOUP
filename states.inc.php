@@ -96,6 +96,7 @@ $machinestates = array(
         'description'       => clienttranslate('${actplayer} must roll the dice to move'),
         'descriptionmyturn' => clienttranslate('Roll the dice to move — buy or cash Souper Duckats before rolling'),
         'type'              => 'activeplayer',
+        'args'              => 'argRollMovement',   // Bug #14 — flags a Duck Soup re-roll entry
         'possibleactions'   => array(
             'rollMovement',
             'buySouperDuckat',
@@ -116,6 +117,7 @@ $machinestates = array(
         'type'              => 'game',
         'action'            => 'stResolveSquare',
         'transitions'       => array(
+            'toRollMovement'    => 5,    // Bug #14 — Duck Soup: collect Souper Duckat, roll again
             'toRestaurant'      => 7,
             'toHireStaff'       => 9,
             'toStaffQuits'      => 11,

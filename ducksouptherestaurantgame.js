@@ -594,11 +594,31 @@ function (dojo, declare) {
                     break;
 
                 case 'rollMovement':
+                    // Bug #14 — argRollMovement sends duck_soup_reroll = true when this
+                    // entry into rollMovement is the extra roll granted by landing on the
+                    // Duck Soup square. Server-side flag, so the cue survives a refresh.
+                    // BGA sends [] rather than an object when args are empty — same guard
+                    // pattern as hireStaff above.
+                    var moveArgs  = args && args.args && !Array.isArray(args.args) ? args.args : {};
+                    var isReroll  = !!moveArgs.duck_soup_reroll;
+
                     if (this.isCurrentPlayerActive()) {
                         dojo.style(dojo.byId('move-die'), 'display', 'inline-flex');
+                        if (isReroll) {
+                            this._showBoardMessage(
+                                _('Duck Soup! Roll Again'),
+                                _('You collected a Souper Duckat. Roll the dice again and move your pawn.')
+                            );
+                        } else {
+                            this._showBoardMessage(
+                                _('Roll for Movement'),
+                                _('Roll the dice and move your pawn. You may also play Souper Duckats.')
+                            );
+                        }
+                    } else if (isReroll) {
                         this._showBoardMessage(
-                            _('Roll for Movement'),
-                            _('Roll the dice and move your pawn. You may also play Souper Duckats.')
+                            _('Duck Soup!'),
+                            _('The active player landed on Duck Soup and rolls again.')
                         );
                     }
                     break;
@@ -1066,6 +1086,7 @@ function (dojo, declare) {
                 ['helpWantedOfferDeclined',2000],  // FR-2 — opponent declined
                 ['helpWantedNoTaker',      2000],  // FR-2 — no valid taker, turn ends
                 ['staffHired',            1500],
+                ['hireSkipped',           2000],   // Bug #25 — hire offered but category already complete
                 ['staffTransferred',      1500],
                 ['staffReturned',         1500],
                 ['auctionResolved',       2000],
@@ -1195,10 +1216,19 @@ function (dojo, declare) {
 
             var squareType  = notif.args.square_type;
             var playerDuck  = notif.args.player_duckats;
+            var souperDuck  = notif.args.souper_duckats;
             var player_id   = notif.args.player_id;
 
             if (playerDuck !== undefined && this.duckatCounters[player_id]) {
                 this.duckatCounters[player_id].setValue(playerDuck);
+            }
+
+            // Bug #14 — the duck_soup branch of stResolveSquare sends the new Souper
+            // Duckat total in this payload, but it was never being read, so the panel
+            // only caught up on a page refresh. Squares that don't award Souper Duckats
+            // simply omit the field, hence the undefined guard.
+            if (souperDuck !== undefined) {
+                this._updateSouperDuckatCount(player_id, souperDuck);
             }
 
             this._showBoardMessage(
@@ -1382,6 +1412,24 @@ function (dojo, declare) {
 
         notif_helpWantedNoTaker: function (notif) {
             console.log('notif_helpWantedNoTaker', notif);
+        },
+
+        // Bug #25 — the server skipped the hire picker because the player already owns
+        // every Excellent role the opportunity could have offered. Show the reason on the
+        // board instead of opening a picker with nothing selectable.
+        notif_hireSkipped: function (notif) {
+            console.log('notif_hireSkipped', notif);
+
+            this._showBoardMessage(
+                _('No Hire Available'),
+                dojo.string.substitute(
+                    _('${player_name} already has every Excellent ${category} staff member.'),
+                    {
+                        player_name: notif.args.player_name,
+                        category:    notif.args.category
+                    }
+                )
+            );
         },
 
         notif_auctionResolved: function (notif) {

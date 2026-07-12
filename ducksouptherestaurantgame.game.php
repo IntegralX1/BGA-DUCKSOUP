@@ -109,6 +109,7 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
     const GS_HIRE_HALF_PRICE     = 19; // 1 = this hire is at half price (card bonus)
     const GS_HELP_WANTED_PENDING = 20; // 1 = hireStaff entered from help_wanted; passHire creates auction
     const GS_HELP_WANTED_VALUE   = 21; // face value of the help_wanted rolled staff (Duckats)
+    const GS_DUCK_SOUP_REROLL    = 22; // Bug #14 — 1 = next rollMovement entry is a Duck Soup re-roll
     // GS_CARD_TYPE removed — card type is a string, stored in game_state_text table
     // helpWantedStaffType is also a string — stored in game_state_text table
 
@@ -128,6 +129,7 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
             'hireHalfPrice'     => self::GS_HIRE_HALF_PRICE,
             'helpWantedPending' => self::GS_HELP_WANTED_PENDING,
             'helpWantedValue'   => self::GS_HELP_WANTED_VALUE,
+            'duckSoupReroll'    => self::GS_DUCK_SOUP_REROLL,
             // cardType and helpWantedStaffType stored in game_state_text (strings)
         ));
     }
@@ -220,6 +222,7 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
         self::setGameStateInitialValue('hireHalfPrice',     0);
         self::setGameStateInitialValue('helpWantedPending', 0);
         self::setGameStateInitialValue('helpWantedValue',   0);
+        self::setGameStateInitialValue('duckSoupReroll',    0);
         // cardType stored as string in game_state_text — reset for new game
         $this->setCardType('');
         $this->setHelpWantedStaffType('');
@@ -548,6 +551,11 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
 
         self::setGameStateValue('movementRoll',      $roll);
         self::setGameStateValue('souperDuckatsUsed', 0);
+
+        // Bug #14 — consume the Duck Soup re-roll flag. argRollMovement has already
+        // shipped it to the client for this state entry; clear it so a subsequent
+        // entry into rollMovement is not mislabelled as a re-roll.
+        self::setGameStateValue('duckSoupReroll', 0);
 
         $currentPos = (int) self::getUniqueValueFromDB(
             "SELECT player_board_position FROM player WHERE player_id = {$player_id}"
@@ -1072,16 +1080,23 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
                         'souper_duckats' => $newSouper,
                     )
                 );
-                // Roll again — go back to rollMovement
-                $this->gamestate->nextState('toEndTurn'); // Will re-enter via rollMovement
-                // Actually per rules player rolls again — route to rollMovement via endTurn
-                // We use a special re-roll: transition straight to rollStaffDie is wrong.
-                // Per rules: land on Duck Soup → collect Souper Duckat → roll again.
-                // Roll again means back to rollMovement (skip question + staff die for re-roll).
-                // End turn advances to next player — instead we route back to rollMovement
-                // via a dedicated transition. Using toEndTurn here as the closest available
-                // transition; stEndTurn will need a duck_soup re-roll flag if full re-roll
-                // behaviour is required. Flagged for Phase 4 refinement.
+                // Bug #14 — per rules: land on Duck Soup → collect a Souper Duckat → roll again.
+                // "Roll again" means the DICE only, not the whole turn: the letter/question and
+                // Staff Die phases happen once, at the top of the turn, before movement. So we
+                // route straight back to rollMovement (state 5) via the dedicated toRollMovement
+                // transition on state 6.
+                //
+                // The re-roll then flows normally: rollMovement → checkSouperDuckats (15) →
+                // souperDuckatUse (10) → resolveSquare (6). rollMovement resets
+                // souperDuckatsUsed, so the spend window reopens for the second roll.
+                //
+                // No loop risk: square 0 is the only Duck Soup square, and 2d6 from position 0
+                // lands on 2–12, so the pawn can never immediately re-land on it.
+                //
+                // duckSoupReroll flags the upcoming rollMovement entry so argRollMovement can
+                // tell the client this is a re-roll (board message cue). rollMovement() clears it.
+                self::setGameStateValue('duckSoupReroll', 1);
+                $this->gamestate->nextState('toRollMovement');
                 return;
 
             case 'business_great':
@@ -1170,6 +1185,11 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
                         'square_type' => $squareType,
                     )
                 );
+                // Bug #25 — kitchen already complete: skip the picker, end the turn.
+                if (!$this->hasAnyHireableSlot($player_id, 0)) {
+                    $this->skipEmptyHire($player_id, 0);
+                    break;
+                }
                 self::setGameStateValue('hireType', 0); // 0 = kitchen
                 self::setGameStateValue('hireHalfPrice', 0);
                 $this->gamestate->nextState('toHireStaff');
@@ -1184,6 +1204,11 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
                         'square_type' => $squareType,
                     )
                 );
+                // Bug #25 — dining room already complete: skip the picker, end the turn.
+                if (!$this->hasAnyHireableSlot($player_id, 1)) {
+                    $this->skipEmptyHire($player_id, 1);
+                    break;
+                }
                 self::setGameStateValue('hireType', 1); // 1 = dining_room
                 self::setGameStateValue('hireHalfPrice', 0);
                 $this->gamestate->nextState('toHireStaff');
@@ -1198,6 +1223,12 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
                         'square_type' => $squareType,
                     )
                 );
+                // Bug #25 — both categories complete (i.e. all 12 Excellent staff owned,
+                // which normally means the game has already been won): skip the picker.
+                if (!$this->hasAnyHireableSlot($player_id, 2)) {
+                    $this->skipEmptyHire($player_id, 2);
+                    break;
+                }
                 self::setGameStateValue('hireType', 2); // 2 = either
                 self::setGameStateValue('hireHalfPrice', 0);
                 $this->gamestate->nextState('toHireStaff');
@@ -1273,9 +1304,20 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
 
         // Conditional hire
         if ($result['needs_hire']) {
-            self::setGameStateValue('hireHalfPrice', 1);
             $hireTypeCode = $result['hire_type'] === 'kitchen' ? 0 :
                            ($result['hire_type'] === 'dining_room' ? 1 : 2);
+
+            // Bug #25 — half-price cards offer exactly one role (chef_cook_bonus → cook,
+            // maitre_d_bonus → server). If that role — or, for an unrestricted card, the
+            // whole offered category — is already fully owned, the picker would open with
+            // nothing selectable. Skip it and end the turn instead.
+            $halfPriceType = $this->getHalfPriceStaffType($result['card_type']);
+            if (!$this->hasAnyHireableSlot($player_id, $hireTypeCode, $halfPriceType)) {
+                $this->skipEmptyHire($player_id, $hireTypeCode, $halfPriceType);
+                return;
+            }
+
+            self::setGameStateValue('hireHalfPrice', 1);
             self::setGameStateValue('hireType', $hireTypeCode);
             $this->setCardType($result['card_type']);
             $this->gamestate->nextState('toHireStaff');
@@ -1415,6 +1457,10 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
      */
     function stEndTurn()
     {
+        // Bug #14 — safety net: the flag is normally consumed by rollMovement(), but a
+        // zombie/abandoned turn could leave it set. Never let it leak into another turn.
+        self::setGameStateValue('duckSoupReroll', 0);
+
         $auctionId = (int) self::getGameStateValue('auctionId');
 
         if ($auctionId > 0) {
@@ -1559,6 +1605,20 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
         return array(
             'position'    => $position,
             'square_type' => $this->getBoardSquare($position),
+        );
+    }
+
+    /**
+     * argRollMovement — Bug #14
+     * Tells the client whether this entry into rollMovement (state 5) is a Duck Soup
+     * re-roll, so it can show "Duck Soup! Roll again" rather than the generic movement
+     * prompt. Server-side flag rather than a client-held flag so the cue survives a
+     * page refresh or reconnect mid-re-roll.
+     */
+    function argRollMovement()
+    {
+        return array(
+            'duck_soup_reroll' => (bool) self::getGameStateValue('duckSoupReroll'),
         );
     }
 
@@ -1874,6 +1934,123 @@ class ducksouptherestaurantgame extends Bga\GameFramework\Table
             }
         }
         return false;
+    }
+
+    /**
+     * Bug #25 — hire-picker dead-end guard.
+     *
+     * True iff $playerId has at least one OPEN slot among the roles the offered hire
+     * can actually deliver. When this returns false, opening state 9 would present a
+     * picker in which every tile is greyed "Already Hired" and the only legal action
+     * is Pass — a dead end. Callers skip state 9 entirely instead.
+     *
+     * Sourced from the per-player `staff` table via hasOpenSlot() — never the
+     * vestigial global staff_box.
+     *
+     * @param int         $playerId
+     * @param int         $hireTypeCode  0 = kitchen, 1 = dining_room, 2 = either
+     * @param string|null $restrictType  Half-price Restaurant cards offer exactly ONE
+     *                                   role (chef_cook_bonus → cook,
+     *                                   maitre_d_bonus → server). When set, only that
+     *                                   role is checked and the category is ignored.
+     * @return bool
+     */
+    private function hasAnyHireableSlot($playerId, $hireTypeCode, $restrictType = null)
+    {
+        $playerId = (int) $playerId;
+
+        if ($restrictType !== null && $restrictType !== '') {
+            return $this->hasOpenSlot($restrictType, $playerId);
+        }
+
+        foreach (self::STAFF as $staffDef) {
+            if (!$this->staffMatchesHireType($staffDef['location'], $hireTypeCode)) {
+                continue;
+            }
+            if ($this->hasOpenSlot($staffDef['type'], $playerId)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Bug #25 — does a staff role's board location fall inside the offered hire category?
+     *
+     * @param string $location      'kitchen' | 'dining_room' (self::STAFF)
+     * @param int    $hireTypeCode  0 = kitchen, 1 = dining_room, 2 = either
+     * @return bool
+     */
+    private function staffMatchesHireType($location, $hireTypeCode)
+    {
+        $code = (int) $hireTypeCode;
+
+        if ($code === 2) {
+            return true;                          // 'either' — all eight roles on offer
+        }
+        if ($code === 0) {
+            return $location === 'kitchen';
+        }
+        return $location === 'dining_room';       // 1
+    }
+
+    /**
+     * Bug #25 — human-readable label for the category (or single role) that a hire
+     * opportunity covered, for the skip notification. Wrapped in clienttranslate() and
+     * shipped with an i18n arg key so BGA translates it client-side.
+     *
+     * @param int         $hireTypeCode
+     * @param string|null $restrictType
+     * @return string
+     */
+    private function getHireCategoryLabel($hireTypeCode, $restrictType = null)
+    {
+        if ($restrictType === 'cook') {
+            return clienttranslate('Cook');
+        }
+        if ($restrictType === 'server') {
+            return clienttranslate('Server');
+        }
+
+        switch ((int) $hireTypeCode) {
+            case 0:  return clienttranslate('Kitchen');
+            case 1:  return clienttranslate('Dining Room');
+            default: return clienttranslate('Kitchen or Dining Room');
+        }
+    }
+
+    /**
+     * Bug #25 — the player already owns every Excellent role this hire could have
+     * offered. Announce the skip and route straight to End Turn instead of opening an
+     * empty picker.
+     *
+     * Both calling states already define toEndTurn → 13 (state 6 resolveSquare and
+     * state 7 resolveRestaurant), so this needs NO states.inc.php change.
+     *
+     * The caller must not fire any further nextState() after calling this.
+     *
+     * @param int         $playerId
+     * @param int         $hireTypeCode
+     * @param string|null $restrictType
+     */
+    private function skipEmptyHire($playerId, $hireTypeCode, $restrictType = null)
+    {
+        // Defensive: never leave half-price / category context set on a skipped hire.
+        self::setGameStateValue('hireType',      0);
+        self::setGameStateValue('hireHalfPrice', 0);
+
+        self::notifyAllPlayers('hireSkipped',
+            clienttranslate('${player_name} already has every Excellent ${category} staff member — no hire available.'),
+            array(
+                'i18n'        => array('category'),
+                'player_id'   => $playerId,
+                'player_name' => self::getPlayerNameById($playerId),
+                'category'    => $this->getHireCategoryLabel($hireTypeCode, $restrictType),
+            )
+        );
+
+        $this->gamestate->nextState('toEndTurn');
     }
 
     /**
